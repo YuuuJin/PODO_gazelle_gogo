@@ -1220,7 +1220,7 @@ void HB_WALKING::save_onestep(int cnt)
 void HB_WALKING::save_all()
 {
     printf("walk finished %d\n",k);
-    FILE* ffp = fopen("/home/rainbow/Desktop/HBtest_Walking_Data.txt","w");
+    FILE* ffp = fopen("/home/yujin/Desktop/HBtest_Walking_Data.txt","w");
     for(int i=0;i<k;i++)
     {
         fprintf(ffp,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t"
@@ -1311,7 +1311,7 @@ void HB_WALKING::save_sysID(double _freq)
 {
     printf("walk finished %d\n",k);
     char name[100];
-    sprintf(name, "/home/rainbow/Desktop/%.2f.txt",_freq);
+    sprintf(name, "/home/yujin/Desktop/%.2f.txt",_freq);
     FILE* ffp = fopen(name,"w");
     for(int i=0;i<k;i++)
     {

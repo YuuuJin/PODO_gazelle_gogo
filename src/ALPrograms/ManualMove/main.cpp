@@ -39,10 +39,10 @@
  */
 
 
+#include <QCoreApplication>
 #include <alchemy/task.h>
 
 
-#include <QCoreApplication>
 
 #include <iostream>
 #include <string>

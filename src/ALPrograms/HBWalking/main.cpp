@@ -2619,7 +2619,12 @@ void RBTaskThread(void *)
 //        userData->M2G.pPelZ = WBmotion->pPelZ;
     }
 
-        joint->MoveAllJoint();
+    double RAP_deg, RAR_deg;
+    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentReference, sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentReference, 0, 0, RAP_deg, RAR_deg);
+    double LAP_deg, LAR_deg;
+    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentReference, sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentReference, 0, 0, LAP_deg, LAR_deg);
+
+    joint->MoveAllJoint();
 
         userData->M2G.valveMode = 12;
         rt_task_suspend(&rtTaskCon);
@@ -3502,7 +3507,7 @@ void save_onestep(int cnt){
 void save_all()
 {
     printf("walk finished and saved%d\n",HBPW.k);
-    FILE* ffp2 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev1.txt","w");
+    FILE* ffp2 = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev1.txt","w");
     for(int i=0;i<HBPW.k;i++)
     {
         for(int j=0;j<SAVEN;j++)

@@ -544,13 +544,13 @@ public:
 
 
             _vec3 e = _vec3(_th1_deg - th_est[0], _th2_deg - th_est[1], 0);
-            //cout<<" error : "<<e[0]<<" "<<e[1]<<endl;
+//            cout<<" error : "<<e[0]<<" "<<e[1]<<endl;
             _mat3 J = gazelle_jacobian(pitch_roll[0], pitch_roll[1], th_est[0], th_est[1]);
             pitch_roll = K*J*e + pitch_roll;  //vector addition and multiplication is this okay?
             if(sqrt(e[0]*e[0] + e[1]*e[1]) < 0.0001){
                 break;
             }
-            //cout<<"pitch : "<<pitch_roll[0]<<" roll: "<<pitch_roll[1]<<endl;
+//            cout<<"pitch : "<<pitch_roll[0]<<" roll: "<<pitch_roll[1]<<endl;
             i++;
         }
 

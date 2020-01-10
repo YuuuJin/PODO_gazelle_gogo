@@ -26,7 +26,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = ALPrograms1.0.0
-DISTDIR = /home/rainbow/Desktop/podo_Real_Gazelle/build/ALBuild/.tmp/ALPrograms1.0.0
+DISTDIR = /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/build/ALBuild/.tmp/ALPrograms1.0.0
 SUBTARGETS    =  \
 		sub-PODOLAN \
 		sub-ALTutorial \
@@ -43,279 +43,279 @@ SUBTARGETS    =  \
 
 sub-PODOLAN-qmake_all:  FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile
+	cd PODOLAN/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile
 	cd PODOLAN/ && $(MAKE) -f Makefile qmake_all
 sub-PODOLAN: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-PODOLAN-make_first: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-PODOLAN-all: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-PODOLAN-clean: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-PODOLAN-distclean: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-PODOLAN-install_subtargets: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-PODOLAN-uninstall_subtargets: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-ALTutorial-qmake_all:  FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile
+	cd ALTutorial/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile
 	cd ALTutorial/ && $(MAKE) -f Makefile qmake_all
 sub-ALTutorial: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-ALTutorial-make_first: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-ALTutorial-all: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-ALTutorial-clean: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-ALTutorial-distclean: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-ALTutorial-install_subtargets: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-ALTutorial-uninstall_subtargets: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-WalkReady-qmake_all:  FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile
+	cd WalkReady/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile
 	cd WalkReady/ && $(MAKE) -f Makefile qmake_all
 sub-WalkReady: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-WalkReady-make_first: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-WalkReady-all: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-WalkReady-clean: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-WalkReady-distclean: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-WalkReady-install_subtargets: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-WalkReady-uninstall_subtargets: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-FreeWalking-qmake_all:  FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile
+	cd FreeWalking/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile
 	cd FreeWalking/ && $(MAKE) -f Makefile qmake_all
 sub-FreeWalking: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-FreeWalking-make_first: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-FreeWalking-all: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-FreeWalking-clean: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-FreeWalking-distclean: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-FreeWalking-install_subtargets: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-FreeWalking-uninstall_subtargets: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-OmniWheel-qmake_all:  FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile
+	cd OmniWheel/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile
 	cd OmniWheel/ && $(MAKE) -f Makefile qmake_all
 sub-OmniWheel: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-OmniWheel-make_first: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-OmniWheel-all: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-OmniWheel-clean: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-OmniWheel-distclean: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-OmniWheel-install_subtargets: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-OmniWheel-uninstall_subtargets: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-DemoFireAL-qmake_all:  FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile
+	cd DemoFireAL/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile
 	cd DemoFireAL/ && $(MAKE) -f Makefile qmake_all
 sub-DemoFireAL: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-DemoFireAL-make_first: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-DemoFireAL-all: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-DemoFireAL-clean: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-DemoFireAL-distclean: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-DemoFireAL-install_subtargets: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-DemoFireAL-uninstall_subtargets: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-ManualMove-qmake_all:  FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile
+	cd ManualMove/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile
 	cd ManualMove/ && $(MAKE) -f Makefile qmake_all
 sub-ManualMove: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-ManualMove-make_first: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-ManualMove-all: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-ManualMove-clean: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-ManualMove-distclean: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-ManualMove-install_subtargets: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-ManualMove-uninstall_subtargets: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-CarTask-qmake_all:  FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile
+	cd CarTask/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile
 	cd CarTask/ && $(MAKE) -f Makefile qmake_all
 sub-CarTask: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-CarTask-make_first: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-CarTask-all: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-CarTask-clean: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-CarTask-distclean: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-CarTask-install_subtargets: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-CarTask-uninstall_subtargets: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-ALNRL-qmake_all:  FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile
+	cd ALNRL/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile
 	cd ALNRL/ && $(MAKE) -f Makefile qmake_all
 sub-ALNRL: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-ALNRL-make_first: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-ALNRL-all: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-ALNRL-clean: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-ALNRL-distclean: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-ALNRL-install_subtargets: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-ALNRL-uninstall_subtargets: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-HBWalking-qmake_all:  FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile
+	cd HBWalking/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile
 	cd HBWalking/ && $(MAKE) -f Makefile qmake_all
 sub-HBWalking: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-HBWalking-make_first: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-HBWalking-all: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-HBWalking-clean: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-HBWalking-distclean: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-HBWalking-install_subtargets: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-HBWalking-uninstall_subtargets: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 sub-StateEstimation-qmake_all:  FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile
+	cd StateEstimation/ && $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile
 	cd StateEstimation/ && $(MAKE) -f Makefile qmake_all
 sub-StateEstimation: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile
 sub-StateEstimation-make_first: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile 
 sub-StateEstimation-all: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile all
 sub-StateEstimation-clean: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile clean
 sub-StateEstimation-distclean: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile distclean
 sub-StateEstimation-install_subtargets: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile install
 sub-StateEstimation-uninstall_subtargets: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile uninstall
 
 Makefile: ../../src/ALPrograms/ALPrograms.pro /opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -347,11 +347,15 @@ Makefile: ../../src/ALPrograms/ALPrograms.pro /opt/Qt5.7.0/5.7/gcc_64/mkspecs/li
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri \
@@ -491,11 +495,15 @@ Makefile: ../../src/ALPrograms/ALPrograms.pro /opt/Qt5.7.0/5.7/gcc_64/mkspecs/li
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri:
@@ -620,72 +628,72 @@ uninstall_subtargets: sub-PODOLAN-uninstall_subtargets sub-ALTutorial-uninstall_
 
 sub-PODOLAN-check:
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-ALTutorial-check:
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-WalkReady-check:
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-FreeWalking-check:
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-OmniWheel-check:
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-DemoFireAL-check:
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-ManualMove-check:
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-CarTask-check:
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-ALNRL-check:
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-HBWalking-check:
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 sub-StateEstimation-check:
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile check
 check: sub-PODOLAN-check sub-ALTutorial-check sub-WalkReady-check sub-FreeWalking-check sub-OmniWheel-check sub-DemoFireAL-check sub-ManualMove-check sub-CarTask-check sub-ALNRL-check sub-HBWalking-check sub-StateEstimation-check
 
 sub-PODOLAN-benchmark:
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-ALTutorial-benchmark:
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-WalkReady-benchmark:
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-FreeWalking-benchmark:
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-OmniWheel-benchmark:
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-DemoFireAL-benchmark:
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-ManualMove-benchmark:
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-CarTask-benchmark:
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-ALNRL-benchmark:
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-HBWalking-benchmark:
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 sub-StateEstimation-benchmark:
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -f Makefile benchmark
 benchmark: sub-PODOLAN-benchmark sub-ALTutorial-benchmark sub-WalkReady-benchmark sub-FreeWalking-benchmark sub-OmniWheel-benchmark sub-DemoFireAL-benchmark sub-ManualMove-benchmark sub-CarTask-benchmark sub-ALNRL-benchmark sub-HBWalking-benchmark sub-StateEstimation-benchmark
 install:install_subtargets  FORCE
 
@@ -698,49 +706,49 @@ dist: distdir FORCE
 
 distdir: sub-PODOLAN-distdir sub-ALTutorial-distdir sub-WalkReady-distdir sub-FreeWalking-distdir sub-OmniWheel-distdir sub-DemoFireAL-distdir sub-ManualMove-distdir sub-CarTask-distdir sub-ALNRL-distdir sub-HBWalking-distdir sub-StateEstimation-distdir FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
-	$(COPY_FILE) --parents /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/sanitize.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/gcc-base.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/gcc-base-unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/g++-base.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/g++-unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/qconfig.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dcore.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dcore_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dextras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dextras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dinput.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dinput_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dlogic.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dlogic_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquick.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquick_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickextras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickextras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickinput.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickinput_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickrender.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickrender_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3drender.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3drender_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designercomponents_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_eglfs_device_lib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gamepad.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gamepad_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gui.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gui_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_help.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_help_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_location.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_location_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimedia.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimedia_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimediawidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimediawidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_network.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_network_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_nfc.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_nfc_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_opengl.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_opengl_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_openglextensions.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_openglextensions_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_packetprotocol_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_platformsupport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_positioning.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_positioning_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_printsupport.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_printsupport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_purchasing.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_purchasing_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmldebug_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmldevtools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmltest.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmltest_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quick.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quick_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickcontrols2.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickcontrols2_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickparticles_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quicktemplates2_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickwidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickwidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_script.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_script_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scripttools.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scripttools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scxml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scxml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sensors.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sensors_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialbus.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialbus_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialport.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sql.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sql_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_svg.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_svg_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_testlib.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_testlib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uiplugin.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uitools.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uitools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webchannel.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webchannel_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webengine.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webengine_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecore.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecore_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecoreheaders_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginewidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginewidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_websockets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_websockets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webview.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webview_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_widgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_widgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_x11extras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_x11extras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xmlpatterns.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xmlpatterns_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_functions.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_config.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_post.prf .qmake.stash /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exclusive_builds.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_pre.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/resolve_config.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_post.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/warn_on.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/file_copies.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/testcase_targets.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exceptions.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/yacc.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/lex.prf ../../src/ALPrograms/ALPrograms.pro $(DISTDIR)/
+	$(COPY_FILE) --parents /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/sanitize.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/gcc-base.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/gcc-base-unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/g++-base.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/g++-unix.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/qconfig.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dcore.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dcore_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dextras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dextras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dinput.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dinput_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dlogic.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dlogic_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquick.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquick_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickextras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickextras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickinput.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickinput_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickrender.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3dquickrender_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3drender.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_3drender_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designercomponents_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_eglfs_device_lib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gamepad.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gamepad_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gui.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_gui_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_help.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_help_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_location.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_location_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimedia.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimedia_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimediawidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_multimediawidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_network.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_network_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_nfc.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_nfc_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_opengl.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_opengl_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_openglextensions.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_openglextensions_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_packetprotocol_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_platformsupport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_positioning.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_positioning_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_printsupport.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_printsupport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_purchasing.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_purchasing_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmldebug_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmldevtools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmltest.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qmltest_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quick.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quick_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickcontrols2.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickcontrols2_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickparticles_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quicktemplates2_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickwidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_quickwidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_script.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_script_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scripttools.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scripttools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scxml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_scxml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sensors.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sensors_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialbus.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialbus_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialport.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_serialport_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sql.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_sql_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_svg.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_svg_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_testlib.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_testlib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uiplugin.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uitools.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_uitools_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webchannel.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webchannel_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webengine.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webengine_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecore.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecore_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginecoreheaders_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginewidgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webenginewidgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_websockets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_websockets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webview.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_webview_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_widgets.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_widgets_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_x11extras.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_x11extras_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xml.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xml_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xmlpatterns.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_xmlpatterns_private.pri /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_functions.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_config.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_post.prf .qmake.stash /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exclusive_builds.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_pre.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/resolve_config.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_post.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/warn_on.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/file_copies.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/testcase_targets.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exceptions.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/yacc.prf /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/lex.prf ../../src/ALPrograms/ALPrograms.pro $(DISTDIR)/
 
 sub-PODOLAN-distdir: FORCE
 	@test -d PODOLAN/ || mkdir -p PODOLAN/
-	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/PODOLAN
+	cd PODOLAN/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/PODOLAN/PODOLAN.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/PODOLAN
 
 sub-ALTutorial-distdir: FORCE
 	@test -d ALTutorial/ || mkdir -p ALTutorial/
-	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ALTutorial
+	cd ALTutorial/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALTutorial/ALTutorial.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ALTutorial
 
 sub-WalkReady-distdir: FORCE
 	@test -d WalkReady/ || mkdir -p WalkReady/
-	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/WalkReady
+	cd WalkReady/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/WalkReady/WalkReady.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/WalkReady
 
 sub-FreeWalking-distdir: FORCE
 	@test -d FreeWalking/ || mkdir -p FreeWalking/
-	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/FreeWalking
+	cd FreeWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/FreeWalking/FreeWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/FreeWalking
 
 sub-OmniWheel-distdir: FORCE
 	@test -d OmniWheel/ || mkdir -p OmniWheel/
-	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/OmniWheel
+	cd OmniWheel/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/OmniWheel/OmniWheel.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/OmniWheel
 
 sub-DemoFireAL-distdir: FORCE
 	@test -d DemoFireAL/ || mkdir -p DemoFireAL/
-	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/DemoFireAL
+	cd DemoFireAL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/DemoFireAL/DemoFireAL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/DemoFireAL
 
 sub-ManualMove-distdir: FORCE
 	@test -d ManualMove/ || mkdir -p ManualMove/
-	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ManualMove
+	cd ManualMove/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ManualMove/ManualMove.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ManualMove
 
 sub-CarTask-distdir: FORCE
 	@test -d CarTask/ || mkdir -p CarTask/
-	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/CarTask
+	cd CarTask/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/CarTask/CarTask.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/CarTask
 
 sub-ALNRL-distdir: FORCE
 	@test -d ALNRL/ || mkdir -p ALNRL/
-	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ALNRL
+	cd ALNRL/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/ALNRL/ALNRL.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/ALNRL
 
 sub-HBWalking-distdir: FORCE
 	@test -d HBWalking/ || mkdir -p HBWalking/
-	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/HBWalking
+	cd HBWalking/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/HBWalking/HBWalking.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/HBWalking
 
 sub-StateEstimation-distdir: FORCE
 	@test -d StateEstimation/ || mkdir -p StateEstimation/
-	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/rainbow/Desktop/podo_Real_Gazelle/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/StateEstimation
+	cd StateEstimation/ && ( test -e Makefile || $(QMAKE) /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/ALPrograms/StateEstimation/StateEstimation.pro -spec linux-g++ -o Makefile ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/StateEstimation
 

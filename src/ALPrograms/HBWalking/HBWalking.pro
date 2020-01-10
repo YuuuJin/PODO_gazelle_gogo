@@ -29,6 +29,7 @@ INCLUDEPATH += \
     /usr/include/xenomai/alchemy \
     ../../../share/Headers\
     /usr/include/eigen3\
+    /usr/local/lib
 
 LIBS    += \
     -lalchemy \

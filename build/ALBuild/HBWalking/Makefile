@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -I/usr/include/xenomai/cobalt -I/usr/include/xenomai -D_GNU_SOURCE -D_REENTRANT -D__COBALT__ -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../../../src/ALPrograms/HBWalking -I. -isystem /usr/include/xenomai/cobalt -isystem /usr/include/xenomai -isystem /usr/include/xenomai/alchemy -I../../../share/Headers -isystem /usr/include/eigen3 -I/opt/Qt5.7.0/5.7/gcc_64/include -I/opt/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../../../src/ALPrograms/HBWalking -I. -isystem /usr/include/xenomai/cobalt -isystem /usr/include/xenomai -isystem /usr/include/xenomai/alchemy -I../../../share/Headers -isystem /usr/include/eigen3 -I/usr/local/lib -I/opt/Qt5.7.0/5.7/gcc_64/include -I/opt/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++
 QMAKE         = /opt/Qt5.7.0/5.7/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = HBWalking1.0.0
-DISTDIR = /home/rainbow/Desktop/podo_Real_Gazelle/build/ALBuild/HBWalking/.tmp/HBWalking1.0.0
+DISTDIR = /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/build/ALBuild/HBWalking/.tmp/HBWalking1.0.0
 LINK          = g++
 LFLAGS        = /usr/lib/xenomai/bootstrap.o -Wl,--wrap=main -Wl,--dynamic-list=/usr/lib/dynlist.ld -L/usr/lib -lcobalt -lpthread -lrt -Wl,-O1 -Wl,-rpath,/opt/Qt5.7.0/5.7/gcc_64/lib
 LIBS          = $(SUBLIBS) -lalchemy -lcopperplate -lcobalt -lrt -lpcan -L/usr/local/lib/ -lrbdl -L/opt/Qt5.7.0/5.7/gcc_64/lib -lQt5Core -lpthread 
@@ -100,11 +100,15 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri \
@@ -293,11 +297,15 @@ Makefile: ../../../src/ALPrograms/HBWalking/HBWalking.pro /opt/Qt5.7.0/5.7/gcc_6
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri \
+		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri \
@@ -442,11 +450,15 @@ Makefile: ../../../src/ALPrograms/HBWalking/HBWalking.pro /opt/Qt5.7.0/5.7/gcc_6
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_charts_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_clucene_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_core_private.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri:
+/opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/modules/qt_lib_designer.pri:
@@ -690,6 +702,30 @@ main.o: ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWal
 		../../../src/ALPrograms/HBWalking/ManualCAN.h \
 		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
 		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathFixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/compileassert.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathBlock.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathDynamic.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathQR.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCholesky.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCommaInitializer.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMap.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_eigenmath.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Quaternion.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SpatialAlgebraOperators.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_mathutils.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Logging.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Body.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Model.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Joint.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Dynamics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Kinematics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Constraints.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_utils.h \
 		../../../src/ALPrograms/HBWalking/HB_types.h \
 		../../../src/ALPrograms/HBWalking/ow_cplex.h \
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
@@ -883,6 +919,30 @@ HB_functions.o: ../../../src/ALPrograms/HBWalking/HB_functions.cpp ../../../src/
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QString \
 		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
 		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathFixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/compileassert.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathBlock.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathDynamic.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathQR.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCholesky.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCommaInitializer.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMap.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_eigenmath.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Quaternion.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SpatialAlgebraOperators.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_mathutils.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Logging.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Body.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Model.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Joint.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Dynamics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Kinematics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Constraints.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_utils.h \
 		../../../src/ALPrograms/HBWalking/HB_types.h \
 		../../../src/ALPrograms/HBWalking/ow_cplex.h \
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
@@ -996,6 +1056,30 @@ HB_PreviewWalk.o: ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp ../../../
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QString \
 		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
 		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathFixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/compileassert.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathBlock.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathDynamic.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathQR.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCholesky.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCommaInitializer.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMap.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_eigenmath.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Quaternion.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SpatialAlgebraOperators.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_mathutils.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Logging.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Body.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Model.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Joint.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Dynamics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Kinematics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Constraints.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_utils.h \
 		../../../src/ALPrograms/HBWalking/HB_types.h \
 		../../../src/ALPrograms/HBWalking/ow_cplex.h \
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
@@ -1056,6 +1140,30 @@ HB_Controller.o: ../../../src/ALPrograms/HBWalking/HB_Controller.cpp ../../../sr
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QString \
 		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
 		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathFixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/compileassert.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathBlock.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathDynamic.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathQR.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCholesky.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCommaInitializer.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMap.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_eigenmath.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Quaternion.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SpatialAlgebraOperators.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_mathutils.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Logging.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Body.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Model.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Joint.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Dynamics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Kinematics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Constraints.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_utils.h \
 		../../../src/ALPrograms/HBWalking/HB_types.h \
 		../../../src/ALPrograms/HBWalking/ow_cplex.h \
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \

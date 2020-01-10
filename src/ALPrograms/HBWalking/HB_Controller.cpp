@@ -2351,7 +2351,7 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
         if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30)){
             dz_ctrl = +dsp_ctrl_gain/10*Fz_diff_error - dsp_tilt_gain/10*COM_e_imu_local.y
                         + L*dsp_tilt_gain/5*COM_e_imu_local.x;
-            cout<<"DSP tiliting out!"<<endl;
+            cout<<"DSP tilting out!"<<endl;
         }
         else{
             dz_ctrl = dsp_ctrl_gain*Fz_diff_error + dsp_tilt_gain/2*COM_e_imu_local.y
@@ -2381,7 +2381,7 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
         if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30)){
             dz_ctrl = dsp_ctrl_gain/3.0*Fz_diff_error - dsp_tilt_gain/6*COM_e_imu_local.y
                     +0*L*dsp_tilt_gain*COM_e_imu_local.x - z_ctrl/0.3;
-            cout<<"SSP tiliting out!"<<endl;
+            cout<<"SSP tilting out!"<<endl;
 
 
         }
@@ -5032,7 +5032,7 @@ void HB_PreviewWalk::save_onestep(int cnt)
 void HB_PreviewWalk::save_all()
 {
     printf("walk finished %d\n",k);
-    FILE* ffp = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev.txt","w");
+    FILE* ffp = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev.txt","w");
     for(int i=0;i<k;i++)
     {
         fprintf(ffp,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t"

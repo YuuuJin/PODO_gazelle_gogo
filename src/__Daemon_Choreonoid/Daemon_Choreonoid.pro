@@ -44,7 +44,6 @@ SOURCES += main.cpp \
     RBIMUSensor.cpp \
     RBSmartPower.cpp \
     RBOpticFlowSensor.cpp \
-    RBFOGSensor.cpp \
     RBRawLAN.cpp
 
 HEADERS += \
@@ -58,7 +57,6 @@ HEADERS += \
     RBIMUSensor.h \
     RBSmartPower.h \
     RBOpticFlowSensor.h \
-    RBFOGSensor.h \
     RBRawLAN.h \
     JointInformation.h \
     ExternHeader.h

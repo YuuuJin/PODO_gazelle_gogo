@@ -207,7 +207,7 @@ public:
 
     void CalcCOMMomentum(VectorNd _Q,VectorNd _Qdot)
     {
-        Utils::CalcCenterOfMass(*Robot,_Q,_Qdot,Mass,COM,&dCOM,&Momentum,true);
+//        Utils::CalcCenterOfMass(*Robot,_Q,_Qdot,Mass,COM,&dCOM,&Momentum,true);
     }
 
     void CalcEndeffectorJacobian6D(VectorNd _Q)

@@ -93,7 +93,7 @@ RBFTSensor          _DEV_FT[MAX_FT];
 RBIMUSensor         _DEV_IMU[MAX_IMU];
 RBSmartPower        _DEV_SP[MAX_SP];
 RBOpticFlowSensor   _DEV_OF[MAX_OF];
-RBFOGSensor         _DEV_FOG;
+//RBFOGSensor         _DEV_FOG;
 
 int _CANOUT_ENABLED = false;
 int _ENCODER_ENABLED = false;
@@ -1740,27 +1740,27 @@ void RBCMD_SensorIMUOffsetSet(){
 }
 
 void RBCMD_SensorFOGNull(){
-    int nullzero = sharedCMD->COMMAND[RBCORE_PODO_NO].USER_PARA_CHAR[0];
-    if(nullzero != 0) nullzero = 1;
+//    int nullzero = sharedCMD->COMMAND[RBCORE_PODO_NO].USER_PARA_CHAR[0];
+//    if(nullzero != 0) nullzero = 1;
 
-    if(nullzero == 0){  // Null
-        _DEV_FOG.FOGNullFlag = true;
-    }else{  // Zero
+//    if(nullzero == 0){  // Null
+//        _DEV_FOG.FOGNullFlag = true;
+//    }else{  // Zero
 
-        _DEV_IMU[0].FOG_ROLL_OFFSET  = -_DEV_IMU[0].FOG_ROLL_NULL     + (_DEV_IMU[0].ACC_X);
-        _DEV_IMU[0].FOG_PITCH_OFFSET = -_DEV_IMU[0].FOG_PITCH_NULL    + (_DEV_IMU[0].ACC_Y);
-        _DEV_IMU[0].FOG_YAW_OFFSET   = -_DEV_IMU[0].FOG_YAW_NULL      + (_DEV_IMU[0].ACC_Z);
+//        _DEV_IMU[0].FOG_ROLL_OFFSET  = -_DEV_IMU[0].FOG_ROLL_NULL     + (_DEV_IMU[0].ACC_X);
+//        _DEV_IMU[0].FOG_PITCH_OFFSET = -_DEV_IMU[0].FOG_PITCH_NULL    + (_DEV_IMU[0].ACC_Y);
+//        _DEV_IMU[0].FOG_YAW_OFFSET   = -_DEV_IMU[0].FOG_YAW_NULL      + (_DEV_IMU[0].ACC_Z);
 
-        _DEV_FOG.FOGRoll   = _DEV_IMU[0].ACC_X;
-        _DEV_FOG.FOGPitch  = _DEV_IMU[0].ACC_Y;
-        _DEV_FOG.FOGYaw    = _DEV_IMU[0].ACC_Z;
-    }
+//        _DEV_FOG.FOGRoll   = _DEV_IMU[0].ACC_X;
+//        _DEV_FOG.FOGPitch  = _DEV_IMU[0].ACC_Y;
+//        _DEV_FOG.FOGYaw    = _DEV_IMU[0].ACC_Z;
+//    }
 }
 
 void RBCMD_SensorFOGUSBReset(){
-    _DEV_FOG.RBClosePort();
-    usleep(50*1000);
-    _DEV_FOG.RBOpenPort(B460800);
+//    _DEV_FOG.RBClosePort();
+//    usleep(50*1000);
+//    _DEV_FOG.RBOpenPort(B460800);
 }
 
 void RBCMD_SensorOFNull(){
@@ -1931,14 +1931,14 @@ int RBCore_Initialize(void){
         return false;
 
     // FOG [RS-232] initialize
-    if(!__IS_GAZEBO && __IS_FOG){
-        if(_DEV_FOG.RBOpenPort(B460800) != FOG_PORT_SUCCESS){
-            IS_RS232_OK = false;
-            return false;
-        }else{
-            IS_RS232_OK = true;
-        }
-    }
+//    if(!__IS_GAZEBO && __IS_FOG){
+//        if(_DEV_FOG.RBOpenPort(B460800) != FOG_PORT_SUCCESS){
+//            IS_RS232_OK = false;
+//            return false;
+//        }else{
+//            IS_RS232_OK = true;
+//        }
+//    }
 
     FILE_LOG(logERROR) << "=================================";
     cout << endl;

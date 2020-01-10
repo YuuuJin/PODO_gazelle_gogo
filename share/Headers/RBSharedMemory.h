@@ -242,6 +242,7 @@ typedef struct _RBCORE_SHM_REFERENCE_
 {
     float           JointReference[MAX_AL][MAX_MC][MOTOR_2CH];
     float           JointTorqueRef[MAX_AL][MAX_MC][MOTOR_2CH];
+    float           JointReference_Sim[MAX_MC][MOTOR_2CH];
 
     MANUAL_CAN		ManualCAN[MAX_MANUAL_CAN];
 
