@@ -1,19 +1,22 @@
 #include "HB_PreviewWalk.h"
 
-int HB_PreviewWalk::Preveiw_walking(){
+int HB_PreviewWalk::Preveiw_walking()
+{
 
     //// ----------------- step phase change-----------------------------
-    if(step_phase_change_flag == true){
+    if(step_phase_change_flag == true)
+    {
        //// -------------------------------joystick mode-----------------------------------------
 
-        if(Joystick_walk_flag == true && step_phase > 2){
+        if(Joystick_walk_flag == true && step_phase > 2)
+        {
             // Step replanning every step phase change
             // ahead Next Two Step or more...(how much step should be planned before..?)
             // del_pos is confirmed (from joystick input)
             // del_pos : (X moving amount, Y moving amount, Yaw angle_deg)
 
-            if(Joystick_off_signal == true){
-
+            if(Joystick_off_signal == true)
+            {
                 Joystick_walk_flag = false;
                 Joystick_off_signal == false;
                 cout<<"================================"<<endl;
@@ -96,7 +99,8 @@ int HB_PreviewWalk::Preveiw_walking(){
 //                    }
 
                 }
-                else if(SDB[step_phase + i + 0].swingFoot == LFoot){
+                else if(SDB[step_phase + i + 0].swingFoot == LFoot)
+                {
                     rpy Euler_foot = rpy(SDB[step_phase + i + 0].Fquat);
                     mat3 g_R_stanceF = mat3(vec3(0,0,1), Euler_foot.y);
 
@@ -169,14 +173,10 @@ int HB_PreviewWalk::Preveiw_walking(){
 
         //---------generate ZMP SA ref for Step Adjustment
         WindowFill_SA_ref_3rd();
+
         // syncronize with real ref to SA ref
         COM_y_dy_ddy_old_SA = COM_y_dy_ddy_old;
         COM_x_dx_ddx_old_SA = COM_x_dx_ddx_old;
-
-//        for(int i=0; i<NL; i++){
-//            WDSAVE[step_phase][0][i] =    WD_SA_ref[i].ZMP_ref.y;
-
-//        }
 
         // Foot yaw Trajectory
         rpy RF_rpy_cur = rpy(qRF_ref);
@@ -185,7 +185,8 @@ int HB_PreviewWalk::Preveiw_walking(){
         RF_yaw_quat_first = quat(vec3(0,0,1), RF_rpy_cur.y);
         LF_yaw_quat_first = quat(vec3(0,0,1), LF_rpy_cur.y);
 
-        if(SDB[step_phase].swingFoot == RFoot){
+        if(SDB[step_phase].swingFoot == RFoot)
+        {
             RF_yaw_delta_quat = inverse_HB(RF_yaw_quat_ref)*SDB[step_phase + 1].Fquat;
 
             rpy RF_delta_quat_rpy = rpy(RF_yaw_delta_quat);
@@ -193,7 +194,8 @@ int HB_PreviewWalk::Preveiw_walking(){
             RF_delta_yaw_goal_rad = RF_delta_quat_rpy.y; // RF delta yaw for current step_phase
             LF_delta_yaw_goal_rad = 0;
         }
-        else if(SDB[step_phase].swingFoot == LFoot){
+        else if(SDB[step_phase].swingFoot == LFoot)
+        {
             LF_yaw_delta_quat = inverse_HB(LF_yaw_quat_ref)*SDB[step_phase + 1].Fquat;
 
             rpy LF_delta_quat_rpy = rpy(LF_yaw_delta_quat);
@@ -201,7 +203,8 @@ int HB_PreviewWalk::Preveiw_walking(){
             LF_delta_yaw_goal_rad = LF_delta_quat_rpy.y; // LF delta yaw for current step_phase
             RF_delta_yaw_goal_rad = 0;
         }
-        else{
+        else
+        {
             RF_delta_yaw_goal_rad = 0;
             LF_delta_yaw_goal_rad = 0;
         }
@@ -539,20 +542,27 @@ int HB_PreviewWalk::Preveiw_walking(){
     if(dT_SA < 10*dt) dT_SA = 10*dt;
 
     // Step Adjustment Flag enable & disable
-    if(StepAdjustControl_flag == true){
-        if(LandingControl_flag == true){ // landing control on : if one of foot is landed, disable StepAdjust
-            if((t_now > 0.005 && t_now < t_step - 0.08) && (RF_landing_flag == false || LF_landing_flag == false)){
+    if(StepAdjustControl_flag == true)
+    {
+        if(LandingControl_flag == true)
+        { // landing control on : if one of foot is landed, disable StepAdjust
+            if((t_now > 0.005 && t_now < t_step - 0.08) && (RF_landing_flag == false || LF_landing_flag == false))
+            {
                 SA_Enable_flag = true;
             }
-            else{
+            else
+            {
                 SA_Enable_flag = false;
             }
         }
-        else{
-            if(t_now > 0.005 && t_now < t_step - 0.08){ // landing control off : SA enables depends on time
+        else
+        {
+            if(t_now > 0.005 && t_now < t_step - 0.08)
+            { // landing control off : SA enables depends on time
                 SA_Enable_flag = true;
             }
-            else{
+            else
+            {
                 SA_Enable_flag = false;
             }
         }
@@ -1168,7 +1178,7 @@ int HB_PreviewWalk::Preveiw_walking(){
     
 
     //// -------------------------------------- Foot trajectory ----------------------------
-    FootUp_height = 0.05/0.4*t_step;
+    FootUp_height = 0.1;// 0.05/0.4*t_step;
     //for rigid foot
 //    double Landing_Threshold = 40; // N
     //for damping foot
@@ -1178,7 +1188,8 @@ int HB_PreviewWalk::Preveiw_walking(){
 
 
     // RFoot position
-    if(SDB[step_phase].swingFoot == RFoot){
+    if(SDB[step_phase].swingFoot == RFoot)
+    {
         // Landing Height & delta XY decision
         LandingZ_des = Calc_LandingHeight(RFoot, pLF_ref, SDB[step_phase+1].Fpos, qLF_ref, qRF_ref, G_R_g_pitroll);
         Landing_delXY = Calc_Landing_delXY(RFoot, pLF_ref, SDB[step_phase+1].Fpos, qLF_ref, qRF_ref, G_R_g_pitroll);
@@ -1188,7 +1199,8 @@ int HB_PreviewWalk::Preveiw_walking(){
 
         // get orientation of stance foot
         vec3 pFoot;
-        if(SDB[step_phase+1].swingFoot == DSP){
+        if(SDB[step_phase+1].swingFoot == DSP)
+        {
             rpy Euler_angle_StanceFoot_rad = rpy(qLF_ref);
 
             mat3 g_R_f = mat3(vec3(0,0,1), Euler_angle_StanceFoot_rad.y);
@@ -1196,7 +1208,8 @@ int HB_PreviewWalk::Preveiw_walking(){
 
             pFoot = SDB[step_phase+1].Fpos + last_foot_offset;
         }
-        else{
+        else
+        {
             pFoot = SDB[step_phase+1].Fpos;
         }
 
@@ -1205,13 +1218,17 @@ int HB_PreviewWalk::Preveiw_walking(){
 
         double t_half_dsp = T_nom*dsp_ratio*0.5;
 
-        if(LandingControl_flag == true){
+        if(LandingControl_flag == true)
+        {
 //            if(RS.F_RF.z <= 70 && t_now < t_step*0.5 && RF_landing_flag == true){
-            if(t_now > t_half_dsp && t_now < t_half_dsp + 3*dt && RF_landing_flag == true){
+            if(t_now > t_half_dsp && t_now < t_half_dsp + 3*dt && RF_landing_flag == true)
+            {
                 RF_landing_flag = false;
                 LF_landing_flag = true;
             }
-            if(F_RF_filtered.z > Landing_Threshold && t_now > T_nom*0.6 && t_now < T_nom - t_half_dsp*2 && RF_landing_flag == false){
+
+            if(F_RF_filtered.z > Landing_Threshold && t_now > T_nom*0.6 && t_now < T_nom - t_half_dsp*2 && RF_landing_flag == false)
+            {
                 RF_landing_flag = true;
 
                 // Z
@@ -1235,7 +1252,8 @@ int HB_PreviewWalk::Preveiw_walking(){
             }
 
 
-            if(RF_landing_flag == false || t_now < T_nom*0.5){
+            if(RF_landing_flag == false || t_now < T_nom*0.5)
+            {
                 // Z direction
                RF_z_dz_ddz = FootZ_trajectory(t_step, t_now, dsp_ratio, RF_z_dz_ddz_old, FootUp_height + LandingZ_des, LandingZ_des-0.001);
                // X direction
@@ -1244,7 +1262,8 @@ int HB_PreviewWalk::Preveiw_walking(){
                RF_y_dy_ddy = FootX_trajectory(t_step, t_now, dsp_ratio, RF_y_dy_ddy_old, pFoot.y + Landing_delXY.y);
 
             }
-            if(RF_landing_flag == true && t_now > T_nom*0.4){
+            if(RF_landing_flag == true && t_now > T_nom*0.4)
+            {
                 // Z direction
                 //RF_z_dz_ddz = FootZ_Landing_trajectory(RF_landing_time, t_now, RF_z_dz_ddz_old, pRF_landing.z);
                 RF_z_dz_ddz = vec3(RF_z_dz_ddz_old[0]+RF_z_dz_ddz_old[1]*dt, RF_z_dz_ddz_old[1]*0.5, 0);
@@ -1315,14 +1334,17 @@ int HB_PreviewWalk::Preveiw_walking(){
         RF_yaw_quat_ref = RF_yaw_quat_first*RF_yaw_delta_quat;
 
         //Swing Phase Vib Control
-        if(Swing_leg_vibration_control_flag == true){
-            if(t_now > T_nom*dsp_ratio/2 && t_now < T_nom*0.7){// && fabs(RS.IMUangle.x) < 10*D2R){
+        if(Swing_leg_vibration_control_flag == true)
+        {
+            if(t_now > T_nom*dsp_ratio/2 && t_now < T_nom*0.7)
+            {// && fabs(RS.IMUangle.x) < 10*D2R){
                 RSwingLeg_Vib_Control(ACC_RF_filtered, false);
     //            RSwingLeg_Pitch_Vib_Control(ACC_RF_filtered, false);
                 //RTorso_Roll_Vib_Control(RS.IMULocalW, false);
                 RTorso_Yaw_Vib_Control(RS.IMULocalW, false);
             }
-            else{
+            else
+            {
                 RSwingLeg_Vib_Control(ACC_RF_filtered, true);
     //            RSwingLeg_Pitch_Vib_Control(ACC_RF_filtered, true);
                 //RTorso_Roll_Vib_Control(RS.IMULocalW, true);
@@ -1568,7 +1590,8 @@ int HB_PreviewWalk::Preveiw_walking(){
     vec3 L_local = global2local_vec(qRF_ref, qLF_ref, L);
 
     double foot_width ;
-    if(fabs(L_local.y) > pelv_w){
+    if(fabs(L_local.y) > pelv_w)
+    {
        foot_width = fabs(L_local.y) - pelv_w;
     }
     else{
@@ -1601,11 +1624,13 @@ int HB_PreviewWalk::Preveiw_walking(){
 //    DSP_Fz_controller2(SDB[step_phase].swingFoot);
 
 
-    if(DSP_FZ_Control_flag == true){
+    if(DSP_FZ_Control_flag == true)
+    {
         pRF_ref.z = RF_z_dz_ddz[0] + 0.5*z_ctrl + z_com_ctrl;
         pLF_ref.z = LF_z_dz_ddz[0] - 0.5*z_ctrl + z_com_ctrl;
     }
-    else{
+    else
+    {
         pRF_ref.z = RF_z_dz_ddz[0];
         pLF_ref.z = LF_z_dz_ddz[0];
     }
@@ -1623,11 +1648,13 @@ int HB_PreviewWalk::Preveiw_walking(){
 //    RF_landing_angle_gain_roll = 10*40/(40 + RS.F_RF.z);
 //    RF_landing_angle_gain_pitch = 10*40/(40 + RS.F_RF.z);
 
-    if(RF_landing_flag == false){
+    if(RF_landing_flag == false)
+    {
         dRF_landing_angle.r = 0.005*(-G_R_g_pitroll_rpy.r) - RF_landing_angle.r/0.1;
         dRF_landing_angle.p = 0.005*(-G_R_g_pitroll_rpy.p) - RF_landing_angle.p/0.1;
     }
-    else{
+    else
+    {
         dRF_landing_angle.r = - RF_landing_angle.r/0.1;
         dRF_landing_angle.p = - RF_landing_angle.p/0.1;
     }
@@ -1687,9 +1714,11 @@ int HB_PreviewWalk::Preveiw_walking(){
 
     ////------------------- hip roll deflection compensation----------------------------
 
-    if(Joint_deflection_compensation_flag == true){
-        if(SDB[step_phase].swingFoot == RFoot){
-            vec3 ZMP_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, p_ref[0]);
+    if(Joint_deflection_compensation_flag == true)
+    {
+        if(SDB[step_phase].swingFoot == RFoot)
+        {
+            ZMP_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, p_ref[0]);
             //vec3 COM_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, COM_ref);
 
             // hip roll
@@ -1706,8 +1735,9 @@ int HB_PreviewWalk::Preveiw_walking(){
             R_knee_compen_deg = alpha*R_knee_compen_deg + (1-alpha)*(basic_comp_deg);
 
         }
-        if(SDB[step_phase].swingFoot == LFoot){
-            vec3 ZMP_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, p_ref[0]);
+        if(SDB[step_phase].swingFoot == LFoot)
+        {
+            ZMP_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, p_ref[0]);
             //vec3 COM_local = global2local_point(qRF_ref, qLF_ref, pRF_ref, pLF_ref, COM_ref);
 
             // hip roll
@@ -1728,8 +1758,10 @@ int HB_PreviewWalk::Preveiw_walking(){
 
             // hip roll
             double alpha = 1/(1 + 2*PI*dt*2);
-            R_roll_compen_deg = alpha*R_roll_compen_deg + (1-alpha)*0;
+//            L_roll_compen_deg = alpha*L_roll_compen_deg + (1-alpha)*HB_sign(ZMP_local.y)*0.1*13;
+//            R_roll_compen_deg = alpha*R_roll_compen_deg + (1-alpha)*HB_sign(ZMP_local.y)*0.1*13;
 
+            R_roll_compen_deg = alpha*R_roll_compen_deg + (1-alpha)*0;
             L_roll_compen_deg = alpha*L_roll_compen_deg + (1-alpha)*0;
 
             // knee
