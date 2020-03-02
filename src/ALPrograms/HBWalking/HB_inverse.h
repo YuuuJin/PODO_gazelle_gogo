@@ -590,10 +590,12 @@ public:
 
         double COS_PI_minus_q4 = (ULEG*ULEG + LLEG*LLEG - l_AR2HP*l_AR2HP)/(2*ULEG*LLEG);
 
-        if(COS_PI_minus_q4 > 1){
+        if(COS_PI_minus_q4 > 1)
+        {
             COS_PI_minus_q4 = 1;
         }
-        else if(COS_PI_minus_q4 < -1){
+        else if(COS_PI_minus_q4 < -1)
+        {
             COS_PI_minus_q4 = -1;
         }
 

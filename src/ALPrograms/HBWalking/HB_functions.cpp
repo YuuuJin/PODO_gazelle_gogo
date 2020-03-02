@@ -1609,7 +1609,8 @@ vec3 FootX_trajectory(double _real_t_step, double _t_foot_now, double _dsp_ratio
     if(_t_foot_now < t_half_dsp - 0.5*dt)
     {
     }
-    else if(_t_foot_now < t_forward + t_half_dsp - 0.5*dt){             //foot rising, 5th order trajectory up
+    else if(_t_foot_now < t_forward + t_half_dsp - 0.5*dt)
+    {             //foot rising, 5th order trajectory up
 //        double st_5,st_4,st_3,st_2,st_1;
 //        st_1 = _t_foot_now;
 //        st_2 = st_1*st_1;
@@ -1875,11 +1876,14 @@ vec3 calc_5th_GG(double t_now, double t_e, vec3 p_init, vec3 p_end){
 
 
         //for safety
-        if (t_now <= 0){
+        if (t_now <= 0)
+        {
             p_dp_ddp = p_init;
             return p_dp_ddp;
         }
-        if(t_now >= t_e){
+
+        if(t_now >= t_e)
+        {
             p_dp_ddp = p_end;
             return p_dp_ddp;
         }

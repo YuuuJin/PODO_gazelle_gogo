@@ -263,7 +263,7 @@ void HB_JUMP::save_onestep(int cnt)
 void HB_JUMP::save_all()
 {
     printf("Jump finished %d\n",k);
-    FILE* ffp = fopen("/home/yujin/Desktop/HBtest_Walking_Data.txt","w");
+    FILE* ffp = fopen("/home/rainbow/Desktop/HBtest_Walking_Data.txt","w");
     for(int i=0;i<k;i++)
     {
         fprintf(ffp,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t"

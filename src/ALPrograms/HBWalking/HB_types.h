@@ -157,33 +157,6 @@ typedef struct _RobotSensor{
 
 struct RobotStates
 {
-//    RobotStates operator =(RobotStates RS)
-//    {
-//        RobotStates RE;
-//        RE.IMUangle = RS.IMUangle;
-//        RE.IMUomega = RS.IMUomega;
-//        RE.IMUquat = RS.IMUquat;
-//        RE.IMULocalW = RS.IMULocalW;
-//        RE.JSP = RS.JSP;
-//        RE.JSV = RS.JSV;
-//        RE.CSP = RS.CSP;
-//        RE.CSV = RS.CSV;
-//        RE.Qnow = RS.Qnow;
-//        RE.dQnow = RS.dQnow;
-//        RE.Xnow = RS.Xnow;
-//        RE.dXnow = RS.dXnow;
-
-//        RE.F_RF = RS.F_RF;
-//        RE.F_LF = RS.F_LF;
-//        RE.M_RF = RS.M_RF;
-//        RE.M_LF = RS.M_LF;
-//        RE.ACC_RF = RS.ACC_RF;
-//        RE.ACC_LF = RS.ACC_LF;
-//        RE.cRF = RS.cRF;
-//        RE.cLF = RS.cLF;
-
-//        return RE;
-//    }
     //IMU
     vec3 IMUangle;
     vec3 IMUangle_comp;
@@ -212,10 +185,12 @@ struct RobotStates
     bool cRF, cLF;
 
     //Member Functions
-    VectorNd getQnow(int sizeof_q){
+    VectorNd getQnow(int sizeof_q)
+    {
         VectorNd _Qnow = VectorNd::Zero(sizeof_q);
 
-        for(int i=6;i<sizeof_q - 1;i++){
+        for(int i=6;i<sizeof_q - 1;i++)
+        {
             _Qnow[i] = JSP.JSP_Array[i-6];
 //            cout<<"i : "<<i<<" q: "<<_Qnow[i]<<endl;
 //            cout<<"i : "<<i<<" JSP.JSP_Array[i]: "<<JSP.JSP_Array[i]<<endl;

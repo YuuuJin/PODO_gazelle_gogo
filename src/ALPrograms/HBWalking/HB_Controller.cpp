@@ -612,7 +612,8 @@ double HB_PreviewWalk::RTorso_Yaw_Vib_Control(vec3 _IMULocalW, bool return_flag)
 
     vec3 y = vec3(0, _IMULocalW.z, 0);
 
-    if(return_flag == false){
+    if(return_flag == false)
+    {
         dX_RTorsoYaw = A_obs*X_RTorsoYaw + B_obs*LHY_con_deg*D2R + Ke*(y - X_RTorsoYaw);
         
         X_RTorsoYaw = X_RTorsoYaw + dX_RTorsoYaw*dt;
@@ -629,7 +630,7 @@ double HB_PreviewWalk::RTorso_Yaw_Vib_Control(vec3 _IMULocalW, bool return_flag)
     if(LHY_con_deg > 0.3) LHY_con_deg = 0.3;
     if(LHY_con_deg < -0.3) LHY_con_deg = -0.3;
 
-;
+
 
 
     return -LHY_con_deg;
@@ -743,7 +744,8 @@ double HB_PreviewWalk::RSwingLeg_Vib_Control(vec3 _ACC_RF_filtered, bool return_
 
 
     // Observer
-    if(return_flag == false){
+    if(return_flag == false)
+    {
         dR_roll_obs = A_obs*R_roll_obs + B_obs*u + Ke*(RF_ACC - dot(C_obs,R_roll_obs) - D_obs*u);
 
         R_roll_obs = R_roll_obs + dR_roll_obs*dt;
@@ -1217,7 +1219,8 @@ vec4 HB_PreviewWalk::Ankle_Torque_from_cZMP(vec3 _global_cZMP, vec3 _global_ZMP,
     double F_width_inner = 0.15;
     double F_length = 0.35;
 
-    if(_F_RF.z > -10){
+    if(_F_RF.z > -10)
+    {
         //RAR torque
         if(TorqueRF.x > F_width_inner*_F_RF.z) TorqueRF.x = F_width_inner*_F_RF.z;
         if(TorqueRF.x < -F_width_outer*_F_RF.z) TorqueRF.x = -F_width_outer*_F_RF.z;
@@ -1227,7 +1230,8 @@ vec4 HB_PreviewWalk::Ankle_Torque_from_cZMP(vec3 _global_cZMP, vec3 _global_ZMP,
         if(TorqueRF.y < -F_length*_F_RF.z/2) TorqueRF.y = -F_length*_F_RF.z/2;
 
     }
-    if(_F_LF.z > -10){
+    if(_F_LF.z > -10)
+    {
         //LAR torque
         if(TorqueLF.x > F_width_outer*_F_LF.z) TorqueLF.x  = F_width_outer*_F_LF.z;
         if(TorqueLF.x  < -F_width_inner*_F_LF.z) TorqueLF.x  = -F_width_inner*_F_LF.z;
@@ -1682,16 +1686,16 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
     double gain_pitch_max = -0.85;//-0.5;//-0.5;
     double gain_pitch_min = -0.045;//-0.06;//-0.045;
 
-    if(step_phase <= 1 || step_phase > N_step - 2){
+    if(step_phase <= 1 || step_phase > N_step - 2)
+    {
         gain_roll_max = -0.1;//-0.5;
         gain_roll_min = -0.01;
         gain_pitch_max = -0.1;//-0.5;
         gain_pitch_min = -0.01;
 
     }
-
-
-    if(Standing_mode_flag == true){
+    if(Standing_mode_flag == true)
+    {
         gain_roll_max = -0.01;//-0.5;
         gain_roll_min = -0.015;
         gain_pitch_max = -0.01;//-0.5;
@@ -1708,7 +1712,8 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
     double RF_variable_gain_roll, RF_variable_gain_pitch;
     double LF_variable_gain_roll, LF_variable_gain_pitch;
 
-    double Contact_threshold = 80; //80N
+    double Contact_threshold = 50; //50N
+
     double RF_Arial_return_factor = 0.5;
     double LF_Arial_return_factor = 0.5;
 
@@ -1768,11 +1773,13 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
 
     RF_Arial_return_factor = 0.2;//0.1*(10 + _F_RF_filtered.z)/10;
 
-    if(_F_RF_filtered.z > 50.0){
+    if(_F_RF_filtered.z > Contact_threshold)
+    {
         dRF_angle_ctrl.x = RF_variable_gain_roll*(RAR_T_ref_filtered - _M_RF_filtered.x);
         dRF_angle_ctrl.y = RF_variable_gain_pitch*(RAP_T_ref_filtered - _M_RF_filtered.y);
     }
-    else{
+    else
+    {
         dRF_angle_ctrl.x = RF_variable_gain_roll*(RAR_T_ref_filtered - _M_RF_filtered.x)-  RF_angle_ctrl.x/RF_Arial_return_factor;
         dRF_angle_ctrl.y = RF_variable_gain_pitch*(RAP_T_ref_filtered - _M_RF_filtered.y) - RF_angle_ctrl.y/RF_Arial_return_factor;
     }
@@ -1795,11 +1802,13 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
 
     LF_Arial_return_factor = 0.2;//0.1*(10 + _F_LF_filtered.z)/10;
 
-    if(_F_LF_filtered.z > 50.0){
+    if(_F_LF_filtered.z > Contact_threshold)
+    {
         dLF_angle_ctrl.x = LF_variable_gain_roll*(LAR_T_ref_filtered - _M_LF_filtered.x);
         dLF_angle_ctrl.y = LF_variable_gain_pitch*(LAP_T_ref_filtered - _M_LF_filtered.y);
     }
-    else{
+    else
+    {
         dLF_angle_ctrl.x = LF_variable_gain_roll*(LAR_T_ref_filtered - _M_LF_filtered.x) -  LF_angle_ctrl.x/LF_Arial_return_factor;
         dLF_angle_ctrl.y = LF_variable_gain_pitch*(LAP_T_ref_filtered - _M_LF_filtered.y) -  LF_angle_ctrl.y/LF_Arial_return_factor;
     }
@@ -1847,6 +1856,8 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
         LF_angle_ctrl.y =0;
     }
 
+//    RF_quat_ctrl = quat(vec3(0,1,0),RF_angle_ctrl.y)*quat(vec3(1,0,0),RF_angle_ctrl.x);
+//    LF_quat_ctrl = quat(vec3(0,1,0),LF_angle_ctrl.y)*quat(vec3(1,0,0),LF_angle_ctrl.x);
     RF_quat_ctrl = quat();//quat(vec3(0,1,0),RF_angle_ctrl.y)*quat(vec3(1,0,0),RF_angle_ctrl.x);
     LF_quat_ctrl = quat();//quat(vec3(0,1,0),LF_angle_ctrl.y)*quat(vec3(1,0,0),LF_angle_ctrl.x);
 
@@ -2205,11 +2216,13 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
 
     //// Control
 
-    if(step_phase <= 1 || step_phase > N_step - 2){
+    if(step_phase <= 1 || step_phase > N_step - 2)
+    {
         dsp_ctrl_gain = 0.0001; //0.0008
         dsp_tilt_gain = 1.5;//0.9
     }
-    else{
+    else
+    {
         dsp_ctrl_gain = 0.001; //0.0012
         dsp_tilt_gain = 12.0; //18
     }
@@ -2343,17 +2356,20 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
     }
 
 
-    if(DSP_time_flag == true || DSP_force_flag == true){
+    if(DSP_time_flag == true || DSP_force_flag == true)
+    {
         //dz_ctrl = dsp_ctrl_gain*Fz_diff_error + dsp_tilt_gain*COM_e_imu_local.y; // - z_ctrl/0.1;
 //        dz_ctrl = dsp_ctrl_gain*Fz_diff_error + dsp_tilt_gain/3*COM_e_imu_local.y
 //                    + L*dsp_tilt_gain*COM_e_imu_local.x;
 
-        if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30)){
+        if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30))
+        {
             dz_ctrl = +dsp_ctrl_gain/10*Fz_diff_error - dsp_tilt_gain/10*COM_e_imu_local.y
                         + L*dsp_tilt_gain/5*COM_e_imu_local.x;
-            cout<<"DSP tilting out!"<<endl;
+//            cout<<"DSP tilting out!"<<endl;
         }
-        else{
+        else
+        {
             dz_ctrl = dsp_ctrl_gain*Fz_diff_error + dsp_tilt_gain/2*COM_e_imu_local.y
                         + L*dsp_tilt_gain*COM_e_imu_local.x;
         }
@@ -2367,7 +2383,8 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
         if(dz_ctrl < -0.35) dz_ctrl = -0.35;
 
     }
-    else{
+    else
+    {
         //dz_ctrl = dsp_ctrl_gain/1.5*Fz_diff_error + dsp_tilt_gain/2*COM_e_imu_local.y  - z_ctrl/0.3;// +dsp_tilt_gain/50*dCOM_e_imu_local.y;
         dz_ctrl = dsp_ctrl_gain/2.0*Fz_diff_error + dsp_tilt_gain/3.0*COM_e_imu_local.y
                     +0*L*dsp_tilt_gain*COM_e_imu_local.x - z_ctrl/0.3;
@@ -2378,11 +2395,11 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
 
 
 
-        if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30)){
+        if((COM_e_imu_local.y > 0.02 && RS.F_RF.z < 30) || (COM_e_imu_local.y < -0.02 && RS.F_LF.z < 30))
+        {
             dz_ctrl = dsp_ctrl_gain/3.0*Fz_diff_error - dsp_tilt_gain/6*COM_e_imu_local.y
                     +0*L*dsp_tilt_gain*COM_e_imu_local.x - z_ctrl/0.3;
-            cout<<"SSP tilting out!"<<endl;
-
+//            cout<<"SSP tilting out!"<<endl;
 
         }
 
@@ -2403,7 +2420,8 @@ void HB_PreviewWalk::DSP_Fz_controller(char _swingFoot, double _F_RF_z, double _
 
     }
 
-    if(Standing_mode_flag == true){
+    if(Standing_mode_flag == true)
+    {
         dsp_ctrl_gain = 0.0001;
         dsp_tilt_gain = 0.6;
         dz_ctrl = dsp_ctrl_gain*Fz_diff_error + dsp_tilt_gain/3*COM_e_imu_local.y;
@@ -2502,8 +2520,8 @@ vec3 HB_PreviewWalk::del_u_modification_by_foot_size(vec3 _del_u_f){
 }
 
 
-double HB_PreviewWalk::Calc_LandingHeight(char _SwingFoot, vec3 _pLF_des, vec3 _pRF_des, quat _qLF_ref, quat _qRF_ref, mat3 _G_R_g_pitroll){
-
+double HB_PreviewWalk::Calc_LandingHeight(char _SwingFoot, vec3 _pLF_des, vec3 _pRF_des, quat _qLF_ref, quat _qRF_ref, mat3 _G_R_g_pitroll)
+{
 //    if(_SwingFoot == -1){ // RightFoot Swing
 //        vec3 L = (_pRF_des - _pLF_des)/1.0;
 
@@ -2675,10 +2693,12 @@ void HB_PreviewWalk::Calc_del_pos_from_Joystick(int _RJOG_RL, int _RJOG_UD, int 
     double del_pos_Max_y = 0.15;
     double del_pos_Max_yaw = 15; //deg
 
-    if(_LJOG_UD >= 0){
+    if(_LJOG_UD >= 0)
+    {
         del_pos.x =  -(double)(_LJOG_UD)/32767.0*del_pos_Max_x;
     }
-    else{
+    else
+    {
         del_pos.x =  -(double)(_LJOG_UD)/32767.0*del_pos_min_x;
     }
     del_pos.y = (double)(_LJOG_RL)/32767.0*del_pos_Max_y;
@@ -2743,11 +2763,13 @@ double HB_PreviewWalk::Calc_Landing_Threshold(char _swingFoot, vec3 _cZMP_dsp){
     if(RF_Threshold < 30.0) RF_Threshold = 30.0;
     if(LF_Threshold < 30.0) LF_Threshold = 30.0;
 
-    if(_swingFoot == RFoot){
+    if(_swingFoot == RFoot)
+    {
         //if(RF_Threshold > 25) cout<<"RF_Threshold : "<<RF_Threshold<<endl;
         return RF_Threshold;
     }
-    if(_swingFoot == LFoot){
+    if(_swingFoot == LFoot)
+    {
         //if(LF_Threshold > 25) cout<<"LF_Threshold : "<<LF_Threshold<<endl;
         return LF_Threshold;
     }
@@ -5032,7 +5054,7 @@ void HB_PreviewWalk::save_onestep(int cnt)
 void HB_PreviewWalk::save_all()
 {
     printf("walk finished %d\n",k);
-    FILE* ffp = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev.txt","w");
+    FILE* ffp = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev1.txt","w");
     for(int i=0;i<k;i++)
     {
         fprintf(ffp,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t"

@@ -1381,8 +1381,7 @@ int main(int argc, char *argv[])
 //// Task Thread
 ////========================================================================================================================//
 ////========================================================================================================================//
-////========================================================================================================================//
-////========================================================================================================================//
+
 doubles dbs_qRF(4), dbs_qLF(4), dbs_qPel(4);
 void RBTaskThread(void *)
 {
@@ -1392,6 +1391,7 @@ void RBTaskThread(void *)
         {
             RSE.READ_DATA_FROM_SENSOR();
             RSE.HSE_ESTIMATOR();
+
             // output
             pel_estimated.x = RSE.OUTPUT.FK_PELVIS_POSITION[0];
             pel_estimated.y = RSE.OUTPUT.FK_PELVIS_POSITION[1];
@@ -2785,30 +2785,201 @@ void RBTaskThread(void *)
             break;
         }
 
+        case _task_SingleLog_Walk:
+        {
+
+            //// Put sensor value into RSEN object
+            SensorInput();
+
+            //// State Estimation
+            RST = SE.StateEst(RSEN);
+            GGSW.MeasurementInput(RST);
+
+            //// Main Walking code
+            if(GGSW.Preveiw_walking() == -1)
+            {
+                _task_thread = _task_Idle;
+
+                save_all();
+                cout<<"Preview Walk finished"<<endl;
+            }
+
+            vec3 COM_total = GGSW.uCOM;
+
+            //// Leg Vibration Control
+            LHY_con_deg = -GGSW.LHY_con_deg;
+            RHY_con_deg = -GGSW.RHY_con_deg;
+
+            LHR_con_deg = 1.0*GGSW.LHR_con_deg + GGSW.L_roll_compen_deg;
+            RHR_con_deg = 1.0*GGSW.RHR_con_deg + GGSW.R_roll_compen_deg;
+
+            LHP_con_deg = 1.0*GGSW.LHP_con_deg*0.5;
+            RHP_con_deg = 1.0*GGSW.RHP_con_deg*0.5;
+            LKN_con_deg = GGSW.L_knee_compen_deg;
+            RKN_con_deg = GGSW.R_knee_compen_deg;
+
+
+            ////Foot and Pelv Orientation
+            //foot Orientation
+
+                for(int i=0;i<4;i++)
+                {
+                    dbs_qRF[i] = GGSW.qRF_ref[i];
+                    dbs_qLF[i] = GGSW.qLF_ref[i];
+                }
+
+
+            // Pelvis Orientation
+            for(int i=0;i<4;i++)
+            {
+                dbs_qPel[i] = GGSW.qPel_ref[i];
+            }
+
+            //// Put reference Task to Trajectory Handler
+            WBmotion->addCOMInfo_xy_pelz_HB(COM_total.x, COM_total.y, WBmotion->pPel_3x1[2]);
+            WBmotion->addRFPosInfo_HB(GGSW.pRF_ref.x, GGSW.pRF_ref.y, GGSW.pRF_ref.z);
+            WBmotion->addLFPosInfo_HB(GGSW.pLF_ref.x, GGSW.pLF_ref.y, GGSW.pLF_ref.z);
+            WBmotion->addRFOriInfo_HB(GGSW.qRF_ref);
+            WBmotion->addLFOriInfo_HB(GGSW.qLF_ref);
+            WBmotion->addPELOriInfo_HB(GGSW.qPel_ref);
+
+            WST_ref_deg = GGSW.WST_ref_deg;
+
+            save_onestep_ggsw(GGSW.k);
+
+            //// Set shared memory variables
+            if(GGSW.ROSWalk_flag == true)
+            {
+                if(GGSW.step_phase_change_flag == true && GGSW.flag_send_ros == false)
+                {
+                    //send result one step
+                    printf("send ros\n");
+                    userData->FLAG_sendROS = CMD_DONE;
+                    GGSW.flag_send_ros = true;
+
+                    if(_task_thread == _task_Idle)
+                    {
+                        userData->FLAG_sendROS = CMD_WALKING_FINISHED;
+                    }
+                }
+
+                if(userData->ros_step_num < 2)
+                {
+                    FILE_LOG(logERROR) << "ROS Step_phase is null";
+                    GGSW.ROSWalk_off_flag = true;
+                }
+            }
+            userData->step_phase = GGSW.step_phase;
+            userData->lr_state = GGSW.R_or_L;
+
+            for(int i=0;i<15;i++)
+                userData->given_footsteps[i] = userData->ros_footsteps[i];
+
+            break;
+        }
+        case _task_ROS_Walk:
+        {
+            //// Put sensor value into RSEN object
+            SensorInput();
+
+            //// State Estimation
+            RST = SE.StateEst(RSEN);
+            GGSW.MeasurementInput(RST);
+
+            //// Main Walking code
+            if(GGSW.Preveiw_walking() == -1)
+            {
+                _task_thread = _task_Idle;
+                userData->FLAG_receivedROS = ROS_RX_EMPTY;
+
+                save_all();
+                cout<<"Preview Walk finished"<<endl;
+            }
+
+            vec3 COM_total = GGSW.uCOM;
+
+            //// Leg Vibration Control
+            LHY_con_deg = -GGSW.LHY_con_deg;
+            RHY_con_deg = -GGSW.RHY_con_deg;
+
+            LHR_con_deg = 1.0*GGSW.LHR_con_deg + GGSW.L_roll_compen_deg;
+            RHR_con_deg = 1.0*GGSW.RHR_con_deg + GGSW.R_roll_compen_deg;
+
+            LHP_con_deg = 1.0*GGSW.LHP_con_deg*0.5;
+            RHP_con_deg = 1.0*GGSW.RHP_con_deg*0.5;
+            LKN_con_deg = GGSW.L_knee_compen_deg;
+            RKN_con_deg = GGSW.R_knee_compen_deg;
+
+
+            ////Foot and Pelv Orientation
+            //foot Orientation
+
+                for(int i=0;i<4;i++)
+                {
+                    dbs_qRF[i] = GGSW.qRF_ref[i];
+                    dbs_qLF[i] = GGSW.qLF_ref[i];
+                }
+
+
+            // Pelvis Orientation
+            for(int i=0;i<4;i++)
+            {
+                dbs_qPel[i] = GGSW.qPel_ref[i];
+            }
+
+            //// Put reference Task to Trajectory Handler
+            WBmotion->addCOMInfo_xy_pelz_HB(COM_total.x, COM_total.y, WBmotion->pPel_3x1[2]);
+            WBmotion->addRFPosInfo_HB(GGSW.pRF_ref.x, GGSW.pRF_ref.y, GGSW.pRF_ref.z);
+            WBmotion->addLFPosInfo_HB(GGSW.pLF_ref.x, GGSW.pLF_ref.y, GGSW.pLF_ref.z);
+            WBmotion->addRFOriInfo_HB(GGSW.qRF_ref);
+            WBmotion->addLFOriInfo_HB(GGSW.qLF_ref);
+            WBmotion->addPELOriInfo_HB(GGSW.qPel_ref);
+
+            WST_ref_deg = GGSW.WST_ref_deg;
+
+            save_onestep_ggsw(GGSW.k);
+
+            //// Set shared memory variables
+
+            if(GGSW.flag_send_ros == false)
+            {
+                GGSW.flag_send_ros = true;
+
+                //send result one step
+                if(_task_thread == _task_Idle)
+                {
+                    printf("walking done? %d\n",userData->FLAG_receivedROS);
+                    userData->FLAG_sendROS = CMD_WALKING_FINISHED;
+                }else
+                {
+                    printf("stepping done? %d\n",userData->FLAG_receivedROS);
+                    userData->FLAG_sendROS = CMD_DONE;
+                }
+            }
+
+            if(GGSW.ROSWalk_flag == true && userData->ros_footstep_flag == true)
+            {
+                if(userData->ros_step_num < 2 && userData->FLAG_receivedROS != ROS_RX_FALSE && GGSW.ROSWalk_off_flag == false)
+                {
+                    FILE_LOG(logERROR) << "ROS Step_phase is null";
+                    GGSW.ROSWalk_off_flag = true;
+                }
+            }
+            userData->step_phase = GGSW.step_phase;
+            userData->lr_state = GGSW.R_or_L;
+
+            for(int i=0;i<15;i++)
+                userData->given_footsteps[i] = userData->ros_footsteps[i];
+
+            break;
+        }
         case _task_Idle:
-//            vec3 IMUangle(sharedSEN->IMU[0].Roll,sharedSEN->IMU[0].Pitch,sharedSEN->IMU[0].Yaw);
-//            quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
-
-//            mat3 rot_pitroll_wrtpelv = mat3(cos(IMUangle.y*D2Rf),sin(IMUangle.y*D2Rf)*sin(IMUangle.x*D2Rf), sin(IMUangle.y*D2Rf)*cos(IMUangle.x*D2Rf),
-//                                  0, cos(IMUangle.x*D2Rf), -sin(IMUangle.x*D2Rf),
-//                                  -sin(IMUangle.y*D2Rf), cos(IMUangle.y*D2Rf)*sin(IMUangle.x*D2Rf), cos(IMUangle.y*D2Rf)*cos(IMUangle.x*D2Rf));
-
-//            mat3 rot_pitroll_wrtpelv2 =mat3(IMUquat);
-
-//            static int cnt = 0;
-//            if(cnt == 100){
-//                cout<<"r11: "<<rot_pitroll_wrtpelv.m00<<" r12: "<<rot_pitroll_wrtpelv.m01<<" r13: "<<rot_pitroll_wrtpelv.m02<<endl;
-//                cout<<"R11: "<<rot_pitroll_wrtpelv2.m00<<" R12: "<<rot_pitroll_wrtpelv2.m01<<" R13: "<<rot_pitroll_wrtpelv2.m02<<endl;
-//                cnt = 0;
-//            }
-//            cnt++;
 
             break;
         }
 
-
-    if(WB_FLAG == 1){
-//        WBmotion->updateAll();
+    if(WB_FLAG == 1)
+    {
         WBmotion->updateAll_HB();
 
         userData->M2G.valveMode = 9;
@@ -2825,33 +2996,46 @@ void RBTaskThread(void *)
 
         joint->SetJointRefAngle(WST, WST_ref_deg);
 
-        //Right leg
+        //////////////////////////////////--------------Right leg------------////////////////////////////////////////
         double RHY_ref_deg = WBmotion->LJ.RHY*R2D + RHY_con_deg;
-        if(RHY_ref_deg > 30.0) RHY_ref_deg == 30.0;
-        if(RHY_ref_deg < -30.0) RHY_ref_deg == -30.0;
+        if(RHY_ref_deg > 30.0) RHY_ref_deg = 30.0;
+        if(RHY_ref_deg < -30.0) RHY_ref_deg = -30.0;
 
         joint->SetJointRefAngle(RHY,RHY_ref_deg);
         joint->SetJointRefAngle(RHR,WBmotion->LJ.RHR*R2D + RHR_con_deg);
         joint->SetJointRefAngle(RHP,WBmotion->LJ.RHP*R2D + RHP_con_deg);
         joint->SetJointRefAngle(RKN,WBmotion->LJ.RKN*R2D + RKN_con_deg);
-        //for gazelle
-        GK.IK_Ankle_right(WBmotion->LJ.RAP*R2D + HBPW.RF_angle_ctrl.y*R2D, WBmotion->LJ.RAR*R2D + HBPW.RF_angle_ctrl.x*R2D, RA1_ref_deg, RA2_ref_deg);
+
+        if(_task_thread == _task_SingleLog_Walk)
+        {
+            GK.IK_Ankle_right(WBmotion->LJ.RAP*R2D + GGSW.RF_angle_ctrl.y*R2D, WBmotion->LJ.RAR*R2D + GGSW.RF_angle_ctrl.x*R2D, RA1_ref_deg, RA2_ref_deg);
+        }else
+        {
+            GK.IK_Ankle_right(WBmotion->LJ.RAP*R2D + HBPW.RF_angle_ctrl.y*R2D, WBmotion->LJ.RAR*R2D + HBPW.RF_angle_ctrl.x*R2D, RA1_ref_deg, RA2_ref_deg);
+        }
         joint->SetJointRefAngle(RAP, RA1_ref_deg);
         joint->SetJointRefAngle(RAR, RA2_ref_deg);
 //        joint->SetJointRefAngle(RAP,WBmotion->LJ.RAP*R2D);
 //        joint->SetJointRefAngle(RAR,WBmotion->LJ.RAR*R2D);
 
-        // Left Leg
+
+        //////////////////////////////////--------------Left leg------------////////////////////////////////////////
         double LHY_ref_deg = WBmotion->LJ.LHY*R2D + LHY_con_deg;
-        if(LHY_ref_deg > 30.0) LHY_ref_deg == 30.0;
-        if(LHY_ref_deg < -30.0) LHY_ref_deg == -30.0;
+        if(LHY_ref_deg > 30.0) LHY_ref_deg = 30.0;
+        if(LHY_ref_deg < -30.0) LHY_ref_deg = -30.0;
 
         joint->SetJointRefAngle(LHY,LHY_ref_deg);
         joint->SetJointRefAngle(LHR,WBmotion->LJ.LHR*R2D + LHR_con_deg);
         joint->SetJointRefAngle(LHP,WBmotion->LJ.LHP*R2D + LHP_con_deg);
         joint->SetJointRefAngle(LKN,WBmotion->LJ.LKN*R2D + LKN_con_deg);
-        //for gazelle
-        GK.IK_Ankle_left(WBmotion->LJ.LAP*R2D + HBPW.LF_angle_ctrl.y*R2D, WBmotion->LJ.LAR*R2D + HBPW.LF_angle_ctrl.x*R2D, LA1_ref_deg, LA2_ref_deg);
+
+        if(_task_thread == _task_SingleLog_Walk)
+        {
+            GK.IK_Ankle_left(WBmotion->LJ.LAP*R2D + GGSW.LF_angle_ctrl.y*R2D, WBmotion->LJ.LAR*R2D + GGSW.LF_angle_ctrl.x*R2D, LA1_ref_deg, LA2_ref_deg);
+        }else
+        {
+            GK.IK_Ankle_left(WBmotion->LJ.LAP*R2D + HBPW.LF_angle_ctrl.y*R2D, WBmotion->LJ.LAR*R2D + HBPW.LF_angle_ctrl.x*R2D, LA1_ref_deg, LA2_ref_deg);
+        }
         joint->SetJointRefAngle(LAP, LA1_ref_deg);
         joint->SetJointRefAngle(LAR, LA2_ref_deg);
 //        joint->SetJointRefAngle(LAP,WBmotion->LJ.LAP*R2D);
@@ -3076,24 +3260,6 @@ void SensorInput()
 
     //------------------------------------------------------------------------------
     
-//    RST.F_RF = F_RF;
-//    RST.F_LF = F_LF;
-//    RST.M_RF = M_RF;
-//    RST.M_LF = M_LF;
-    
-//    RST.IMUangle = IMUangle;
-//    RST.IMUomega = IMUvel;
-    
-//    for(int i=0 ;i<12;i++){
-//        RST.JSP.JSP_Array[i] = getEnc(i);
-//        RST.JSV.JSV_Array[i] = getEncVel(i);
-//    }
-//    RST.JSP.JSP_Array[RAP] = RSEN.JSP.JSP_Array[RAP];
-//    RST.JSP.JSP_Array[RAR] = RSEN.JSP.JSP_Array[RAR];
-
-//    RST.JSV.JSV_Array[RAP] = RSEN.JSV.JSV_Array[RAP];
-//    RST.JSV.JSV_Array[RAR] = RSEN.JSV.JSV_Array[RAR];
-        
 }
 
 void Torque2Choreonoid(DesiredStates _Des_State)
@@ -3106,350 +3272,7 @@ void Torque2Choreonoid(DesiredStates _Des_State)
     }
 }
 
-/*
-//void save_onestep(int cnt){
-//    if(cnt < 200000){
-//        ////RobotStates--------------------------------------
-//        SAVE[0][cnt] =  RST.Qnow[0]; //pPel.x
-//        SAVE[1][cnt] =  RST.Qnow[1]; //pPel.y
-//        SAVE[2][cnt] =  RST.Qnow[2]; //pPel.z
-//        SAVE[3][cnt] =  RST.Qnow[3]; //qPel.x
-//        SAVE[4][cnt] =  RST.Qnow[4]; //qPel.y
-//        SAVE[5][cnt] =  RST.Qnow[5]; //qPel.z
-//        SAVE[6][cnt] =  RST.Qnow[6]; //RHY
-//        SAVE[7][cnt] =  RST.Qnow[7]; //RHR
-//        SAVE[8][cnt] =  RST.Qnow[8]; //RHP
-//        SAVE[9][cnt] =  RST.Qnow[9]; //RKN
-//        SAVE[10][cnt] = RST.Qnow[10]; //RAP
-//        SAVE[11][cnt] = RST.Qnow[11]; //RAR
-//        SAVE[12][cnt] = RST.Qnow[12]; //LHY
-//        SAVE[13][cnt] = RST.Qnow[13]; //LHR
-//        SAVE[14][cnt] = RST.Qnow[14]; //LHP
-//        SAVE[15][cnt] = RST.Qnow[15]; //LKN
-//        SAVE[16][cnt] = RST.Qnow[16]; //LAP
-//        SAVE[17][cnt] = RST.Qnow[17]; //LAR
-//        SAVE[18][cnt] = RST.Qnow[18]; //qPel.w
 
-//        SAVE[19][cnt] = RST.dQnow[0]; //dpPel.x
-//        SAVE[20][cnt] = RST.dQnow[1]; //dpPel.y
-//        SAVE[21][cnt] = RST.dQnow[2]; //dpPel.z
-//        SAVE[22][cnt] = RST.dQnow[3]; //dqPel.x
-//        SAVE[23][cnt] = RST.dQnow[4]; //dqPel.y
-//        SAVE[24][cnt] = RST.dQnow[5]; //dqPel.z
-//        SAVE[25][cnt] = RST.dQnow[6]; //dRHY
-//        SAVE[26][cnt] = RST.dQnow[7]; //dRHR
-//        SAVE[27][cnt] = RST.dQnow[8]; //dRHP
-//        SAVE[28][cnt] = RST.dQnow[9]; //dRKN
-//        SAVE[29][cnt] = RST.dQnow[10]; //dRAP
-//        SAVE[30][cnt] = RST.dQnow[11]; //dRAR
-//        SAVE[31][cnt] = RST.dQnow[12]; //dLHY
-//        SAVE[32][cnt] = RST.dQnow[13]; //dLHR
-//        SAVE[33][cnt] = RST.dQnow[14]; //dLHP
-//        SAVE[34][cnt] = RST.dQnow[15]; //dLKN
-//        SAVE[35][cnt] = RST.dQnow[16]; //dLAP
-//        SAVE[36][cnt] = RST.dQnow[17]; //dLAR
-//        //COM state
-//        SAVE[37][cnt] = RST.CSP.pCOM.x;
-//        SAVE[38][cnt] = RST.CSP.pCOM.y;
-//        SAVE[39][cnt] = RST.CSP.pCOM.z;
-//        SAVE[40][cnt] = RST.CSV.dpCOM.x;
-//        SAVE[41][cnt] = RST.CSV.dpCOM.y;
-//        SAVE[42][cnt] = RST.CSV.dpCOM.z;
-//        //pel
-//        SAVE[38][cnt] = RST.CSP.pPel.x;
-//        SAVE[39][cnt] = RST.CSP.pPel.y;
-//        SAVE[40][cnt] = RST.CSP.pPel.z;
-//        SAVE[41][cnt] = RST.CSV.dpPel.x;
-//        SAVE[42][cnt] = RST.CSV.dpPel.y;
-//        SAVE[43][cnt] = RST.CSV.dpPel.z;
-
-//        SAVE[44][cnt] = RST.CSP.qPel.w;
-//        SAVE[45][cnt] = RST.CSP.qPel.x;
-//        SAVE[46][cnt] = RST.CSP.qPel.y;
-//        SAVE[47][cnt] = RST.CSP.qPel.z;
-
-//        SAVE[48][cnt] = RST.CSV.dqPel.x;
-//        SAVE[49][cnt] = RST.CSV.dqPel.y;
-//        SAVE[50][cnt] = RST.CSV.dqPel.z;
-//        //RF
-//        SAVE[51][cnt] = RST.CSP.pRF.x;
-//        SAVE[52][cnt] = RST.CSP.pRF.y;
-//        SAVE[53][cnt] = RST.CSP.pRF.z;
-//        SAVE[54][cnt] = RST.CSV.dpRF.x;
-//        SAVE[55][cnt] = RST.CSV.dpRF.y;
-//        SAVE[56][cnt] = RST.CSV.dpRF.z;
-
-//        SAVE[57][cnt] = RST.CSP.qRF.w;
-//        SAVE[58][cnt] = RST.CSP.qRF.x;
-//        SAVE[59][cnt] = RST.CSP.qRF.y;
-//        SAVE[60][cnt] = RST.CSP.qRF.z;
-
-//        SAVE[61][cnt] = RST.CSV.dqRF.x;
-//        SAVE[62][cnt] = RST.CSV.dqRF.y;
-//        SAVE[63][cnt] = RST.CSV.dqRF.z;
-//        //LF
-//        SAVE[64][cnt] = RST.CSP.pLF.x;
-//        SAVE[65][cnt] = RST.CSP.pLF.y;
-//        SAVE[66][cnt] = RST.CSP.pLF.z;
-//        SAVE[67][cnt] = RST.CSV.dpLF.x;
-//        SAVE[68][cnt] = RST.CSV.dpLF.y;
-//        SAVE[69][cnt] = RST.CSV.dpLF.z;
-
-//        SAVE[70][cnt] = RST.CSP.qLF.w;
-//        SAVE[71][cnt] = RST.CSP.qLF.x;
-//        SAVE[72][cnt] = RST.CSP.qLF.y;
-//        SAVE[73][cnt] = RST.CSP.qLF.z;
-
-//        SAVE[74][cnt] = RST.CSV.dqLF.x;
-//        SAVE[75][cnt] = RST.CSV.dqLF.y;
-//        SAVE[76][cnt] = RST.CSV.dqLF.z;
-//        //Sensors
-//        SAVE[77][cnt] = RST.IMUangle.x;
-//        SAVE[78][cnt] = RST.IMUangle.y;
-//        SAVE[79][cnt] = RST.IMUangle.z;
-
-//        SAVE[80][cnt] = RST.IMUomega.x;
-//        SAVE[81][cnt] = RST.IMUomega.y;
-//        SAVE[82][cnt] = RST.IMUomega.z;
-
-//        SAVE[83][cnt] = RST.IMUquat.w;
-//        SAVE[84][cnt] = RST.IMUquat.x;
-//        SAVE[85][cnt] = RST.IMUquat.y;
-//        SAVE[86][cnt] = RST.IMUquat.z;
-
-//        SAVE[87][cnt] = RST.IMULocalW.x;
-//        SAVE[88][cnt] = RST.IMULocalW.y;
-//        SAVE[89][cnt] = RST.IMULocalW.z;
-
-//        SAVE[90][cnt] = RST.F_RF.x;
-//        SAVE[91][cnt] = RST.F_RF.y;
-//        SAVE[92][cnt] = RST.F_RF.z;
-
-//        SAVE[93][cnt] = RST.M_RF.x;
-//        SAVE[94][cnt] = RST.M_RF.y;
-//        SAVE[95][cnt] = RST.M_RF.z;
-
-//        SAVE[96][cnt] = RST.F_LF.x;
-//        SAVE[97][cnt] = RST.F_LF.y;
-//        SAVE[98][cnt] = RST.F_LF.z;
-
-//        SAVE[99][cnt] = RST.M_LF.x;
-//        SAVE[100][cnt] = RST.M_LF.y;
-//        SAVE[101][cnt] = RST.M_LF.z;
-
-//        SAVE[151][cnt] = (double)(int)(RST.cRF);
-//        SAVE[152][cnt] = (double)(int)(RST.cLF);
-
-//        ////RobotSensor ------------------------------------
-//        SAVE[102][cnt] = RSEN.IMUangle.x;
-//        SAVE[103][cnt] = RSEN.IMUangle.y;
-//        SAVE[104][cnt] = RSEN.IMUangle.z;
-
-//        SAVE[105][cnt] = RSEN.IMUomega.x;
-//        SAVE[106][cnt] = RSEN.IMUomega.y;
-//        SAVE[107][cnt] = RSEN.IMUomega.z;
-
-//        SAVE[108][cnt] = RSEN.IMUquat.w;
-//        SAVE[109][cnt] = RSEN.IMUquat.x;
-//        SAVE[110][cnt] = RSEN.IMUquat.y;
-//        SAVE[111][cnt] = RSEN.IMUquat.z;
-
-//        SAVE[112][cnt] = RSEN.IMULocalW.x;
-//        SAVE[113][cnt] = RSEN.IMULocalW.y;
-//        SAVE[114][cnt] = RSEN.IMULocalW.z;
-
-//        SAVE[115][cnt] = RSEN.F_RF.x;
-//        SAVE[116][cnt] = RSEN.F_RF.y;
-//        SAVE[117][cnt] = RSEN.F_RF.z;
-
-//        SAVE[118][cnt] = RSEN.M_RF.x;
-//        SAVE[119][cnt] = RSEN.M_RF.y;
-//        SAVE[120][cnt] = RSEN.M_RF.z;
-
-//        SAVE[121][cnt] = RSEN.F_LF.x;
-//        SAVE[122][cnt] = RSEN.F_LF.y;
-//        SAVE[123][cnt] = RSEN.F_LF.z;
-
-//        SAVE[124][cnt] = RSEN.M_LF.x;
-//        SAVE[125][cnt] = RSEN.M_LF.y;
-//        SAVE[126][cnt] = RSEN.M_LF.z;
-//        //joint pos
-//        SAVE[127][cnt] = RSEN.JSP.RHY;
-//        SAVE[128][cnt] = RSEN.JSP.RHR;
-//        SAVE[129][cnt] = RSEN.JSP.RHP;
-//        SAVE[130][cnt] = RSEN.JSP.RKN;
-//        SAVE[131][cnt] = RSEN.JSP.RAP;
-//        SAVE[132][cnt] = RSEN.JSP.RAR;
-
-//        SAVE[133][cnt] = RSEN.JSP.LHY;
-//        SAVE[134][cnt] = RSEN.JSP.LHR;
-//        SAVE[135][cnt] = RSEN.JSP.LHP;
-//        SAVE[136][cnt] = RSEN.JSP.LKN;
-//        SAVE[137][cnt] = RSEN.JSP.LAP;
-//        SAVE[138][cnt] = RSEN.JSP.LAR;
-//        //joint vel
-//        SAVE[139][cnt] = RSEN.JSV.dRHY;
-//        SAVE[140][cnt] = RSEN.JSV.dRHR;
-//        SAVE[141][cnt] = RSEN.JSV.dRHP;
-//        SAVE[142][cnt] = RSEN.JSV.dRKN;
-//        SAVE[143][cnt] = RSEN.JSV.dRAP;
-//        SAVE[144][cnt] = RSEN.JSV.dRAR;
-
-//        SAVE[145][cnt] = RSEN.JSV.dLHY;
-//        SAVE[146][cnt] = RSEN.JSV.dLHR;
-//        SAVE[147][cnt] = RSEN.JSV.dLHP;
-//        SAVE[148][cnt] = RSEN.JSV.dLKN;
-//        SAVE[149][cnt] = RSEN.JSV.dLAP;
-//        SAVE[150][cnt] = RSEN.JSV.dLAR;
-
-//        ////---REFRENCE------------------------------------------
-//        SAVE[153][cnt] = HBD.REF.Qref[0]; //pPel.x
-//        SAVE[154][cnt] = HBD.REF.Qref[1]; //pPel.y
-//        SAVE[155][cnt] = HBD.REF.Qref[2]; //pPel.z
-//        SAVE[156][cnt] = HBD.REF.Qref[3]; //qPel.x
-//        SAVE[157][cnt] = HBD.REF.Qref[4]; //qPel.y
-//        SAVE[158][cnt] = HBD.REF.Qref[5]; //qPel.z
-//        SAVE[159][cnt] = HBD.REF.Qref[6]; //RHY
-//        SAVE[160][cnt] = HBD.REF.Qref[7]; //RHR
-//        SAVE[161][cnt] = HBD.REF.Qref[8]; //RHP
-//        SAVE[162][cnt] = HBD.REF.Qref[9]; //RKN
-//        SAVE[163][cnt] = HBD.REF.Qref[10]; //RAP
-//        SAVE[164][cnt] = HBD.REF.Qref[11]; //RAR
-//        SAVE[165][cnt] = HBD.REF.Qref[12]; //LHY
-//        SAVE[166][cnt] = HBD.REF.Qref[13]; //LHR
-//        SAVE[167][cnt] = HBD.REF.Qref[14]; //LHP
-//        SAVE[168][cnt] = HBD.REF.Qref[15]; //LKN
-//        SAVE[169][cnt] = HBD.REF.Qref[16]; //LAP
-//        SAVE[170][cnt] = HBD.REF.Qref[17]; //LAR
-//        SAVE[171][cnt] = HBD.REF.Qref[18]; //qPel.w
-
-//        SAVE[172][cnt] = HBD.REF.dQref[0]; //dpPel.x
-//        SAVE[173][cnt] = HBD.REF.dQref[1]; //dpPel.y
-//        SAVE[174][cnt] = HBD.REF.dQref[2]; //dpPel.z
-//        SAVE[175][cnt] = HBD.REF.dQref[3]; //dqPel.x
-//        SAVE[176][cnt] = HBD.REF.dQref[4]; //dqPel.y
-//        SAVE[177][cnt] = HBD.REF.dQref[5]; //dqPel.z
-//        SAVE[178][cnt] = HBD.REF.dQref[6]; //dRHY
-//        SAVE[179][cnt] = HBD.REF.dQref[7]; //dRHR
-//        SAVE[180][cnt] = HBD.REF.dQref[8]; //dRHP
-//        SAVE[181][cnt] = HBD.REF.dQref[9]; //dRKN
-//        SAVE[182][cnt] = HBD.REF.dQref[10]; //dRAP
-//        SAVE[183][cnt] = HBD.REF.dQref[11]; //dRAR
-//        SAVE[184][cnt] = HBD.REF.dQref[12]; //dLHY
-//        SAVE[185][cnt] = HBD.REF.dQref[13]; //dLHR
-//        SAVE[186][cnt] = HBD.REF.dQref[14]; //dLHP
-//        SAVE[187][cnt] = HBD.REF.dQref[15]; //dLKN
-//        SAVE[188][cnt] = HBD.REF.dQref[16]; //dLAP
-//        SAVE[189][cnt] = HBD.REF.dQref[17]; //dLAR
-//        //COM state
-//        SAVE[190][cnt] = HBD.REF.CSP.pCOM.x;
-//        SAVE[191][cnt] = HBD.REF.CSP.pCOM.y;
-//        SAVE[192][cnt] = HBD.REF.CSP.pCOM.z;
-//        SAVE[193][cnt] = HBD.REF.CSV.dpCOM.x;
-//        SAVE[194][cnt] = HBD.REF.CSV.dpCOM.y;
-//        SAVE[195][cnt] = HBD.REF.CSV.dpCOM.z;
-//        //pel
-//        SAVE[196][cnt] = HBD.REF.CSP.pPel.x;
-//        SAVE[197][cnt] = HBD.REF.CSP.pPel.y;
-//        SAVE[198][cnt] = HBD.REF.CSP.pPel.z;
-//        SAVE[199][cnt] = HBD.REF.CSV.dpPel.x;
-//        SAVE[200][cnt] = HBD.REF.CSV.dpPel.y;
-//        SAVE[201][cnt] = HBD.REF.CSV.dpPel.z;
-
-//        SAVE[202][cnt] = HBD.REF.CSP.qPel.w;
-//        SAVE[203][cnt] = HBD.REF.CSP.qPel.x;
-//        SAVE[204][cnt] = HBD.REF.CSP.qPel.y;
-//        SAVE[205][cnt] = HBD.REF.CSP.qPel.z;
-
-//        SAVE[206][cnt] = HBD.REF.CSV.dqPel.x;
-//        SAVE[207][cnt] = HBD.REF.CSV.dqPel.y;
-//        SAVE[208][cnt] = HBD.REF.CSV.dqPel.z;
-//        //RF
-//        SAVE[209][cnt] = HBD.REF.CSP.pRF.x;
-//        SAVE[210][cnt] = HBD.REF.CSP.pRF.y;
-//        SAVE[211][cnt] = HBD.REF.CSP.pRF.z;
-//        SAVE[212][cnt] = HBD.REF.CSV.dpRF.x;
-//        SAVE[213][cnt] = HBD.REF.CSV.dpRF.y;
-//        SAVE[214][cnt] = HBD.REF.CSV.dpRF.z;
-
-//        SAVE[215][cnt] = HBD.REF.CSP.qRF.w;
-//        SAVE[216][cnt] = HBD.REF.CSP.qRF.x;
-//        SAVE[217][cnt] = HBD.REF.CSP.qRF.y;
-//        SAVE[218][cnt] = HBD.REF.CSP.qRF.z;
-
-//        SAVE[219][cnt] = HBD.REF.CSV.dqRF.x;
-//        SAVE[220][cnt] = HBD.REF.CSV.dqRF.y;
-//        SAVE[221][cnt] = HBD.REF.CSV.dqRF.z;
-//        //LF
-//        SAVE[222][cnt] = HBD.REF.CSP.pLF.x;
-//        SAVE[223][cnt] = HBD.REF.CSP.pLF.y;
-//        SAVE[224][cnt] = HBD.REF.CSP.pLF.z;
-//        SAVE[225][cnt] = HBD.REF.CSV.dpLF.x;
-//        SAVE[226][cnt] = HBD.REF.CSV.dpLF.y;
-//        SAVE[227][cnt] = HBD.REF.CSV.dpLF.z;
-
-//        SAVE[228][cnt] = HBD.REF.CSP.qLF.w;
-//        SAVE[229][cnt] = HBD.REF.CSP.qLF.x;
-//        SAVE[230][cnt] = HBD.REF.CSP.qLF.y;
-//        SAVE[231][cnt] = HBD.REF.CSP.qLF.z;
-
-//        SAVE[232][cnt] = HBD.REF.CSV.dqLF.x;
-//        SAVE[233][cnt] = HBD.REF.CSV.dqLF.y;
-//        SAVE[234][cnt] = HBD.REF.CSV.dqLF.z;
-//        //ddq ddx
-//        SAVE[235][cnt] = HBD.REF.ddQref[0]; //dpPel.x
-//        SAVE[236][cnt] = HBD.REF.ddQref[1]; //dpPel.y
-//        SAVE[237][cnt] = HBD.REF.ddQref[2]; //dpPel.z
-//        SAVE[238][cnt] = HBD.REF.ddQref[3]; //dqPel.x
-//        SAVE[239][cnt] = HBD.REF.ddQref[4]; //dqPel.y
-//        SAVE[240][cnt] = HBD.REF.ddQref[5]; //dqPel.z
-//        SAVE[241][cnt] = HBD.REF.ddQref[6]; //dRHY
-//        SAVE[242][cnt] = HBD.REF.ddQref[7]; //dRHR
-//        SAVE[243][cnt] = HBD.REF.ddQref[8]; //dRHP
-//        SAVE[244][cnt] = HBD.REF.ddQref[9]; //dRKN
-//        SAVE[245][cnt] = HBD.REF.ddQref[10]; //dRAP
-//        SAVE[246][cnt] = HBD.REF.ddQref[11]; //dRAR
-//        SAVE[247][cnt] = HBD.REF.ddQref[12]; //dLHY
-//        SAVE[248][cnt] = HBD.REF.ddQref[13]; //dLHR
-//        SAVE[249][cnt] = HBD.REF.ddQref[14]; //dLHP
-//        SAVE[250][cnt] = HBD.REF.ddQref[15]; //dLKN
-//        SAVE[251][cnt] = HBD.REF.ddQref[16]; //dLAP
-//        SAVE[252][cnt] = HBD.REF.ddQref[17]; //dLAR
-
-//        SAVE[253][cnt] = HBD.REF.CSA.ddpCOM.x;
-//        SAVE[254][cnt] = HBD.REF.CSA.ddpCOM.y;
-//        SAVE[255][cnt] = HBD.REF.CSA.ddpCOM.z;
-
-//        SAVE[256][cnt] = HBD.REF.CSA.ddpPel.x;
-//        SAVE[257][cnt] = HBD.REF.CSA.ddpPel.y;
-//        SAVE[258][cnt] = HBD.REF.CSA.ddpPel.z;
-
-//        SAVE[259][cnt] = HBD.REF.CSA.ddqPel.x;
-//        SAVE[260][cnt] = HBD.REF.CSA.ddqPel.y;
-//        SAVE[261][cnt] = HBD.REF.CSA.ddqPel.z;
-
-//        SAVE[262][cnt] = HBD.REF.CSA.ddpRF.x;
-//        SAVE[263][cnt] = HBD.REF.CSA.ddpRF.y;
-//        SAVE[264][cnt] = HBD.REF.CSA.ddpRF.z;
-
-//        SAVE[265][cnt] = HBD.REF.CSA.ddqRF.x;
-//        SAVE[266][cnt] = HBD.REF.CSA.ddqRF.y;
-//        SAVE[267][cnt] = HBD.REF.CSA.ddqRF.z;
-
-//        SAVE[268][cnt] = HBD.REF.CSA.ddpLF.x;
-//        SAVE[269][cnt] = HBD.REF.CSA.ddpLF.y;
-//        SAVE[270][cnt] = HBD.REF.CSA.ddpLF.z;
-
-//        SAVE[271][cnt] = HBD.REF.CSA.ddqLF.x;
-//        SAVE[272][cnt] = HBD.REF.CSA.ddqLF.y;
-//        SAVE[273][cnt] = HBD.REF.CSA.ddqLF.z;
-
-//        SAVE[274][cnt] = (double)(int)(HBD.REF.cRF);
-//        SAVE[275][cnt] = (double)(int)(HBD.REF.cLF);
-//    }
-//}
-
-*/
 
 void save_onestep(int cnt){
     SAVE[0][cnt] = HBPW.COM_ref.x;

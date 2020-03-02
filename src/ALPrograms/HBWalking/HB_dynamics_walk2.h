@@ -868,7 +868,7 @@ void HB_DynamicWalk2::save_onestep(int cnt)
 void HB_DynamicWalk2::save_all()
 {
     printf("walk finished %d\n",k);
-    FILE* ffp = fopen("/home/yujin/Desktop/HBtest_Walking_Data.txt","w");
+    FILE* ffp = fopen("/home/rainbow/Desktop/HBtest_Walking_Data.txt","w");
     for(int i=0;i<k;i++)
     {
         fprintf(ffp,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t"
