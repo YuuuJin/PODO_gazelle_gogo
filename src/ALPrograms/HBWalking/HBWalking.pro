@@ -51,7 +51,8 @@ SOURCES += main.cpp \
     HB_PreviewWalk.cpp \
     HB_Controller.cpp \
     robotstateestimator.cpp \
-    basicsetting.cpp
+    basicsetting.cpp \
+    GG_SingleLogWalk.cpp
 
 HEADERS += \
     BasicFiles/BasicSetting.h \
@@ -79,5 +80,6 @@ HEADERS += \
     HB_StepAdjustor.h \
     robotstateestimator_parameter_Gazelle.h \
     robotstateestimator.h \
+    GG_SingleLogWalk.h
 
 

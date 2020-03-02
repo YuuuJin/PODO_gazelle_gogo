@@ -4,26 +4,27 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-//#include "Oinverse.h"
+#include <timer.h>
+
+#include "taskmotion.h"
+
 #include "HB_functions.h"
 #include "HB_walking.h"
-#include "taskmotion.h"
 #include "HB_inverse.h"
-//#include "HB_dynamics_walk.h"
-//#include "HB_dynamics_walk2.h"
 #include "HB_State_est.h"
 #include "HB_Jumping.h"
+
 #include "HB_PreviewWalk.h"
-#include <timer.h>
-#include "robotstateestimator.h"//hyoin
+#include "GG_SingleLogWalk.h"
 
-#define SAVEN       280
+#include "robotstateestimator.h"                        //hyoin
+#include "../../share/Headers/LANData/ROSLANData.h"
 
+#define SAVEN       370
 
 #define PODO_AL_NAME       "HBWalking"
 
 using namespace std;
-
 
 // Basic --------
 pRBCORE_SHM_COMMAND     sharedCMD;
@@ -32,14 +33,11 @@ pRBCORE_SHM_SENSOR      sharedSEN;
 pUSER_SHM               userData;
 JointControlClass       *joint;
 
-
 int     __IS_WORKING = false;
 int     __IS_GAZEBO = false;
 int     PODO_NO = -1;
 
 HB_WALKING      HBWalking;
-//HB_DynamicWalk  HBD;
-//HB_DynamicWalk2 HBD2;
 DesiredStates   DS;
 RobotStates     RST, RST_ini;
 RobotSensor     RSEN;
@@ -47,6 +45,7 @@ REFERENCE       REF;
 BP_RBDL         bp_rbdl;
 HB_SE           SE;
 HB_PreviewWalk  HBPW;
+GG_SingleLogWalk GGSW;
 HB_inverse      Hi;
 
 HB_JUMP HBJumping;
@@ -69,7 +68,7 @@ double      z_ctrl;
 unsigned int SysIDcnt;
 unsigned int SysIDcnt_init;
 double Fz_diff_error_old = 0;
-
+int FLAG_SendROS = CMD_BREAK;
 int input_Amp;
 vec4 input_torque_filtered = vec4(0,0,0,0);
 
@@ -120,6 +119,7 @@ double getPosRef(int in);
 double getEncVel(int in);
 void Torque2Choreonoid(DesiredStates _Des_State);
 void save_onestep(int cnt);
+void save_onestep_ggsw(int cnt);
 void save_all();
 void init_StateEstimator();
 doubles quat2doubles(quat _quat);
@@ -149,6 +149,8 @@ enum HBWalking_COMMAND
     HBWalking_Test,
     HBWalking_JoyStick_Walk_Stop,
     HBWalking_Ready_To_Walk,
+    HBWalking_SingleLog,
+    HBWalking_ROSWalk
 };
 
 enum SE_COMMAND
@@ -179,6 +181,8 @@ enum task_thread
     _task_HB_PrevWalk,
     _task_HB_test,
     _task_Ready_To_Walk,
+    _task_SingleLog_Walk,
+    _task_ROS_Walk
 
 }_task_thread;
 
@@ -200,17 +204,22 @@ int main(int argc, char *argv[])
 
 
     CheckArguments(argc, argv);
-//    cout<<"podo no: "<<PODO_NO<<endl;
-    if(PODO_NO == -1){
+
+    if(PODO_NO == -1)
+    {
         FILE_LOG(logERROR) << "Please check the AL Number";
         FILE_LOG(logERROR) << "Terminate this AL..";
         return 0;
     }
-//    PODO_NO = 3; // for debug mode
+
 
     // Initialize RBCore -----------------------------------
     if(RBInitialize() == false)
         __IS_WORKING = false;
+
+    userData->FLAG_receivedROS = ROS_RX_FALSE;
+    userData->ros_walking_cmd = ROSWALK_BREAK;
+    userData->ros_footstep_flag = false;
 
     joint->SetMotionOwner(0);
 
@@ -219,15 +228,21 @@ int main(int argc, char *argv[])
     HBPW.sharedSEN = sharedSEN;
     HBPW.userData = userData;
 
+    GGSW.sharedCMD = sharedCMD;
+    GGSW.sharedREF = sharedREF;
+    GGSW.sharedSEN = sharedSEN;
+    GGSW.userData = userData;
 
 
     // WBIK Initialize
     WBmotion = new TaskMotion(sharedREF, sharedSEN, sharedCMD, joint);
 
-    while(__IS_WORKING){
+    while(__IS_WORKING)
+    {
         usleep(100*1000);
 
-        switch(sharedCMD->COMMAND[PODO_NO].USER_COMMAND){
+        switch(sharedCMD->COMMAND[PODO_NO].USER_COMMAND)
+        {
         case HBWalking_WALK_TEST:
         {
 //            sharedCMD->COMMAND[RBCORE_PODO_NO].USER_PARA_CHAR[0] = -1;//all
@@ -302,9 +317,7 @@ int main(int argc, char *argv[])
         {
 
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
-            //HBD.save_all();
-
-
+            save_all();
             break;
         }
         case HBWalking_TORQUE_TEST:
@@ -1078,8 +1091,173 @@ int main(int argc, char *argv[])
 
             break;
         }
+        case HBWalking_SingleLog:
+        {
+            int no_of_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[0];
+            double t_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[0];
+            double step_stride = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[1];
 
+            FILE_LOG(logSUCCESS) << "--------------------------------------------------";
+            FILE_LOG(logSUCCESS) << "      New CMD : SingleLog Walking";
+            FILE_LOG(logSUCCESS) << "   " << step_stride  << "m, " << t_step << "s, " << no_of_step << "step" << endl;
+            FILE_LOG(logSUCCESS) << "--------------------------------------------------";
 
+            sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
+            _task_thread = _task_Idle;
+
+            joint->RefreshToCurrentReference();
+            joint->SetAllMotionOwner();
+
+            WBmotion->MomentFlag = false;
+            WB_FLAG = 0;
+
+            WBmotion->StopAll();
+            WBmotion->RefreshToCurrentReference_HB();
+
+            cout<<endl<<"Initial Task position: "<<endl;
+            cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+            cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+            cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+            cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+            ResetGlobalCoord(1);
+            usleep(200*1000);
+
+            cout<<"After ResetGlobal"<<endl;
+            cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+            cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+            cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+            cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+            vec3 COM_ini = vec3(WBmotion->pCOM_3x1);
+            vec3 pRF = vec3(WBmotion->pRF_3x1);
+            vec3 pLF = vec3(WBmotion->pLF_3x1);
+
+            quat qPel_ini = quat(WBmotion->qPEL_4x1);
+            quat qRF = quat(WBmotion->qRF_4x1);
+            quat qLF = quat(WBmotion->qLF_4x1);
+
+            // Waist angle initialize
+            WST_ref_deg = sharedSEN->ENCODER[MC_GetID(WST)][MC_GetCH(WST)].CurrentPosition;
+
+            // preview Gain load
+            GGSW.PreviewGainLoad(GGSW.zc);
+            GGSW.HB_set_step(COM_ini, qPel_ini, pRF, qRF, pLF, qLF, WST_ref_deg, t_step, no_of_step, step_stride, 1);
+
+            cout<<"foot print & timing : total "<<GGSW.SDB.size()<<"steps "<<endl;
+
+            for(int i=GGSW.SDB.size()-1;i>=0;i--)
+            {
+                cout<<"phase: "<<i<<"  "<<GGSW.SDB[i].Fpos.x<<", "<<GGSW.SDB[i].Fpos.y<<" ("<<GGSW.SDB[i].t<<"s)"<<endl;
+            }
+
+            init_StateEstimator(); // State Estimator Initialization
+            WB_FLAG = 1;
+
+            //if(userData->ros_walking_cmd == ROSWALK_START)
+            if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 1)
+            {
+                FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
+                GGSW.ROSWalk_flag = true;
+                userData->M2G.ROSWalk_state = 1;
+
+                for(int i=0;i<15;i++)
+                {
+                    userData->given_footsteps[i] = 0.;
+                }
+            }
+            _task_thread = _task_SingleLog_Walk;
+            break;
+        }
+        case HBWalking_ROSWalk:
+        {
+            if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 0)
+            {
+                FILE_LOG(logSUCCESS) << "ROS Walk Stop\n";
+                GGSW.ROSWalk_off_flag = true;
+                userData->M2G.ROSWalk_state = 0;
+            }else
+            {
+                int no_of_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[0];
+                double t_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[0];
+                double step_stride = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[1];
+
+                FILE_LOG(logSUCCESS) << "--------------------------------------------------";
+                FILE_LOG(logSUCCESS) << "      New CMD : ROS Walking";
+                FILE_LOG(logSUCCESS) << "   " << step_stride  << "m, " << t_step << "s, " << no_of_step << "step" << endl;
+                FILE_LOG(logSUCCESS) << "--------------------------------------------------";
+
+                sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
+                _task_thread = _task_Idle;
+
+                joint->RefreshToCurrentReference();
+                joint->SetAllMotionOwner();
+
+                WBmotion->MomentFlag = false;
+                WB_FLAG = 0;
+
+                WBmotion->StopAll();
+                WBmotion->RefreshToCurrentReference_HB();
+
+                cout<<endl<<"Initial Task position: "<<endl;
+                cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+                cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+                cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+                cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+                ResetGlobalCoord(1);
+                usleep(200*1000);
+
+                cout<<"After ResetGlobal"<<endl;
+                cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+                cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+                cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+                cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+                vec3 COM_ini = vec3(WBmotion->pCOM_3x1);
+                vec3 pRF = vec3(WBmotion->pRF_3x1);
+                vec3 pLF = vec3(WBmotion->pLF_3x1);
+
+                quat qPel_ini = quat(WBmotion->qPEL_4x1);
+                quat qRF = quat(WBmotion->qRF_4x1);
+                quat qLF = quat(WBmotion->qLF_4x1);
+
+                // Waist angle initialize
+                WST_ref_deg = sharedSEN->ENCODER[MC_GetID(WST)][MC_GetCH(WST)].CurrentPosition;
+
+                // preview Gain load
+                GGSW.Set_walkingmode(0);
+                GGSW.PreviewGainLoad(GGSW.zc);
+                GGSW.HB_set_step(COM_ini, qPel_ini, pRF, qRF, pLF, qLF, WST_ref_deg, t_step, no_of_step, step_stride, 1);
+
+                cout<<"foot print & timing : total "<<GGSW.SDB.size()<<"steps "<<endl;
+
+                for(int i=GGSW.SDB.size()-1;i>=0;i--)
+                {
+                    cout<<"phase: "<<i<<"  "<<GGSW.SDB[i].Fpos.x<<", "<<GGSW.SDB[i].Fpos.y<<" ("<<GGSW.SDB[i].t<<"s)"<<endl;
+                }
+
+                init_StateEstimator(); // State Estimator Initialization
+                WB_FLAG = 1;
+
+                //if(userData->ros_walking_cmd == ROSWALK_START)
+                if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 1)
+                {
+                    FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
+                    GGSW.ROSWalk_flag = true;
+                    userData->M2G.ROSWalk_state = 1;
+
+                    for(int i=0;i<15;i++)
+                    {
+                        userData->given_footsteps[i] = 0.;
+                    }
+                }
+                _task_thread = _task_ROS_Walk;
+                break;
+            }
+            sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
+            break;
+        }
         case HBWalking_JoyStick_Walk_Stop:
         {
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
@@ -1098,6 +1276,98 @@ int main(int argc, char *argv[])
         default:
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
             break;
+        }
+
+        switch(userData->ros_walking_cmd)
+        {
+        case ROSWALK_NORMAL_START:
+        {
+            int no_of_step = 10;
+            double t_step = 2.0;
+            double step_stride = 0.;
+
+            FILE_LOG(logSUCCESS) << "--------------------------------------------------";
+            FILE_LOG(logSUCCESS) << "      New CMD : ROS Walking Start";
+            FILE_LOG(logSUCCESS) << "--------------------------------------------------";
+
+            _task_thread = _task_Idle;
+
+            joint->RefreshToCurrentReference();
+            joint->SetAllMotionOwner();
+
+            WBmotion->MomentFlag = false;
+            WB_FLAG = 0;
+
+            WBmotion->StopAll();
+            WBmotion->RefreshToCurrentReference_HB();
+
+            cout<<endl<<"Initial Task position: "<<endl;
+            cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+            cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+            cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+            cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+            ResetGlobalCoord(1);
+            usleep(200*1000);
+
+            cout<<"After ResetGlobal"<<endl;
+            cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
+            cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
+            cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
+            cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
+
+            vec3 COM_ini = vec3(WBmotion->pCOM_3x1);
+            vec3 pRF = vec3(WBmotion->pRF_3x1);
+            vec3 pLF = vec3(WBmotion->pLF_3x1);
+
+            quat qPel_ini = quat(WBmotion->qPEL_4x1);
+            quat qRF = quat(WBmotion->qRF_4x1);
+            quat qLF = quat(WBmotion->qLF_4x1);
+
+            // Waist angle initialize
+            WST_ref_deg = sharedSEN->ENCODER[MC_GetID(WST)][MC_GetCH(WST)].CurrentPosition;
+
+            // preview Gain load
+            GGSW.Set_walkingmode(0);
+            GGSW.PreviewGainLoad(GGSW.zc);
+            GGSW.HB_set_step(COM_ini, qPel_ini, pRF, qRF, pLF, qLF, WST_ref_deg, t_step, no_of_step, step_stride, 1);
+
+            cout<<"foot print & timing : total "<<GGSW.SDB.size()<<"steps "<<endl;
+
+            for(int i=GGSW.SDB.size()-1;i>=0;i--)
+            {
+                cout<<"phase: "<<i<<"  "<<GGSW.SDB[i].Fpos.x<<", "<<GGSW.SDB[i].Fpos.y<<" ("<<GGSW.SDB[i].t<<"s)"<<endl;
+            }
+
+            init_StateEstimator(); // State Estimator Initialization
+            WB_FLAG = 1;
+            userData->FLAG_sendROS = CMD_ACCEPT;
+            userData->FLAG_receivedROS = ROS_RX_EMPTY;
+
+
+            FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
+            GGSW.ROSWalk_flag = true;
+            userData->M2G.ROSWalk_state = 1;
+
+            for(int i=0;i<15;i++)
+            {
+                userData->given_footsteps[i] = 0.;
+            }
+            _task_thread = _task_ROS_Walk;
+
+
+
+            userData->ros_walking_cmd = ROSWALK_BREAK;
+            break;
+        }
+        case ROSWALK_STOP:
+        {
+            FILE_LOG(logSUCCESS) << "ROS Walk Stop\n";
+            GGSW.ROSWalk_off_flag = true;
+            userData->M2G.ROSWalk_state = 0;
+            userData->ros_walking_cmd = ROSWALK_BREAK;
+            break;
+        }
         }
     }
 
@@ -1236,7 +1506,8 @@ void RBTaskThread(void *)
             userData->M2G.valveMode = 1;
 
             //// if JoyStick on, calc del_pos from Joystick input
-            if(HBPW.Joystick_walk_flag == true){
+            if(HBPW.Joystick_walk_flag == true)
+            {
                 int JOY_RJOG_RL = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[0];
                 int JOY_RJOG_UD = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[1];
                 int JOY_LJOG_RL = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[2];
@@ -2643,12 +2914,11 @@ void RBFlagThread(void *)
     {
         rt_task_wait_period(NULL);
 
-        //if(HasAnyOwnership()){
-            if(sharedCMD->SYNC_SIGNAL[PODO_NO] == true){
-                joint->JointUpdate();
-                rt_task_resume(&rtTaskCon);
-            }
-        //}
+        if(sharedCMD->SYNC_SIGNAL[PODO_NO] == true)
+        {
+            joint->JointUpdate();
+            rt_task_resume(&rtTaskCon);
+        }
     }
 }
 //==============================//
@@ -2730,7 +3000,8 @@ double getEncVel(int in)
     return a;
 }
 
-void SensorInput(){
+void SensorInput()
+{
     // Fill in the ROBOTSEN struct
     vec3 F_RF = vec3(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
     vec3 F_LF = vec3(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
@@ -2749,7 +3020,8 @@ void SensorInput(){
     vec3 ACC_RF = vec3(sharedSEN->FT[0].Pitch*4.0, -sharedSEN->FT[0].Roll*4.0,0);
     vec3 ACC_LF = vec3(sharedSEN->FT[1].Pitch*4.0, -sharedSEN->FT[1].Roll*4.0,0);
 
-    for(int i=0; i<12 ; i++){
+    for(int i=0; i<12 ; i++)
+    {
         RSEN.JSP.JSP_Array[i] = getEnc(i);
         RSEN.JSV.JSV_Array[i] = getEncVel(i);
     }
@@ -2824,7 +3096,8 @@ void SensorInput(){
         
 }
 
-void Torque2Choreonoid(DesiredStates _Des_State){
+void Torque2Choreonoid(DesiredStates _Des_State)
+{
     for(int i=0 ; i<12 ; i++){
         double GR = 160;
         //cout<<"_Des_State.ddQdes"<<_Des_State.ddQdes<<endl;
@@ -3497,13 +3770,396 @@ void save_onestep(int cnt){
     SAVE[277][cnt] = HBPW.Pelv_roll_acc_ref;
     SAVE[278][cnt] = HBPW.Pelv_roll_vel_ref;
     SAVE[279][cnt] = HBPW.Pelv_roll_ref;
+
+    SAVE[280][cnt] = HBPW.p_ref_con_error_filtered;
+    SAVE[281][cnt] = HBPW.COM_m_filtered.x;
+    SAVE[282][cnt] = HBPW.COM_m_filtered.y;
+    SAVE[283][cnt] = HBPW.COM_m_filtered.z;
+    SAVE[284][cnt] = HBPW.dCOM_m_filtered.x;
+    SAVE[285][cnt] = HBPW.dCOM_m_filtered.y;
+    SAVE[286][cnt] = HBPW.dCOM_m_filtered.z;
+    SAVE[287][cnt] = HBPW.COM_SA_LIPM.x;
+    SAVE[288][cnt] = HBPW.COM_SA_LIPM.y;
+    SAVE[289][cnt] = HBPW.COM_SA_LIPM.z;
+    SAVE[290][cnt] = HBPW.dCOM_SA_LIPM.x;
+    SAVE[291][cnt] = HBPW.dCOM_SA_LIPM.y;
+    SAVE[292][cnt] = HBPW.dCOM_SA_LIPM.z;
+    SAVE[293][cnt] = HBPW.p_ref_offset_y;
+    SAVE[294][cnt] = HBPW.R_roll_obs.x;
+    SAVE[295][cnt] = HBPW.R_roll_obs.y;
+    SAVE[296][cnt] = HBPW.R_roll_obs.z;
+    SAVE[297][cnt] = HBPW.L_roll_obs.x;
+    SAVE[298][cnt] = HBPW.L_roll_obs.y;
+    SAVE[299][cnt] = HBPW.L_roll_obs.z;
+    SAVE[300][cnt] = HBPW.RF_landing_angle.r;
+    SAVE[301][cnt] = HBPW.RF_landing_angle.p;
+    SAVE[302][cnt] = HBPW.RF_landing_angle.y;
+    SAVE[303][cnt] = HBPW.LF_landing_angle.r;
+    SAVE[304][cnt] = HBPW.LF_landing_angle.p;
+    SAVE[305][cnt] = HBPW.LF_landing_angle.y;
+    SAVE[306][cnt] = HBPW.X_RTorsoYaw.x;
+    SAVE[307][cnt] = HBPW.X_RTorsoYaw.y;
+    SAVE[308][cnt] = HBPW.X_RTorsoYaw.z;
+    SAVE[309][cnt] = HBPW.X_LTorsoYaw.x;
+    SAVE[310][cnt] = HBPW.X_LTorsoYaw.y;
+    SAVE[311][cnt] = HBPW.X_LTorsoYaw.z;
+    
+    SAVE[312][cnt] = HBPW.R_roll_compen_deg;
+    SAVE[313][cnt] = HBPW.L_roll_compen_deg;
+    SAVE[314][cnt] = HBPW.R_knee_compen_deg;
+    SAVE[315][cnt] = HBPW.L_knee_compen_deg;
+
+
+    SAVE[316][cnt] = HBPW.Y_zmp_e_sum;
+    SAVE[317][cnt] = HBPW.X_zmp_e_sum;
+    SAVE[318][cnt] = HBPW.p_ref_for_COM[0].y;
+    SAVE[319][cnt] = HBPW.p_ref_for_COM[0].x;
+
+    SAVE[320][cnt] = HBPW.RS.IMULocalW.z;
+
+    SAVE[321][cnt] = LHY_con_deg;
+    SAVE[322][cnt] = RHY_con_deg;
+    SAVE[323][cnt] = LHR_con_deg;
+    SAVE[324][cnt] = RHR_con_deg;
+    SAVE[325][cnt] = LHP_con_deg;
+    SAVE[326][cnt] = RHP_con_deg;
+    SAVE[327][cnt] = LKN_con_deg;
+    SAVE[328][cnt] = RKN_con_deg;
+
+//    SAVE[328][cnt] = HBPW.ZMP_local.x;
+//    SAVE[329][cnt] = HBPW.ZMP_local.y;
+//    SAVE[330][cnt] = HBPW.ZMP_local.z;
+
 }
 
+void save_onestep_ggsw(int cnt)
+{
+    SAVE[0][cnt] = GGSW.COM_ref.x;
+    SAVE[1][cnt] = GGSW.CP_ref.x;
+    SAVE[2][cnt] = GGSW.COM_ref.y;
+    SAVE[3][cnt] = GGSW.CP_ref.y;
+    SAVE[4][cnt] = GGSW.p_ref[0].x;
+    SAVE[5][cnt] = GGSW.p_ref[0].y;
+    SAVE[6][cnt] = GGSW.p_out.x;
+    SAVE[7][cnt] = GGSW.p_out.y;
+    SAVE[8][cnt] = GGSW.COM_LIPM.x;
+    SAVE[9][cnt] = GGSW.COM_LIPM.y;
+
+    SAVE[10][cnt] = GGSW.dCOM_ref.x;
+    SAVE[11][cnt] = GGSW.dCOM_ref.y;
+    SAVE[12][cnt] = GGSW.cZMP.x;
+    SAVE[13][cnt] = GGSW.cZMP.y;
+    SAVE[14][cnt] = GGSW.ZMP_global.x;
+    SAVE[15][cnt] = GGSW.ZMP_global.y;
+    SAVE[16][cnt] = GGSW.cZMP_proj.x;
+    SAVE[17][cnt] = GGSW.cZMP_proj.y;
+
+    SAVE[18][cnt] = GGSW.RS.IMUangle.x;
+    SAVE[19][cnt] = GGSW.RS.IMUangle.y;
+    SAVE[20][cnt] = GGSW.RS.IMUangle.z;
+
+    SAVE[21][cnt] = GGSW.X_obs[0];
+    SAVE[22][cnt] = GGSW.Y_obs[0];
+    SAVE[23][cnt] = GGSW.X_obs[1];
+    SAVE[24][cnt] = GGSW.Y_obs[1];
+    SAVE[25][cnt] = GGSW.RS.IMULocalW.x;
+    SAVE[26][cnt] = GGSW.RS.IMULocalW.y;
+
+    SAVE[27][cnt] = GGSW.dT;//dT_est;//dT_buf[0];
+    SAVE[28][cnt] = GGSW.pRF_ref.x;
+    SAVE[29][cnt] = GGSW.pLF_ref.x;
+
+    SAVE[30][cnt] = GGSW.pRF_ref.z;
+    SAVE[31][cnt] = GGSW.pLF_ref.z;
+    SAVE[32][cnt] = GGSW.ZMP_error_local.y;
+
+    SAVE[33][cnt] = GGSW.RS.CSP.pCOM.x; // COM_measure x
+    SAVE[34][cnt] = GGSW.RS.CSP.pCOM.y; // COM_measure y
+
+    SAVE[35][cnt] = GGSW.uCOM.x;
+    SAVE[36][cnt] = GGSW.uCOM.y;
+
+    SAVE[37][cnt] = GGSW.CP_m_filtered.x; // temp x
+    SAVE[38][cnt] = GGSW.CP_m_filtered.y; // temp y
+
+    SAVE[39][cnt] = GGSW.COM_error_local.y;
+    SAVE[40][cnt] = GGSW.SDB[GGSW.step_phase].swingFoot;
+
+    SAVE[41][cnt] = GGSW.COM_m.x;
+    SAVE[42][cnt] = GGSW.COM_m.y;
+    SAVE[43][cnt] = GGSW.COM_damping_con.x;
+    SAVE[44][cnt] = GGSW.COM_damping_con.y;
+
+    SAVE[45][cnt] = GGSW.CP_m.y; // ZMP x estimation
+    SAVE[46][cnt] = GGSW.CP_m.x;
+    SAVE[47][cnt] = 0;
+    SAVE[48][cnt] = GGSW.pRF_ref.x;
+    SAVE[49][cnt] = GGSW.pRF_ref.y;
+
+    SAVE[50][cnt] = GGSW.RS.F_RF.z;
+    SAVE[51][cnt] = GGSW.RS.F_LF.z;
+    SAVE[52][cnt] = GGSW.pLF_ref.x;
+    SAVE[53][cnt] = GGSW.pLF_ref.y;
+    SAVE[54][cnt] = GGSW.RS.CSV.dpCOM.y;
+
+    SAVE[55][cnt] = GGSW.RS.CSV.dpCOM.x;
+    SAVE[56][cnt] = GGSW.RS.CSV.dpCOM.y;
+    SAVE[57][cnt] = GGSW.Fz_diff_error;
+
+    SAVE[58][cnt] = GGSW.ACC_RF_filtered.x;
+    SAVE[59][cnt] = GGSW.ACC_RF_filtered.y;
+    SAVE[60][cnt] = GGSW.ACC_LF_filtered.x;
+    SAVE[61][cnt] = GGSW.ACC_LF_filtered.y;
+
+    SAVE[62][cnt] = GGSW.Ye_obs[0];
+    SAVE[63][cnt] = GGSW.Ye_obs[1];
+    SAVE[64][cnt] = GGSW.Xe_obs[0];
+    SAVE[65][cnt] = GGSW.Xe_obs[1];
+    SAVE[66][cnt] = GGSW.L_roll_obs[0];
+    SAVE[67][cnt] = GGSW.LHR_con_deg;
+
+    SAVE[68][cnt] = GGSW.dCOM_m_diff.x;
+    SAVE[69][cnt] = GGSW.dCOM_m_diff.y;
+    SAVE[70][cnt] = GGSW.dCOM_m_imu.x;
+    SAVE[71][cnt] = GGSW.dCOM_m_imu.y;
+    SAVE[72][cnt] = 0;
+    SAVE[73][cnt] = 0;
+
+    SAVE[74][cnt] = GGSW.RS.M_RF.x;
+    SAVE[75][cnt] = GGSW.RS.M_RF.y;
+    SAVE[76][cnt] = GGSW.RS.F_RF.z;
+    SAVE[77][cnt] = GGSW.RS.M_LF.x;
+    SAVE[78][cnt] = GGSW.RS.M_LF.y;
+    SAVE[79][cnt] = GGSW.RS.F_LF.z;
+
+    SAVE[80][cnt] = GGSW.RF_z_dz_ddz[0];
+    SAVE[81][cnt] = GGSW.RF_z_dz_ddz[1];
+    SAVE[82][cnt] = GGSW.LF_z_dz_ddz[0];
+    SAVE[83][cnt] = GGSW.LF_z_dz_ddz[1];
+    SAVE[84][cnt] = GGSW.RF_landing_flag;
+    SAVE[85][cnt] = GGSW.LF_landing_flag;
+
+    SAVE[86][cnt] = GGSW.pRF_landing.z;
+    SAVE[87][cnt] = GGSW.pLF_landing.z;
+    SAVE[88][cnt] = 0;
+    SAVE[89][cnt] = 0;
+
+    SAVE[90][cnt] = GGSW.COM_y_dy_ddy_SA[0];
+    SAVE[91][cnt] = GGSW.COM_y_dy_ddy_SA[1];
+    SAVE[92][cnt] = GGSW.COM_y_dy_ddy_SA[2];
+    SAVE[93][cnt] = GGSW.COM_x_dx_ddx_SA[0];
+    SAVE[94][cnt] = GGSW.COM_x_dx_ddx_SA[1];
+    SAVE[95][cnt] = GGSW.COM_x_dx_ddx_SA[2];
+    SAVE[96][cnt] = GGSW.p_out_SA.y;
+    SAVE[97][cnt] = GGSW.p_out_SA.x;
+    SAVE[98][cnt] = GGSW.p_ref_SA[0].y;
+    SAVE[99][cnt] = GGSW.p_ref_SA[0].x;
+
+    SAVE[100][cnt] = GGSW.COM_SA_ref.y;
+    SAVE[101][cnt] = GGSW.COM_SA_ref.x;
+    SAVE[102][cnt] = GGSW.dCOM_SA_ref.y;
+    SAVE[103][cnt] = GGSW.dCOM_SA_ref.x;
+    SAVE[104][cnt] = GGSW.t_now;
+    SAVE[105][cnt] = GGSW.CP_SA_ref_local.x;
+    SAVE[106][cnt] = GGSW.CP_SA_ref_local.y;
+    SAVE[107][cnt] = 0;
+    SAVE[108][cnt] = GGSW.Landing_delXY.x;
+    SAVE[109][cnt] = GGSW.Landing_delXY.y;
+
+    SAVE[110][cnt] = GGSW.CP_error_lf.x;
+    SAVE[111][cnt] = GGSW.CP_error_lf.y;
+    SAVE[112][cnt] = GGSW.cZMP_SA_lf.x;
+    SAVE[113][cnt] = GGSW.cZMP_SA_lf.y;
+    SAVE[114][cnt] = GGSW.RF_y_dy_ddy[0];
+    SAVE[115][cnt] = GGSW.RF_y_dy_ddy[1];
+    SAVE[116][cnt] = GGSW.pRF_landing.x;
+    SAVE[117][cnt] = GGSW.pRF_landing.y;
+    SAVE[118][cnt] = 0;
+    SAVE[119][cnt] = 0;
+
+    SAVE[120][cnt] = GGSW.CP_error_rf.x;
+    SAVE[121][cnt] = GGSW.CP_error_rf.y;
+    SAVE[122][cnt] = GGSW.cZMP_SA_rf.x;
+    SAVE[123][cnt] = GGSW.cZMP_SA_rf.y;
+    SAVE[124][cnt] = GGSW.LF_y_dy_ddy[0];
+    SAVE[125][cnt] = GGSW.LF_y_dy_ddy[1];
+    SAVE[126][cnt] = GGSW.pLF_landing.x;
+    SAVE[127][cnt] = GGSW.pLF_landing.y;
+    SAVE[128][cnt] = 0;
+    SAVE[129][cnt] = 0;
+
+    SAVE[130][cnt] = GGSW.del_u_f.x;
+    SAVE[131][cnt] = GGSW.del_u_f.y;
+    SAVE[132][cnt] = GGSW.del_b_f.x;
+    SAVE[133][cnt] = GGSW.del_b_f.y;
+    SAVE[134][cnt] = GGSW.new_T;
+    SAVE[135][cnt] = GGSW.del_u_g.x;
+    SAVE[136][cnt] = GGSW.del_u_g.y;
+    SAVE[137][cnt] = GGSW.del_b_g.x;
+    SAVE[138][cnt] = GGSW.del_b_g.y;
+    SAVE[139][cnt] = GGSW.SA_Enable_flag;
+
+    SAVE[140][cnt] = GGSW.del_u_f_filtered.x;
+    SAVE[141][cnt] = GGSW.del_u_f_filtered.y;
+    SAVE[142][cnt] = GGSW.del_b_f_filtered.x;
+    SAVE[143][cnt] = GGSW.del_b_f_filtered.y;
+    SAVE[144][cnt] = GGSW.new_T_filtered;
+    SAVE[145][cnt] = GGSW.UD_flag;
+    SAVE[146][cnt] = GGSW.LandingZ_des;
+    SAVE[147][cnt] = 0;
+    SAVE[148][cnt] = GGSW.Pelv_roll_ref;
+    SAVE[149][cnt] = GGSW.Pelv_pitch_ref;
+
+    SAVE[150][cnt] = GGSW.Omega_pitch;
+    SAVE[151][cnt] = GGSW.Omega_roll;
+    SAVE[152][cnt] = GGSW.Omega_pitch_filtered;
+    SAVE[153][cnt] = GGSW.Omega_roll_filtered;
+    SAVE[154][cnt] = GGSW.del_b0_Nf.x;
+    SAVE[155][cnt] = GGSW.del_b0_Nf.y;
+    SAVE[156][cnt] = GGSW.b0_Nf.x;
+    SAVE[157][cnt] = GGSW.b0_Nf.y;
+    SAVE[158][cnt] = GGSW.SDB[GGSW.step_phase].t;
+    SAVE[159][cnt] = GGSW.T_nom;
+
+    SAVE[160][cnt] = GGSW.del_u_Nf.x;
+    SAVE[161][cnt] = GGSW.del_u_Nf.y;
+    SAVE[162][cnt] = GGSW.del_b_Nf.x;
+    SAVE[163][cnt] = GGSW.del_b_Nf.y;
+    SAVE[164][cnt] = GGSW.new_T_Nf;
+    SAVE[165][cnt] = GGSW.del_u_Nf_filtered.x;
+    SAVE[166][cnt] = GGSW.del_u_Nf_filtered.y;
+    SAVE[167][cnt] = GGSW.del_b_Nf_filtered.x;
+    SAVE[168][cnt] = GGSW.del_b_Nf_filtered.y;
+    SAVE[169][cnt] = GGSW.new_T_Nf_filtered;
+
+    SAVE[170][cnt] = GGSW.dz_com_ctrl;
+    SAVE[171][cnt] = GGSW.z_com_ctrl;
+    SAVE[172][cnt] = 0;
+    SAVE[173][cnt] = 0;
+    SAVE[174][cnt] = 0;
+    SAVE[175][cnt] = 0;
+    SAVE[176][cnt] = 0;
+    SAVE[177][cnt] = GGSW.G_R_g_pitroll_rpy.r;
+    SAVE[178][cnt] = GGSW.G_R_g_pitroll_rpy.p;
+    SAVE[179][cnt] = GGSW.G_R_g_pitroll_rpy.y;
+
+    SAVE[180][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHY].id][MC_ID_CH_Pairs[RHY].ch].CurrentPosition;
+    SAVE[181][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHR].id][MC_ID_CH_Pairs[RHR].ch].CurrentPosition;
+    SAVE[182][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHP].id][MC_ID_CH_Pairs[RHP].ch].CurrentPosition;
+    SAVE[183][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RKN].id][MC_ID_CH_Pairs[RKN].ch].CurrentPosition;
+    SAVE[184][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAP].id][MC_ID_CH_Pairs[RAP].ch].CurrentPosition;
+    SAVE[185][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAR].id][MC_ID_CH_Pairs[RAR].ch].CurrentPosition;
+    SAVE[186][cnt] = 0;
+    SAVE[187][cnt] = 0;
+    SAVE[188][cnt] = 0;
+    SAVE[189][cnt] = 0;
+
+    SAVE[190][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHY].id][MC_ID_CH_Pairs[LHY].ch].CurrentPosition;
+    SAVE[191][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHR].id][MC_ID_CH_Pairs[LHR].ch].CurrentPosition;
+    SAVE[192][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHP].id][MC_ID_CH_Pairs[LHP].ch].CurrentPosition;
+    SAVE[193][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LKN].id][MC_ID_CH_Pairs[LKN].ch].CurrentPosition;
+    SAVE[194][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAP].id][MC_ID_CH_Pairs[LAP].ch].CurrentPosition;
+    SAVE[195][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAR].id][MC_ID_CH_Pairs[LAR].ch].CurrentPosition;
+    SAVE[196][cnt] = 0;
+    SAVE[197][cnt] = 0;
+    SAVE[198][cnt] = 0;
+    SAVE[199][cnt] = 0;
+
+    SAVE[200][cnt] = WBmotion->LJ.RHY*R2D + RHY_con_deg;
+    SAVE[201][cnt] = WBmotion->LJ.RHR*R2D + RHR_con_deg;
+    SAVE[202][cnt] = WBmotion->LJ.RHP*R2D + RHP_con_deg;
+    SAVE[203][cnt] = WBmotion->LJ.RKN*R2D;
+    SAVE[204][cnt] = RA1_ref_deg;  //RAP board
+    SAVE[205][cnt] = RA2_ref_deg;  //RAR board
+    SAVE[206][cnt] = 0;
+    SAVE[207][cnt] = RHY_con_deg;
+    SAVE[208][cnt] = RHR_con_deg;
+    SAVE[209][cnt] = RHP_con_deg;
+
+    SAVE[210][cnt] = WBmotion->LJ.LHY*R2D + LHY_con_deg;
+    SAVE[211][cnt] = WBmotion->LJ.LHR*R2D + LHR_con_deg;
+    SAVE[212][cnt] = WBmotion->LJ.LHP*R2D + LHP_con_deg;
+    SAVE[213][cnt] = WBmotion->LJ.LKN*R2D;
+    SAVE[214][cnt] = LA1_ref_deg; //LAP board
+    SAVE[215][cnt] = LA2_ref_deg; //LAR board
+    SAVE[216][cnt] = 0;
+    SAVE[217][cnt] = LHY_con_deg;
+    SAVE[218][cnt] = LHR_con_deg;
+    SAVE[219][cnt] = LHP_con_deg;
+
+    SAVE[220][cnt] = GGSW.AnkleTorque_ref[0]; //RAR ref torque
+    SAVE[221][cnt] = GGSW.AnkleTorque_ref[1]; //RAP ref torque
+    SAVE[222][cnt] = GGSW.AnkleTorque_ref[2]; //LAR ref torque
+    SAVE[223][cnt] = GGSW.AnkleTorque_ref[3]; //LAP ref torque
+    SAVE[224][cnt] = GGSW.RF_Fz_ref;
+    SAVE[225][cnt] = GGSW.LF_Fz_ref;
+    SAVE[226][cnt] = 0;
+    SAVE[227][cnt] = 0;
+    SAVE[228][cnt] = 0;
+    SAVE[229][cnt] = GGSW.Alpha_dsp;
+
+    SAVE[230][cnt] = GGSW.DSP_time_flag;
+    SAVE[231][cnt] = GGSW.DSP_force_flag;
+    SAVE[232][cnt] = GGSW.RF_Fz_ref;
+    SAVE[233][cnt] = GGSW.LF_Fz_ref;
+    SAVE[234][cnt] = GGSW.Fz_diff_ref;
+    SAVE[235][cnt] = GGSW.Fz_diff;
+    SAVE[236][cnt] = GGSW.dz_ctrl;
+    SAVE[237][cnt] = GGSW.dz_ctrl_filtered;
+    SAVE[238][cnt] = GGSW.z_ctrl;
+    SAVE[239][cnt] = GGSW.z_ctrl_filtered;
+
+    SAVE[240][cnt] = GGSW.dRF_angle_ctrl.x;
+    SAVE[241][cnt] = GGSW.dRF_angle_ctrl.y;
+    SAVE[242][cnt] = GGSW.RF_angle_ctrl.x;
+    SAVE[243][cnt] = GGSW.RF_angle_ctrl.y;
+    SAVE[244][cnt] = GGSW.dLF_angle_ctrl.x;
+    SAVE[245][cnt] = GGSW.dLF_angle_ctrl.y;
+    SAVE[246][cnt] = GGSW.LF_angle_ctrl.x;
+    SAVE[247][cnt] = GGSW.LF_angle_ctrl.y;
+    SAVE[248][cnt] = 0;
+    SAVE[249][cnt] = 0;
+
+    SAVE[250][cnt] = GGSW.RS.IMUangle_comp.x;
+    SAVE[251][cnt] = GGSW.RS.IMUangle_comp.y;
+    SAVE[252][cnt] = GGSW.COM_m_comp.x;
+    SAVE[253][cnt] = GGSW.COM_m_comp.y;
+    SAVE[254][cnt] = GGSW.dCOM_m_comp.x;
+    SAVE[255][cnt] = GGSW.dCOM_m_comp.y;
+    SAVE[256][cnt] = GGSW.CP_m_comp.x;
+    SAVE[257][cnt] = GGSW.CP_m_comp.y;
+    SAVE[258][cnt] = GGSW.cZMP_TC_proj.x;
+    SAVE[259][cnt] = GGSW.cZMP_TC_proj.y;
+
+    SAVE[260][cnt] = GGSW.COM_e_imu_local.x;
+    SAVE[261][cnt] = GGSW.COM_e_imu_local.y;
+    SAVE[262][cnt] = GGSW.dCOM_e_imu_local.x;
+    SAVE[263][cnt] = GGSW.dCOM_e_imu_local.y;
+    SAVE[264][cnt] = GGSW.dsp_ctrl_gain;
+    SAVE[265][cnt] = GGSW.dsp_tilt_gain;
+    SAVE[266][cnt] = GGSW.cZMP_dsp_global.y;
+    SAVE[267][cnt] = GGSW.cZMP_dsp_global.x;
+    SAVE[268][cnt] = GGSW.cZMP_dsp_global_proj.y;
+    SAVE[269][cnt] = GGSW.cZMP_dsp_global_proj.x;
+
+    SAVE[270][cnt] = GGSW.COM_m_comp_filtered.x;
+    SAVE[271][cnt] = GGSW.COM_m_comp_filtered.y;
+    SAVE[272][cnt] = GGSW.dCOM_m_comp_filtered.x;
+    SAVE[273][cnt] = GGSW.dCOM_m_comp_filtered.y;
+    SAVE[274][cnt] = GGSW.Pelv_pitch_acc_ref;
+    SAVE[275][cnt] = GGSW.Pelv_pitch_vel_ref;
+    SAVE[276][cnt] = GGSW.Pelv_pitch_ref;
+    SAVE[277][cnt] = GGSW.Pelv_roll_acc_ref;
+    SAVE[278][cnt] = GGSW.Pelv_roll_vel_ref;
+    SAVE[279][cnt] = GGSW.Pelv_roll_ref;
+
+    SAVE[280][cnt] = GGSW.MaxFoot_y_cur;
+}
 
 void save_all()
 {
     printf("walk finished and saved%d\n",HBPW.k);
-    FILE* ffp2 = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev1.txt","w");
+    FILE* ffp2 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev1.txt","w");
     for(int i=0;i<HBPW.k;i++)
     {
         for(int j=0;j<SAVEN;j++)
@@ -3517,7 +4173,8 @@ void save_all()
     printf("save done\n");
 }
 
-void init_StateEstimator(){
+void init_StateEstimator()
+{
     ////Initialize State Estimator--------------------------------------------------------------------
     vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
     vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
@@ -3539,7 +4196,8 @@ void init_StateEstimator(){
     RST_ini.JSP.pPel = RST_ini.CSP.pPel; RST_ini.JSP.qPel = RST_ini.CSP.qPel;
     RST_ini.JSV.dpPel = vec3(); RST_ini.JSV.dqPel = vec3();
 
-    for(int i=0; i<12 ;i++){
+    for(int i=0; i<12; i++)
+    {
         RST_ini.JSP.JSP_Array[i] = getEnc(i);
         RST_ini.JSV.JSV_Array[i] = 0.0;
     }

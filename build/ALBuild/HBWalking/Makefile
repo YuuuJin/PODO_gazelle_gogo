@@ -58,7 +58,8 @@ SOURCES       = ../../../src/ALPrograms/HBWalking/main.cpp \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp \
 		../../../src/ALPrograms/HBWalking/HB_Controller.cpp \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.cpp \
-		../../../src/ALPrograms/HBWalking/basicsetting.cpp 
+		../../../src/ALPrograms/HBWalking/basicsetting.cpp \
+		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp 
 OBJECTS       = main.o \
 		taskmotion.o \
 		BasicTrajectory.o \
@@ -69,7 +70,8 @@ OBJECTS       = main.o \
 		HB_PreviewWalk.o \
 		HB_Controller.o \
 		robotstateestimator.o \
-		basicsetting.o
+		basicsetting.o \
+		GG_SingleLogWalk.o
 DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf \
@@ -244,7 +246,8 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h \
 		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h \
 		../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h \
-		../../../src/ALPrograms/HBWalking/robotstateestimator.h ../../../src/ALPrograms/HBWalking/main.cpp \
+		../../../src/ALPrograms/HBWalking/robotstateestimator.h \
+		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h ../../../src/ALPrograms/HBWalking/main.cpp \
 		../../../src/ALPrograms/HBWalking/taskmotion.cpp \
 		../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp \
 		../../../src/ALPrograms/HBWalking/HB_functions.cpp \
@@ -254,7 +257,8 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp \
 		../../../src/ALPrograms/HBWalking/HB_Controller.cpp \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.cpp \
-		../../../src/ALPrograms/HBWalking/basicsetting.cpp
+		../../../src/ALPrograms/HBWalking/basicsetting.cpp \
+		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp
 QMAKE_TARGET  = HBWalking
 DESTDIR       = ../PODO_PROC_Build/
 TARGET        = ../PODO_PROC_Build/HBWalking
@@ -586,8 +590,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/BasicFiles/BasicSetting.h ../../../src/ALPrograms/HBWalking/BasicFiles/BasicJoint.h ../../../src/ALPrograms/HBWalking/BasicMath.h ../../../src/ALPrograms/HBWalking/BasicMatrix.h ../../../src/ALPrograms/HBWalking/HB_functions.h ../../../src/ALPrograms/HBWalking/HB_walking.h ../../../src/ALPrograms/HBWalking/Oinverse.h ../../../src/ALPrograms/HBWalking/taskmotion.h ../../../src/ALPrograms/HBWalking/BasicTrajectory.h ../../../src/ALPrograms/HBWalking/taskGeneral.h ../../../src/ALPrograms/HBWalking/ManualCAN.h ../../../src/ALPrograms/HBWalking/HB_inverse.h ../../../src/ALPrograms/HBWalking/BP_RBDL.h ../../../src/ALPrograms/HBWalking/HB_dynamics_walk.h ../../../src/ALPrograms/HBWalking/HB_types.h ../../../src/ALPrograms/HBWalking/HB_State_est.h ../../../src/ALPrograms/HBWalking/ow_cplex.h ../../../src/ALPrograms/HBWalking/Array.hh ../../../src/ALPrograms/HBWalking/QuadProg++.hh ../../../src/ALPrograms/HBWalking/HB_dynamics_walk2.h ../../../src/ALPrograms/HBWalking/HB_Jumping.h ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h ../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h ../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h ../../../src/ALPrograms/HBWalking/robotstateestimator.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWalking/taskmotion.cpp ../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp ../../../src/ALPrograms/HBWalking/HB_functions.cpp ../../../src/ALPrograms/HBWalking/ManualCAN.cpp ../../../src/ALPrograms/HBWalking/Array.cc ../../../src/ALPrograms/HBWalking/QuadProg++.cc ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp ../../../src/ALPrograms/HBWalking/HB_Controller.cpp ../../../src/ALPrograms/HBWalking/robotstateestimator.cpp ../../../src/ALPrograms/HBWalking/basicsetting.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/BasicFiles/BasicSetting.h ../../../src/ALPrograms/HBWalking/BasicFiles/BasicJoint.h ../../../src/ALPrograms/HBWalking/BasicMath.h ../../../src/ALPrograms/HBWalking/BasicMatrix.h ../../../src/ALPrograms/HBWalking/HB_functions.h ../../../src/ALPrograms/HBWalking/HB_walking.h ../../../src/ALPrograms/HBWalking/Oinverse.h ../../../src/ALPrograms/HBWalking/taskmotion.h ../../../src/ALPrograms/HBWalking/BasicTrajectory.h ../../../src/ALPrograms/HBWalking/taskGeneral.h ../../../src/ALPrograms/HBWalking/ManualCAN.h ../../../src/ALPrograms/HBWalking/HB_inverse.h ../../../src/ALPrograms/HBWalking/BP_RBDL.h ../../../src/ALPrograms/HBWalking/HB_dynamics_walk.h ../../../src/ALPrograms/HBWalking/HB_types.h ../../../src/ALPrograms/HBWalking/HB_State_est.h ../../../src/ALPrograms/HBWalking/ow_cplex.h ../../../src/ALPrograms/HBWalking/Array.hh ../../../src/ALPrograms/HBWalking/QuadProg++.hh ../../../src/ALPrograms/HBWalking/HB_dynamics_walk2.h ../../../src/ALPrograms/HBWalking/HB_Jumping.h ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h ../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h ../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h ../../../src/ALPrograms/HBWalking/robotstateestimator.h ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWalking/taskmotion.cpp ../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp ../../../src/ALPrograms/HBWalking/HB_functions.cpp ../../../src/ALPrograms/HBWalking/ManualCAN.cpp ../../../src/ALPrograms/HBWalking/Array.cc ../../../src/ALPrograms/HBWalking/QuadProg++.cc ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp ../../../src/ALPrograms/HBWalking/HB_Controller.cpp ../../../src/ALPrograms/HBWalking/robotstateestimator.cpp ../../../src/ALPrograms/HBWalking/basicsetting.cpp ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -696,12 +700,16 @@ main.o: ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWal
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
 		../../../share/Headers/UserSharedMemory.h \
-		../../../src/ALPrograms/HBWalking/HB_functions.h \
+		../../../src/ALPrograms/HBWalking/taskmotion.h \
+		../../../src/ALPrograms/HBWalking/taskGeneral.h \
+		../../../src/ALPrograms/HBWalking/BasicTrajectory.h \
 		../../../src/ALPrograms/HBWalking/BasicMatrix.h \
 		../../../src/ALPrograms/HBWalking/BasicMath.h \
+		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/Gazelle_Ankle_Kine/Gazelle_kine.h \
+		../../../src/ALPrograms/HBWalking/HB_functions.h \
 		../../../src/ALPrograms/HBWalking/ManualCAN.h \
 		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
-		../../../src/ALPrograms/HBWalking/HB_inverse.h \
 		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
 		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
 		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
@@ -731,19 +739,17 @@ main.o: ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWal
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
 		../../../src/ALPrograms/HBWalking/Array.hh \
 		../../../src/ALPrograms/HBWalking/HB_walking.h \
-		../../../src/ALPrograms/HBWalking/taskmotion.h \
-		../../../src/ALPrograms/HBWalking/taskGeneral.h \
-		../../../src/ALPrograms/HBWalking/BasicTrajectory.h \
-		../../../src/Gazelle_Ankle_Kine/Gazelle_kine.h \
 		../../../src/ALPrograms/HBWalking/HB_State_est.h \
 		../../../src/ALPrograms/HBWalking/HB_Jumping.h \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h \
 		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h \
+		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.h \
 		../../../src/ALPrograms/HBWalking/cmatrix \
 		../../../src/ALPrograms/HBWalking/matrix2.hxx \
 		../../../src/ALPrograms/HBWalking/matrix.cc \
-		../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h
+		../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h \
+		../../../share/Headers/LANData/ROSLANData.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../../src/ALPrograms/HBWalking/main.cpp
 
 taskmotion.o: ../../../src/ALPrograms/HBWalking/taskmotion.cpp ../../../src/ALPrograms/HBWalking/taskmotion.h \
@@ -1321,6 +1327,91 @@ basicsetting.o: ../../../src/ALPrograms/HBWalking/basicsetting.cpp ../../../src/
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
 		../../../share/Headers/UserSharedMemory.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basicsetting.o ../../../src/ALPrograms/HBWalking/basicsetting.cpp
+
+GG_SingleLogWalk.o: ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h \
+		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h \
+		../../../src/ALPrograms/HBWalking/BasicMatrix.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVector \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qnumeric.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qversiontagging.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qhashfunctions.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearraylist.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qpoint.h \
+		../../../src/ALPrograms/HBWalking/BasicMath.h \
+		../../../share/Headers/RBSharedMemory.h \
+		../../../share/Headers/UserSharedMemory.h \
+		../../../src/ALPrograms/HBWalking/HB_functions.h \
+		../../../src/ALPrograms/HBWalking/ManualCAN.h \
+		../../../share/Headers/JointInformation.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QString \
+		../../../src/ALPrograms/HBWalking/BP_RBDL.h \
+		../../../src/ALPrograms/HBWalking/HB_inverse.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_math.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_config.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathFixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/compileassert.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathBlock.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathDynamic.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMixed.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathQR.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCholesky.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathCommaInitializer.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SimpleMath/SimpleMathMap.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_eigenmath.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Quaternion.h \
+		../../../src/ALPrograms/HBWalking/rbdl/SpatialAlgebraOperators.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_mathutils.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Logging.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Body.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Model.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Joint.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Dynamics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Kinematics.h \
+		../../../src/ALPrograms/HBWalking/rbdl/Constraints.h \
+		../../../src/ALPrograms/HBWalking/rbdl/rbdl_utils.h \
+		../../../src/ALPrograms/HBWalking/HB_types.h \
+		../../../src/ALPrograms/HBWalking/ow_cplex.h \
+		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
+		../../../src/ALPrograms/HBWalking/Array.hh \
+		../../../src/Gazelle_Ankle_Kine/Gazelle_kine.h \
+		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GG_SingleLogWalk.o ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp
 
 ####### Install
 
