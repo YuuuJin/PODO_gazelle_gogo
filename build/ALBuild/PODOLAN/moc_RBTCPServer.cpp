@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_RBTCPServer_t {
     QByteArrayData data[7];
-    char stringdata0[96];
+    char stringdata0[94];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,12 +35,12 @@ QT_MOC_LITERAL(2, 30, 0), // ""
 QT_MOC_LITERAL(3, 31, 16), // "SIG_DisConnected"
 QT_MOC_LITERAL(4, 48, 15), // "RBNewConnection"
 QT_MOC_LITERAL(5, 64, 20), // "RBClientDisconnected"
-QT_MOC_LITERAL(6, 85, 10) // "RBReadData"
+QT_MOC_LITERAL(6, 85, 8) // "ReadData"
 
     },
     "RBTCPServer\0SIG_NewConnection\0\0"
     "SIG_DisConnected\0RBNewConnection\0"
-    "RBClientDisconnected\0RBReadData"
+    "RBClientDisconnected\0ReadData"
 };
 #undef QT_MOC_LITERAL
 
@@ -88,7 +88,7 @@ void RBTCPServer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 1: _t->SIG_DisConnected(); break;
         case 2: _t->RBNewConnection(); break;
         case 3: _t->RBClientDisconnected(); break;
-        case 4: _t->RBReadData(); break;
+        case 4: _t->ReadData(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

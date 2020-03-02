@@ -9,206 +9,215 @@ extern pUSER_SHM               sharedUSER;
 
 extern int     __IS_GAZEBO;
 
-Gazelle_Kine GK;
 
-ROSThread::ROSThread()
+ROSWorker::ROSWorker()
 {
+    ROSflag = false;
+    serverROS = new ROSServer();
+    serverROS->RBServerOpen(QHostAddress::AnyIPv4, 6000);
+    serverRST = new RSTServer();
+    serverRST->RBServerOpen(QHostAddress::AnyIPv4, 6001);
+    sendTimer = new QTimer(this);
+
+    ROSflag = true;
+
+    connect(serverROS, SIGNAL(SIG_NewConnection()), this, SLOT(ROSConnected()));
+    connect(serverROS, SIGNAL(SIG_DisConnected()), this, SLOT(ROSDisconnected()));
+    connect(serverRST, SIGNAL(SIG_NewConnection()), this, SLOT(RSTConnected()));
+    connect(serverRST, SIGNAL(SIG_DisConnected()), this, SLOT(RSTDisconnected()));
+    connect(serverROS, SIGNAL(ROS_UPDATE(char*)), this, SLOT(readCMD(char*)));
 }
 
-void ROSThread::run(){
-
-    ROSWorker worker;
-    QTimer fastTimer;
-    QTimer timerPODO2ROS, timerROS2PODO;
-
-    if(__IS_GAZEBO){
-        worker.timePeriod = 0.005; // 5ms period for sending
-        worker.timePrev = worker.timeCur = sharedSEN->Sim_Time_sec + sharedSEN->Sim_Time_nsec/1000000000.0;
-
-        connect(&fastTimer, SIGNAL(timeout()), &worker, SLOT(onFastTimer()));
-        fastTimer.start(1);
-    }else{
-        connect(&timerPODO2ROS, SIGNAL(timeout()), &worker, SLOT(onPODO2ROS()));
-        connect(&timerROS2PODO, SIGNAL(timeout()), &worker, SLOT(onROS2PODO()));
-
-        std::cout<<"JH Communication open!!"<<std::endl;
-
-        timerPODO2ROS.start(50);
-        timerROS2PODO.start(50);
-    }
-    exec();
-}
-
-
-
-ROSWorker::ROSWorker(){
-    serverPODOROS = new PODO_ROS_Server();
-    serverPODOROS->RBServerOpen(QHostAddress::AnyIPv4, 5000);
-    if(__IS_GAZEBO){
-        connect(serverPODOROS, SIGNAL(SIG_NewConnection()), this, SLOT(onNewConnection()));
-    }
-}
-
-void ROSWorker::onNewConnection(){
-    timePrev = timeCur = sharedSEN->Sim_Time_sec + sharedSEN->Sim_Time_nsec/1000000000.0;
-}
-
-
-void ROSWorker::onFastTimer(){
-    // read data from ROS
-    onROS2PODO();
-
-    // send data to ROS
-    timeCur = sharedSEN->Sim_Time_sec + sharedSEN->Sim_Time_nsec/1000000000.0;
-    if(timeCur - timePrev >= timePeriod){
-        timePrev = timeCur;
-        onPODO2ROS();
-    }else if(timeCur < timePrev-0.001){
-        FILE_LOG(logERROR) << "SimTime Reversed..";
-        FILE_LOG(logERROR) << "Probably New Gazebo is turned on..";
-        FILE_LOG(logERROR) << "Reset the local timer..";
-
-        timePrev = timeCur = sharedSEN->Sim_Time_sec + sharedSEN->Sim_Time_nsec/1000000000.0;
-    }
-}
-
-
-void ROSWorker::SendtoROS(){
-//    for(int i=0; i<NO_OF_JOINTS; i++){
-//        TXData.JointReference[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentReference;
-//        TXData.JointEncoder[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentPosition;
-//    }
-//    TXData.odom_x = sharedUSER->odom_data[0];
-//    TXData.odom_y = sharedUSER->odom_data[1];
-//    TXData.odom_theta = sharedUSER->odom_data[2];
-//    TXData.vx = sharedUSER->odom_data[3];
-//    TXData.vy = sharedUSER->odom_data[4];
-//    TXData.vth = sharedUSER->odom_data[5];
-
-//    memcpy(&(TXData.cmd), &(sharedUSER->G2M.ros_cmd), sizeof(LAN_GENERAL_COMMAND));
-//    sharedUSER->G2M.ros_cmd.cmd = 0;
-
-//    //FILE_LOG(logWARNING) << "Send to ROS: " << sizeof(LAN_PODO2ROS);
-//    QByteArray SendData = QByteArray::fromRawData((char*)&TXData, sizeof(LAN_PODO2ROS));
-//    serverPODOROS->RBSendData(SendData);
-
-    for(int i=0; i<NO_OF_JOINTS; i++){
-        TXData.JointReference[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentReference;
-        TXData.JointEncoder[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentPosition;
-    }
-
-    //for gazelle
-    double RAP_deg, RAR_deg;
-    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentReference,
-                            sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentReference, 0, 0, RAP_deg, RAR_deg);
-    TXData.JointReference[RAP] = RAP_deg;
-    TXData.JointReference[RAR] = RAR_deg;
-
-    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentPosition,
-                            sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentPosition, 0, 0, RAP_deg, RAR_deg);
-    TXData.JointEncoder[RAP] = RAP_deg;
-    TXData.JointEncoder[RAR] = RAR_deg;
-
-    double LAP_deg, LAR_deg;
-    GK.FK_diff_Ankle_left(sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentReference,
-                            sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentReference, 0, 0, LAP_deg, LAR_deg);
-    TXData.JointReference[LAP] = LAP_deg;
-    TXData.JointReference[LAR] = LAR_deg;
-
-    GK.FK_diff_Ankle_left(sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentPosition,
-                            sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentPosition, 0, 0, LAP_deg, LAR_deg);
-    TXData.JointEncoder[LAP] = LAP_deg;
-    TXData.JointEncoder[LAR] = LAR_deg;
-
-    TXData.odom_x = sharedUSER->odom_data[0];
-    TXData.odom_y = sharedUSER->odom_data[1];
-    TXData.odom_theta = sharedUSER->odom_data[2];
-    TXData.vx = sharedUSER->odom_data[3];
-    TXData.vy = sharedUSER->odom_data[4];
-    TXData.vth = sharedUSER->odom_data[5];
-    TXData.IMU_ROS[0] = sharedSEN->IMU[0];
-    TXData.FT_ROS[0] = sharedSEN->FT[0];
-    TXData.FT_ROS[1] = sharedSEN->FT[1];
-    TXData.FT_ROS[2] = sharedSEN->FT[2];
-    TXData.FT_ROS[3] = sharedSEN->FT[3];
-    TXData.robot_state=sharedUSER->robot_state;
-    TXData.pel_pos_est[0] = sharedUSER->pel_pos_estimated[0];
-    TXData.pel_pos_est[1] = sharedUSER->pel_pos_estimated[1];
-    TXData.pel_pos_est[2] = sharedUSER->pel_pos_estimated[2];
-
-    TXData.step_phase=sharedUSER->step_phase;
-    for(int m=0;m<6;m++)
+ROSWorker::~ROSWorker()
+{
+    printf("delete ROSWorker\n");
+    if(ROSflag == true)
     {
-        TXData.target_foot[m]=sharedUSER->target_foot[m];
+        delete serverROS;
+        delete serverRST;
+        ROSflag = false;
     }
-
-    //FILE_LOG(logWARNING) << "Send to ROS: " << sizeof(LAN_PODO2ROS);
-    QByteArray SendData = QByteArray::fromRawData((char*)&TXData, sizeof(LAN_PODO2ROS));
-    serverPODOROS->RBSendData(SendData);
-
 }
 
-void ROSWorker::ReadfromROS(){
-//    QByteArray tempData = serverPODOROS->dataReceived[0];
-//    serverPODOROS->dataReceived.pop_front();
+void ROSWorker::ROSConnected()
+{
+    connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendSTATUS()));
+    connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendRESULT()));
+    sendTimer->start(10);
+    sharedUSER->M2G.ROSflag = true;
+}
 
-//    memcpy(&RXData, tempData.data(), sizeof(RXData));
+void ROSWorker::ROSDisconnected()
+{
+    sendTimer->stop();
+    if(!serverROS->isListening())
+        sharedUSER->M2G.ROSflag = false;
+}
 
-//    sharedUSER->vel_cmd[0] = RXData.vx;
-//    sharedUSER->vel_cmd[1] = RXData.vth;
-//    sharedUSER->M2G.obj_pos[0] = RXData.pos[0];
-//    sharedUSER->M2G.obj_pos[1] = RXData.pos[1];
-//    sharedUSER->M2G.obj_pos[2] = RXData.pos[2];
+void ROSWorker::RSTConnected()
+{
+    emit RST_Connected();
+}
 
-    QByteArray tempData = serverPODOROS->dataReceived[0];
-    serverPODOROS->dataReceived.pop_front();
+void ROSWorker::RSTDisconnected()
+{
+    if(!serverRST->isListening())
+        emit RST_Disconnected();
+}
 
-    memcpy(&RXData, tempData.data(), sizeof(RXData));
+void ROSWorker::sendSTATUS()
+{
+    for(int i=0; i<NO_OF_JOINTS; i++)
+    {
+        status.joint_reference[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentReference;
+        status.joint_encoder[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentPosition;
+    }
 
-    sharedUSER->vel_cmd[0] = RXData.vx;
-    sharedUSER->vel_cmd[1] = RXData.vth;
-    sharedUSER->M2G.obj_pos[0] = RXData.pos[0];
-    sharedUSER->M2G.obj_pos[1] = RXData.pos[1];
-    sharedUSER->M2G.obj_pos[2] = RXData.pos[2];
+    status.ft_sensor[0] = sharedSEN->FT[0].Mx;
+    status.ft_sensor[1] = sharedSEN->FT[0].My;
+    status.ft_sensor[2] = sharedSEN->FT[0].Mz;
+    status.ft_sensor[3] = sharedSEN->FT[0].Fx;
+    status.ft_sensor[4] = sharedSEN->FT[0].Fy;
+    status.ft_sensor[5] = sharedSEN->FT[0].Fz;
+    status.ft_sensor[6] = sharedSEN->FT[1].Mx;
+    status.ft_sensor[7] = sharedSEN->FT[1].My;
+    status.ft_sensor[8] = sharedSEN->FT[1].Mz;
+    status.ft_sensor[9] = sharedSEN->FT[1].Fx;
+    status.ft_sensor[10]= sharedSEN->FT[1].Fy;
+    status.ft_sensor[11]= sharedSEN->FT[1].Fz;
 
-    sharedUSER->foot_flag=RXData.footstep_flag;
-    sharedUSER->lr_state=RXData.lr_state;
-    sharedUSER->jh_step_phase=RXData.jh_step_phase;
+    status.imu_sensor[0] = sharedSEN->IMU[0].Roll;
+    status.imu_sensor[1] = sharedSEN->IMU[0].Pitch;
+    status.imu_sensor[2] = sharedSEN->IMU[0].Yaw;
+    status.imu_sensor[3] = sharedSEN->IMU[0].RollVel;
+    status.imu_sensor[4] = sharedSEN->IMU[0].PitchVel;
+    status.imu_sensor[5] = sharedSEN->IMU[0].YawVel;
+    status.imu_sensor[6] = sharedSEN->IMU[0].AccX;
+    status.imu_sensor[7] = sharedSEN->IMU[0].AccY;
+    status.imu_sensor[8] = sharedSEN->IMU[0].AccZ;
 
-    std::cout<<sharedUSER->jh_step_phase<<std::endl;
+    status.step_phase=sharedUSER->step_phase;
 
-    //    if(RXData.lr_state==1)
-//    {
-//        sharedUSER->lr_state=1;
-//    }
-//    else if(RXData.lr_state==0)
-//    {
-//        sharedUSER->lr_state=2;
-//    }
-//    else
-//    {
-//        sharedUSER->lr_state=-1;
-//    }
+    for(int i=0;i<15;i++)
+        status.given_footsteps[i] = sharedUSER->given_footsteps[i];
 
-    RXData.footstep_flag=0;
-    if(sharedUSER->foot_flag==1){
-        for(int m=0;m<15;m++){
-            sharedUSER->given_footsteps[m]=RXData.desired_footsteps[m];
+    status.lr_state = sharedUSER->lr_state;
+
+    char *buf = new char[sizeof(P2R_status)];
+    memcpy(buf, &status, sizeof(P2R_status));
+    serverROS->RBSendData(buf, sizeof(P2R_status));
+    delete [] buf;
+}
+
+void ROSWorker::sendRESULT()
+{
+    if(sharedUSER->FLAG_sendROS != CMD_BREAK && sharedUSER->FLAG_receivedROS == ROS_RX_EMPTY)
+    {
+        printf("send ros : %d\n",sharedUSER->FLAG_sendROS);
+        result.gazelle_result = sharedUSER->FLAG_sendROS;
+        result.step_phase = sharedUSER->step_phase;
+        result.lr_state = sharedUSER->lr_state;
+
+        char *buf = new char[sizeof(P2R_result)];
+        memcpy(buf, &result, sizeof(P2R_result));
+        serverRST->RBSendData(buf, sizeof(P2R_result));
+        delete [] buf;
+        sharedUSER->FLAG_sendROS = CMD_BREAK;
+        sharedUSER->FLAG_receivedROS = ROS_RX_FALSE;
+    }
+}
+
+void ROSWorker::readCMD(char* _data)
+{
+    printf("\n==========New Command for ROS received===========\n");
+    memcpy(&command, _data, serverROS->RXSize);
+
+    sharedUSER->ros_walking_cmd=command.ros_cmd;
+    sharedUSER->ros_lr_state=command.lr_state;
+    sharedUSER->ros_step_num=command.step_num;
+    sharedUSER->ros_footstep_flag = command.footstep_flag;
+
+    for(int i=0;i<15;i++)
+        sharedUSER->ros_footsteps[i] = command.des_footsteps[i];
+
+    switch(sharedUSER->ros_walking_cmd)
+    {
+    case ROSWALK_NORMAL_START:
+        printf("    * ros_cmd = Normal_walking Start\n");
+        break;
+    case ROSWALK_SINGLELOG_START:
+        printf("    * ros_cmd = SingleLog_walking Start\n");
+        break;
+    case ROSWALK_STOP:
+        printf("    * ros_cmd = Walking Stop\n");
+        break;
+    }
+
+    if(sharedUSER->ros_footstep_flag == true)
+    {
+        for(int m=0; m<15; m++)
+        {
+            sharedUSER->given_footsteps[m]=command.des_footsteps[m];
         }
+
+        printf("    * flag is on. next 3 steps is\n");
+        printf("    [%.2f, %.2f, %.2f], [%.2f, %.2f, %.2f], [%.2f, %.2f, %.2f]\n",
+               sharedUSER->ros_footsteps[0],sharedUSER->ros_footsteps[1],sharedUSER->ros_footsteps[2],
+                sharedUSER->ros_footsteps[3],sharedUSER->ros_footsteps[4],sharedUSER->ros_footsteps[5],
+                sharedUSER->ros_footsteps[6],sharedUSER->ros_footsteps[7],sharedUSER->ros_footsteps[8]);
+
+        if(sharedUSER->ros_lr_state == -1)
+            printf("    * lr_state = RIGHT\n");
+        else if(sharedUSER->ros_lr_state == 1)
+            printf("    * lr_state = LEFT\n");
+
+    }else
+    {
+        printf("    * flag is off\n");
     }
+    printf("=====================================================\n");
+    sharedUSER->FLAG_receivedROS = ROS_RX_TRUE;
 
 }
 
-
-void ROSWorker::onPODO2ROS(){
-    if(serverPODOROS->RBConnectionState == RBLAN_CS_CONNECTED){
-        SendtoROS();
-    }
+ROSServer::ROSServer()
+{
+    TXSize = sizeof(P2R_status);
+    RXSize = sizeof(R2P_command);
+    data = new char[RXSize];
 }
 
-void ROSWorker::onROS2PODO(){
-    if(serverPODOROS->dataReceived.size() > 0){
-        ReadfromROS();
-    }
+ROSServer::~ROSServer()
+{
+    printf("delete ROSserver\n");
+    if(RBConnectionState == RBLAN_CS_CONNECTED)
+        RBTcpClient->abort();
+    RBTcpServer->close();
 }
 
+void ROSServer::ReadData()
+{
+    if(RBTcpClient->bytesAvailable() < RXSize)
+        return;
+
+    RBTcpClient->read(data, RXSize);
+    emit ROS_UPDATE(data);
+}
+
+RSTServer::RSTServer()
+{
+    TXSize = sizeof(P2R_result);
+}
+
+RSTServer::~RSTServer()
+{
+    printf("delete RSTserver\n");
+    if(RBConnectionState == RBLAN_CS_CONNECTED)
+        RBTcpClient->abort();
+    RBTcpServer->close();
+}
+
+void RSTServer::ReadData()
+{
+
+}

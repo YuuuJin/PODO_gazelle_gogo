@@ -16,6 +16,7 @@ public:
 
     void RBServerOpen(QHostAddress::SpecialAddress _host = QHostAddress::Any, quint16 _port = 4000);
     void RBSendData(QByteArray &data);
+    void RBSendData(char *data, int size);
 
     quint8      RBConnectionState;
 
@@ -24,7 +25,7 @@ private slots:
     void            RBClientDisconnected();
 
 protected slots:
-    virtual void    RBReadData() = 0;
+    virtual void    ReadData() = 0;
 
 signals:
     void    SIG_NewConnection();

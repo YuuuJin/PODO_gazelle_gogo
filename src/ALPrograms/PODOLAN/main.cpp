@@ -189,10 +189,7 @@ int main(int argc, char *argv[])
     CoreThread  core;
     core.start();
 
-    ROSThread   ros;
-    if(__IS_ROS){
-        ros.start();
-    }
+    ROSWorker   ros;
 
     return a.exec();
 }

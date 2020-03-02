@@ -4,21 +4,13 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 
-#include <QThread>
 #include <QByteArray>
 #include <QTimer>
 
 #include "PODOServer.h"
 
-class ROSThread : public QThread
-{
-    Q_OBJECT
-public:
-    ROSThread();
-
-protected:
-    void run();
-};
+class ROSServer;
+class RSTServer;
 
 
 class ROSWorker : public QObject
@@ -26,28 +18,70 @@ class ROSWorker : public QObject
     Q_OBJECT
 public:
     ROSWorker();
+    ~ROSWorker();
+    ROSServer    *serverROS;
+    RSTServer    *serverRST;
 
-    float   timePrev;
-    float   timeCur;
-    float   timePeriod;
+    P2R_status status;
+    R2P_command command;
+    P2R_result result;
 
-
-private slots:
-    void onFastTimer();
-    void onNewConnection();
-
-    void onPODO2ROS();
-    void onROS2PODO();
-
-private:
-    PODO_ROS_Server         *serverPODOROS;
-    LAN_PODO2ROS            TXData;
-    LAN_ROS2PODO            RXData;
-
+    QTimer *sendTimer;
     void    SendtoROS();
     void    ReadfromROS();
 
+signals:
+    void ROS_Connected();
+    void ROS_Disconnected();
+    void RST_Connected();
+    void RST_Disconnected();
+    void ROS_CMD_READ(R2P_command _cmd);
 
+private slots:
+    void ROSConnected();
+    void ROSDisconnected();
+    void RSTConnected();
+    void RSTDisconnected();
+    void readCMD(char *_data);
+    void sendSTATUS();
+    void sendRESULT();
+
+private:
+    int ROSflag;
+};
+
+class ROSServer : public RBTCPServer
+{
+    Q_OBJECT
+public:
+    ROSServer();
+    ~ROSServer();
+
+    QByteArrays     dataReceived;
+    char      *data;
+    int     TXSize;
+    int     RXSize;
+
+signals:
+    void ROS_UPDATE(char *_data);
+
+protected slots:
+    virtual void ReadData();
+};
+
+class RSTServer : public RBTCPServer
+{
+    Q_OBJECT
+public:
+    RSTServer();
+    ~RSTServer();
+
+    int  TXSize;
+signals:
+    void ROS_UPDATE(char *_data);
+
+protected slots:
+    virtual void ReadData();
 };
 
 

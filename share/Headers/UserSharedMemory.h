@@ -6,6 +6,12 @@
 #ifndef __LAN_STRUCT_GENERAL_COMMAND_DEF__
 #define __LAN_STRUCT_GENERAL_COMMAND_DEF__
 
+enum rosReceived{
+    ROS_RX_FALSE = 0,
+    ROS_RX_TRUE,
+    ROS_RX_EMPTY
+};
+
 typedef struct __LAN_STRUCT_GENERAL_COMMAND_
 {
     char    param_c[10];
@@ -54,6 +60,9 @@ typedef struct _MOTION2GUI_
     float ROI_min_Z;
 
     float           obj_pos[3];
+
+    int ROSflag;
+    int ROSWalk_state;
 } MOTION2GUI, *pMOTION2GUI;
 
 typedef struct _GUI2MOTION_
@@ -79,7 +88,7 @@ typedef struct _USER_SHM_
     MOTION2GUI  M2G;
     GUI2MOTION  G2M;
 
-    double			WalkReadyCOM[3];
+    double          WalkReadyCOM[3];
     double          ZMPInitAnlge[50];  // ZMP init. control input
     double          terrain_variable[10];
 
@@ -104,16 +113,18 @@ typedef struct _USER_SHM_
     float           vel_cmd[2];
 
     //giving data
+    int             FLAG_sendROS;
     unsigned int    step_phase;     // current real step phase
-    float           target_foot[6];  // current real stance foot point and current swingfoot destination point
-    int             robot_state;   // swing foot state -1 or 1
-    float           pel_pos_estimated[3]; // pelvis position estimated
+    float           given_footsteps[15];  // current real stance foot point and current swingfoot destination point
+    int             lr_state;   // swing foot state -1 or 1
 
     // recieving data
-    unsigned int    jh_step_phase;  // planned step phase
-    float           given_footsteps[15]; // 5set of  del_x, del_y, del_theta w.r.t swingfoot destination coordinate
-    int             foot_flag;
-    int             lr_state;
+    int             FLAG_receivedROS;
+    int             ros_walking_cmd;
+    int             ros_footstep_flag;
+    unsigned int    ros_step_num;  // planned step phase
+    float           ros_footsteps[15]; // 5set of  del_x, del_y, del_theta w.r.t swingfoot destination coordinate
+    int             ros_lr_state;
 
 } USER_SHM, *pUSER_SHM;
 

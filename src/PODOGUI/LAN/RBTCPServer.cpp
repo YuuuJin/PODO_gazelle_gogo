@@ -29,7 +29,7 @@ void RBTCPServer::RBNewConnection()
     if(RBConnectionState == RBLAN_CS_DISCONNECTED){
         RBTcpClient = RBTcpServer->nextPendingConnection();
         connect(RBTcpClient, SIGNAL(disconnected()), this, SLOT(RBClientDisconnected()));
-        connect(RBTcpClient, SIGNAL(readyRead()), this, SLOT(RBReadData()));
+        connect(RBTcpClient, SIGNAL(readyRead()), this, SLOT(ReadData()));
         RBConnectionState = RBLAN_CS_CONNECTED;
         FILE_LOG(logINFO) << "New client is connected";
 

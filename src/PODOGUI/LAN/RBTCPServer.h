@@ -24,7 +24,7 @@ private slots:
     void            RBClientDisconnected();
 
 protected slots:
-    virtual void    RBReadData() = 0;
+    virtual void    ReadData() = 0;
 
 signals:
     void    SIG_NewConnection();

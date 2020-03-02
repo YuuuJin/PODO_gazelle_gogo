@@ -17,27 +17,12 @@ public:
     QByteArray  RBData;
 
 protected slots:
-    virtual void    RBReadData();
+    virtual void    ReadData();
 
 private:
     int         dataSize;
 };
 
 
-class PODO_ROS_Server : public RBTCPServer
-{
-    Q_OBJECT
-public:
-    PODO_ROS_Server();
-
-    QByteArrays dataReceived;
-    QByteArray  RBData;
-
-protected slots:
-    virtual void    RBReadData();
-
-private:
-    int         dataSize;
-};
 
 #endif // PODOSERVER_H

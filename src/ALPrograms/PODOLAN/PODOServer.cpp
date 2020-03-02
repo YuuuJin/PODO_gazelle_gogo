@@ -8,7 +8,7 @@ PODO_GUI_Server::PODO_GUI_Server()
     RBData.resize(dataSize);
 }
 
-void PODO_GUI_Server::RBReadData(){
+void PODO_GUI_Server::ReadData(){
     QDataStream in(RBTcpClient);
     in.setVersion(QDataStream::Qt_5_2);
 
@@ -21,25 +21,3 @@ void PODO_GUI_Server::RBReadData(){
     }
 }
 
-
-// =========================================
-
-PODO_ROS_Server::PODO_ROS_Server()
-{
-    dataSize = sizeof(LAN_ROS2PODO);
-    dataReceived.clear();
-    RBData.resize(dataSize);
-}
-
-void PODO_ROS_Server::RBReadData(){
-    QDataStream in(RBTcpClient);
-    in.setVersion(QDataStream::Qt_5_2);
-
-    if(RBTcpClient->bytesAvailable() < dataSize)
-        return;
-
-    while(RBTcpClient->bytesAvailable() >= dataSize){
-        in.readRawData(RBData.data(), dataSize);
-        dataReceived.push_back(RBData);
-    }
-}

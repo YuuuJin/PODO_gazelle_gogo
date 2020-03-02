@@ -3,51 +3,58 @@
 #include "../RBSharedMemory.h"
 #include "JointInformation.h"
 
-#ifndef __LAN_STRUCT_GENERAL_COMMAND_DEF__
-#define __LAN_STRUCT_GENERAL_COMMAND_DEF__
-
-typedef struct __LAN_STRUCT_GENERAL_COMMAND_
+enum COMMAND
 {
-    char    param_c[10];
-    int     param_i[10];
-    float   param_f[10];
-    int     cmd;
-} LAN_GENERAL_COMMAND, *pLAN_GENERAL_COMMAND;
+    CMD_BREAK = 0,
+    CMD_ACCEPT,
+    CMD_DONE,
+    CMD_ERROR,
+    CMD_WALKING_FINISHED
+};
 
-#endif
-
-typedef struct __LAN_STRUCT_ROS2PODO__
+enum RosCommand
 {
-    float   vx;
-    float   vth;
+    ROSWALK_BREAK = 0,
+    ROSWALK_STOP,
+    ROSWALK_NORMAL_START,
+    ROSWALK_SINGLELOG_START
+};
 
-    float   pos[3];
-    float   desired_footsteps[15];
-    unsigned int jh_step_phase;
-    int     footstep_flag;
-    int     lr_state;
-} LAN_ROS2PODO,*pLAN_ROS2PODO;
-
-typedef struct __LAN_STRUCT_PODO2ROS__
+/*----------------------PODO(Gazelle) to ROS-------------------------*/
+struct P2R_status
 {
-    float   JointReference[NO_OF_JOINTS];
-    float   JointEncoder[NO_OF_JOINTS];
-
-    float   odom_x;
-    float   odom_y;
-    float   odom_theta;
-    float   vx;
-    float   vy;
-    float   vth;
-    float   target_foot[6];
     int     robot_state;
-    unsigned int step_phase;
+    int     step_phase;
+
+    int     lr_state;
+    float   given_footsteps[15];
     float   pel_pos_est[3];
-    IMU_SENSOR IMU_ROS[MAX_IMU];
-    FT_SENSOR FT_ROS[MAX_FT];
 
-    LAN_GENERAL_COMMAND cmd;
+    float   joint_reference[31];
+    float   joint_encoder[31];
 
-} LAN_PODO2ROS, *pLAN_PODO2ROS;
+    float   ft_sensor[12];
+    float   imu_sensor[9];
+};
+
+struct P2R_result
+{
+    int     gazelle_result = CMD_BREAK;
+    int     step_phase;
+    int     lr_state;
+};
+
+/*--------------------------ROS to PODO(Gazelle)--------------------*/
+struct R2P_command
+{
+    int             ros_cmd;
+
+    float           des_footsteps[15];
+
+    unsigned int    step_num;
+    int             footstep_flag;
+    int             lr_state;
+};
+
 
 #endif // ROSLANDATA_H

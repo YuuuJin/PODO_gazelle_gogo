@@ -17,32 +17,37 @@ void RBTCPServer::RBServerOpen(QHostAddress::SpecialAddress _host, quint16 _port
     RBTcpServer = new QTcpServer(this);
     connect(RBTcpServer, SIGNAL(newConnection()), this, SLOT(RBNewConnection()));
 
-    if(!RBTcpServer->listen(RBHostAddress, RBPortNumber)){
+    if(!RBTcpServer->listen(RBHostAddress, RBPortNumber))
+    {
         FILE_LOG(logERROR) << "RBServer unable to start the server";
-    }else{
+    }else
+    {
         FILE_LOG(logSUCCESS) << "RBServer open successed with port(" << RBTcpServer->serverPort() << ")";
     }
 }
 
 void RBTCPServer::RBNewConnection()
 {
-    if(RBConnectionState == RBLAN_CS_DISCONNECTED){
+    if(RBConnectionState == RBLAN_CS_DISCONNECTED)
+    {
         RBTcpClient = RBTcpServer->nextPendingConnection();
         connect(RBTcpClient, SIGNAL(disconnected()), this, SLOT(RBClientDisconnected()));
-        connect(RBTcpClient, SIGNAL(readyRead()), this, SLOT(RBReadData()));
+        connect(RBTcpClient, SIGNAL(readyRead()), this, SLOT(ReadData()));
         RBConnectionState = RBLAN_CS_CONNECTED;
         FILE_LOG(logINFO) << "New client is connected";
 
         // emit signal
         emit SIG_NewConnection();
-    }else{
+    }else
+    {
         QTcpSocket *dummySocket = RBTcpServer->nextPendingConnection();
         dummySocket->close();
         FILE_LOG(logWARNING) << "Client is already connected";
     }
 }
 
-void RBTCPServer::RBClientDisconnected(){
+void RBTCPServer::RBClientDisconnected()
+{
     RBTcpClient->deleteLater();
     RBConnectionState = RBLAN_CS_DISCONNECTED;
     FILE_LOG(logINFO) << "Client is disconnected";
@@ -51,6 +56,12 @@ void RBTCPServer::RBClientDisconnected(){
     emit SIG_DisConnected();
 }
 
-void RBTCPServer::RBSendData(QByteArray &data){
+void RBTCPServer::RBSendData(QByteArray &data)
+{
     RBTcpClient->write(data);
+}
+
+void RBTCPServer::RBSendData(char *data, int size)
+{
+    RBTcpClient->write(data, size);
 }

@@ -1118,7 +1118,8 @@ void RBTaskThread(void *)
 {
     while(__IS_WORKING)
     {
-        if(RSE.HSE_ONOFF){
+        if(RSE.HSE_ONOFF)
+        {
             RSE.READ_DATA_FROM_SENSOR();
             RSE.HSE_ESTIMATOR();
             // output
@@ -1126,11 +1127,6 @@ void RBTaskThread(void *)
             pel_estimated.y = RSE.OUTPUT.FK_PELVIS_POSITION[1];
             pel_estimated.z = RSE.OUTPUT.FK_PELVIS_POSITION[2];
 
-            userData->pel_pos_estimated[0] = pel_estimated.x;
-            userData->pel_pos_estimated[1] = pel_estimated.y;
-            userData->pel_pos_estimated[2] = pel_estimated.z;
-
-            //cout<<"x,y,z : ("<<pel_estimated.x<<", "<<pel_estimated.y<<", "<<pel_estimated.z<<")"<<endl;
         }
 
         switch(_task_thread)
