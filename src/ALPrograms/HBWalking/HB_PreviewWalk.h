@@ -355,10 +355,10 @@ public:
         step_phase_change_flag = true;
 
         // Controller Flags       
-        StepAdjustControl_flag = true;
+        StepAdjustControl_flag = false;//true;
         // --> variable filtering of dp
 
-        HipTorqueControl_flag = true;
+        HipTorqueControl_flag = false;//true;
 
         Landing_angle_control_flag = false;
 

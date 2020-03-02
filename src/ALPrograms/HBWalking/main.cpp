@@ -72,9 +72,6 @@ int FLAG_SendROS = CMD_BREAK;
 int input_Amp;
 vec4 input_torque_filtered = vec4(0,0,0,0);
 
-bool AnkleTorqueControl_flag = false;
-bool Choreonoid_flag = false;
-
 // Hip roll vib control
 double RHR_con_deg = 0;
 double LHR_con_deg = 0;
@@ -300,13 +297,7 @@ int main(int argc, char *argv[])
                 cout<<HBWalking.step_data_buf[i].x<<", "<<HBWalking.step_data_buf[i].y<<" ("<<HBWalking.step_data_buf[i].t<<"s)"<<endl;
             }
 
-            if(AnkleTorqueControl_flag == true){
-                AnkleToruqeControl_Init();
-                usleep(50*1000);
-                AnkleToruqeControl_Init();
-            }
-            if(Choreonoid_flag == true) HBWalking.Choreonoid_flag = true;
-            else HBWalking.Choreonoid_flag = false;
+            HBWalking.Choreonoid_flag = false;
 
             usleep(500*1000);
 
@@ -477,12 +468,6 @@ int main(int argc, char *argv[])
 
 
 
-            if(AnkleTorqueControl_flag == true){
-                AnkleToruqeControl_Init();
-                usleep(50*1000);
-                AnkleToruqeControl_Init();
-            }
-
             _task_thread = _task_Control_on;
 //            sharedCMD->COMMAND[4].USER_COMMAND = SE_EST_START;
 
@@ -544,16 +529,7 @@ int main(int argc, char *argv[])
             cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl;
 
             WB_FLAG = 1;
-            
-            
-            if(Choreonoid_flag == true){
-                sharedCMD->Choreonoid.TorqueConOnOff = 1;
-            }
-            else{
-                
-            }
 
-            
             _task_thread = _task_Inv_Dyn_con;
             break;
         }
@@ -842,11 +818,7 @@ int main(int argc, char *argv[])
 //            joint->SetAllMotionOwner();
 
 //            sharedCMD->Choreonoid.TorqueConOnOff = 0;
-            //// Ankle Torque Control (by pwm)
-            if(AnkleTorqueControl_flag == true){
-                AnkleTorqueControl_Stop();
-                sharedCMD->Choreonoid.AnkleTorqueCon_flag = false;
-            }
+
             WB_FLAG = 0;
             save_all();
 
@@ -928,13 +900,6 @@ int main(int argc, char *argv[])
 
 
 
-            //// Ankle Torque Control (by pwm)
-            if(AnkleTorqueControl_flag == true){
-                AnkleToruqeControl_Init();
-                HBPW.Ankle_torque_control_flag = true;
-                sharedCMD->Choreonoid.AnkleTorqueCon_flag = true;
-            }
-
             _task_thread = _task_HB_test;
             WB_FLAG = 1;
 
@@ -1000,13 +965,6 @@ int main(int argc, char *argv[])
             init_StateEstimator(); // State Estimator Initialization
 
             WB_FLAG = 1;
-
-            //// Ankle Torque Control (by pwm)
-            if(AnkleTorqueControl_flag == true){
-                AnkleToruqeControl_Init();
-                HBPW.Ankle_torque_control_flag = true;
-                sharedCMD->Choreonoid.AnkleTorqueCon_flag = true;
-            }
 
 
             if(sharedCMD->COMMAND[PODO_NO].USER_PARA_CHAR[15] == 10){
@@ -1548,10 +1506,6 @@ void RBTaskThread(void *)
                 _task_thread = _task_Idle;
                 //WB_FLAG = 0;
                 save_all();
-                if(AnkleTorqueControl_flag == true){
-                    AnkleTorqueControl_Stop();
-                    sharedCMD->Choreonoid.AnkleTorqueCon_flag = false;
-                }
                 //HBPW.save_WD();
 
                 cout<<"Preview Walk finished"<<endl;
@@ -1595,33 +1549,14 @@ void RBTaskThread(void *)
             ////Foot and Pelv Orientation
             //foot Orientation
 
-            if(AnkleTorqueControl_flag == true){
-                quat total_qRF = HBPW.qRF_ref*HBPW.RF_del_quat;
-                quat total_qLF = HBPW.qLF_ref*HBPW.LF_del_quat;
-
-                for(int i=0;i<4;i++){
-                    dbs_qRF[i] = total_qRF[i];
-                    dbs_qLF[i] = total_qLF[i];
-                }
-            }
-            else{
-                for(int i=0;i<4;i++){
-                    dbs_qRF[i] = HBPW.qRF_ref[i];
-                    dbs_qLF[i] = HBPW.qLF_ref[i];
-                }
+            for(int i=0;i<4;i++){
+                dbs_qRF[i] = HBPW.qRF_ref[i];
+                dbs_qLF[i] = HBPW.qLF_ref[i];
             }
 
             // Pelvis Orientation
             for(int i=0;i<4;i++){
                 dbs_qPel[i] = HBPW.qPel_ref[i];
-            }
-
-            //// Ankle Torque to Choreonoid
-            if(AnkleTorqueControl_flag == true){
-                sharedCMD->Choreonoid.T_RAR = -HBPW.InputTorque[0];
-                sharedCMD->Choreonoid.T_RAP = -HBPW.InputTorque[1];
-                sharedCMD->Choreonoid.T_LAR = -HBPW.InputTorque[2];
-                sharedCMD->Choreonoid.T_LAP = -HBPW.InputTorque[3];
             }
 
             userData->M2G.valveMode = 6;
@@ -2038,29 +1973,11 @@ void RBTaskThread(void *)
 
 
 //            doubles dbs_qRF(4), dbs_qLF(4);
-//            if(AnkleTorqueControl_flag == true){
-//                quat total_qRF = HBPW.qRF_ref*HBPW.RF_del_quat;
-//                quat total_qLF = HBPW.qLF_ref*HBPW.LF_del_quat;
-
-//                for(int i=0;i<4;i++){
-//                    dbs_qRF[i] = total_qRF[i];
-//                    dbs_qLF[i] = total_qLF[i];
-//                }
-//            }
-//            else{
 //                for(int i=0;i<4;i++){
 //                    dbs_qRF[i] = HBPW.qRF_ref[i];
 //                    dbs_qLF[i] = HBPW.qLF_ref[i];
 //                }
-//            }
-
-//            // Ankle Torque to Choreonoid
-//            if(AnkleTorqueControl_flag == true){
-//                sharedCMD->Choreonoid.T_RAR = -HBPW.InputTorque[0];
-//                sharedCMD->Choreonoid.T_RAP = -HBPW.InputTorque[1];
-//                sharedCMD->Choreonoid.T_LAR = -HBPW.InputTorque[2];
-//                sharedCMD->Choreonoid.T_LAP = -HBPW.InputTorque[3];
-//            }
+//
 
 //            // Put reference Task to Trajectory Handler
 //            WBmotion->addRFPosInfo(HBPW.pRF_ref.x, HBPW.pRF_ref.y, HBPW.pRF_ref.z,0.005);
@@ -2269,10 +2186,6 @@ void RBTaskThread(void *)
             //DS = HBD.InvDyn_Control(RST, REF);
 
 
-            if(Choreonoid_flag == true){
-                Torque2Choreonoid(DS);
-            }
-
             Scnt++;
 
             break;
@@ -2280,8 +2193,7 @@ void RBTaskThread(void *)
 
         case _task_HB_Walking:
         {
-            if(AnkleTorqueControl_flag == true) sharedCMD->Choreonoid.TorqueConOnOff = 0;
-            else sharedCMD->Choreonoid.TorqueConOnOff = 0;
+            sharedCMD->Choreonoid.TorqueConOnOff = 0;
 
 //            vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
 //            vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
@@ -2340,8 +2252,6 @@ void RBTaskThread(void *)
                 HBWalking.save_all();
                 sharedCMD->Choreonoid.TorqueConOnOff = 0;
 
-                if(AnkleTorqueControl_flag == true) AnkleTorqueControl_Stop();
-
                 sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_STOP;
                 _task_thread = _task_Idle;
                 //WB_FLAG = 0;
@@ -2365,12 +2275,6 @@ void RBTaskThread(void *)
             HBWalking.R_HIP_R_torque = sharedCMD->Choreonoid.R_HIP_ROLL_T;
 
             //Torso Orientation Control
-
-            //Ankle Torque Control for Hubo2
-            if(AnkleTorqueControl_flag == true){
-                AnkleTorqueControl(-HBWalking.R_ank_torque.x,-HBWalking.R_ank_torque.y,-HBWalking.L_ank_torque.x,-HBWalking.L_ank_torque.y,   F_RF, F_LF,M_RF,M_LF);
-            }
-
 
             break;
         }
@@ -2514,14 +2418,6 @@ void RBTaskThread(void *)
             input_torque[1] = input_torque_filtered[1] + Angle_FB_torque[1];
             input_torque[2] = input_torque_filtered[2] + Angle_FB_torque[2];
             input_torque[3] = input_torque_filtered[3] + Angle_FB_torque[3];
-
-
-            if(AnkleTorqueControl_flag == true){
-//               AnkleTorqueControl(-input_torque_filtered[0],-input_torque_filtered[1],0,0,   F_RF,F_LF,M_RF,M_LF);
-                AnkleTorqueControl(-input_torque[0],-input_torque[1],-input_torque[2],-input_torque[3],   F_RF,F_LF,M_RF,M_LF);
-                //AnkleTorqueControl(0,0,-input_torque_filtered[2],-input_torque_filtered[3],   F_RF,F_LF,M_RF,M_LF);
-            }
-
 
             WBmotion->addCOMInfo(COM_total.x, COM_total.y, pCOM.z, 0.005);
 //            WBmotion->addCOMInfo(pCOM.x, pCOM.y, pCOM.z, 0.005);
@@ -2981,18 +2877,7 @@ void RBTaskThread(void *)
     if(WB_FLAG == 1)
     {
         WBmotion->updateAll_HB();
-
-        userData->M2G.valveMode = 9;
-
-        //WBmotion->WBIK();
         WBmotion->WBIK_xy_pelz();
-
-        userData->M2G.valveMode = 10;
-//        cout<<"des_pel z: "<<WBmotion->des_pPELz<<", pel z: "<<WBmotion->pPelZ<<endl;
-
-        // for(int i=RHY; i<=LAR; i++) joint->SetJointRefAngle(i, WBmotion->Q_filt_34x1[idRHY+i-RHY]*R2D);
-         //do_not_move_arm
-
 
         joint->SetJointRefAngle(WST, WST_ref_deg);
 
@@ -3015,8 +2900,6 @@ void RBTaskThread(void *)
         }
         joint->SetJointRefAngle(RAP, RA1_ref_deg);
         joint->SetJointRefAngle(RAR, RA2_ref_deg);
-//        joint->SetJointRefAngle(RAP,WBmotion->LJ.RAP*R2D);
-//        joint->SetJointRefAngle(RAR,WBmotion->LJ.RAR*R2D);
 
 
         //////////////////////////////////--------------Left leg------------////////////////////////////////////////
@@ -3038,49 +2921,9 @@ void RBTaskThread(void *)
         }
         joint->SetJointRefAngle(LAP, LA1_ref_deg);
         joint->SetJointRefAngle(LAR, LA2_ref_deg);
-//        joint->SetJointRefAngle(LAP,WBmotion->LJ.LAP*R2D);
-//        joint->SetJointRefAngle(LAR,WBmotion->LJ.LAR*R2D);
-
-        userData->M2G.valveMode = 11;
-
-        //// Jacobian Check!
-//        double J00, J01, J10, J11;
-//        double JJ00, JJ01, JJ10, JJ11;
-//        GK.gazelle_jacobian_double(WBmotion->LJ.RAP*R2D, WBmotion->LJ.RAR*R2D, RA1_ref_deg, RA2_ref_deg, J00, J01, J10, J11);
-
-//        GK.gazelle_jacobian_numeric(WBmotion->LJ.RAP*R2D, WBmotion->LJ.RAR*R2D, RA1_ref_deg, RA2_ref_deg, JJ00, JJ01, JJ10, JJ11);
-
-//        cout<<" J00: "<<J00<<",  J01: "<<J01<<"  J10: "<<J10<<"  J11: "<<J11<<endl;
-//        cout<<"JJ00: "<<JJ00<<", JJ01: "<<JJ01<<" JJ10: "<<JJ10<<" JJ11: "<<JJ11<<endl<<endl;
-
-
-//        for(int i=0; i<3; i++){
-//            userData->M2G.pRF[i] = WBmotion->pRF_3x1[i];
-//            userData->M2G.pLF[i] = WBmotion->pLF_3x1[i];
-//        }
-//        for(int i=0; i<4; i++){
-//            userData->M2G.qRF[i] = WBmotion->qRF_4x1[i];
-//            userData->M2G.qLF[i] = WBmotion->qLF_4x1[i];
-//            userData->M2G.qPel[i] = WBmotion->qPEL_4x1[i];
-//        }
-//        userData->M2G.rWST = joint->GetJointRefAngle(WST);
-
-//        userData->M2G.pCOM[0] = WBmotion->pCOM_3x1[0];
-//        userData->M2G.pCOM[1] = WBmotion->pCOM_3x1[1];
-//        userData->M2G.pPelZ = WBmotion->pPelZ;
     }
-
-    double RAP_deg, RAR_deg;
-    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentReference, sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentReference, 0, 0, RAP_deg, RAR_deg);
-    double LAP_deg, LAR_deg;
-    GK.FK_diff_Ankle_right(sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentReference, sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentReference, 0, 0, LAP_deg, LAR_deg);
-
     joint->MoveAllJoint();
-
-        userData->M2G.valveMode = 12;
-        rt_task_suspend(&rtTaskCon);
-
-        userData->M2G.valveMode = 13;
+    rt_task_suspend(&rtTaskCon);
     }
 }
 //==============================//
@@ -3649,9 +3492,9 @@ void save_onestep(int cnt){
     SAVE[327][cnt] = LKN_con_deg;
     SAVE[328][cnt] = RKN_con_deg;
 
-//    SAVE[328][cnt] = HBPW.ZMP_local.x;
-//    SAVE[329][cnt] = HBPW.ZMP_local.y;
-//    SAVE[330][cnt] = HBPW.ZMP_local.z;
+    SAVE[328][cnt] = HBPW.ZMP_local.x;
+    SAVE[329][cnt] = HBPW.ZMP_local.y;
+    SAVE[330][cnt] = HBPW.ZMP_local.z;
 
 }
 
