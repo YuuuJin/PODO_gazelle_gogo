@@ -28,6 +28,8 @@ enum HBWalking_COMMAND
     HBWalking_Test,
     HBWalking_JoyStick_Walk_Stop,
     HBWalking_Ready_To_Walk,
+    HBWalking_SingleLog,
+    HBWalking_ROSWalk
 };
 
 enum WALKREADYCOMMAND
@@ -56,6 +58,21 @@ HBWalkingDialog::HBWalkingDialog(QWidget *parent, LANDialog *_lanData) :
 HBWalkingDialog::~HBWalkingDialog()
 {
     delete ui;
+}
+
+void HBWalkingDialog::DisplayUpdate()
+{
+    if(PODO_DATA.UserM2G.ROSWalk_state == 1)
+    {
+        ui->LE_ROS_STATUS->setText(QString().sprintf("Start"));
+    }
+    else if(PODO_DATA.UserM2G.ROSflag == true)
+    {
+        ui->LE_ROS_STATUS->setText(QString().sprintf("Connected"));
+    }else
+    {
+        ui->LE_ROS_STATUS->setText(QString().sprintf("Disconnected"));
+    }
 }
 
 void HBWalkingDialog::on_BT_WALK_TEST_clicked()
@@ -97,12 +114,12 @@ void HBWalkingDialog::on_BT_TEST_STOP_clicked()
 
 void HBWalkingDialog::on_BT_SYSID_INPUT_START_clicked()
 {
-    USER_COMMAND cmd;
-    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_SYSID_START;
-    cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = ui->LE_SYSID_INPUT_FREQ->text().toDouble();
-    cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_SYSID_INPUT_AMP->text().toDouble();
-    cmd.COMMAND_TARGET = AlnumHBWalking;
-    pLAN->SendCommand(cmd);
+//    USER_COMMAND cmd;
+//    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_SYSID_START;
+//    cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = ui->LE_SYSID_INPUT_FREQ->text().toDouble();
+//    cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_SYSID_INPUT_AMP->text().toDouble();
+//    cmd.COMMAND_TARGET = AlnumHBWalking;
+//    pLAN->SendCommand(cmd);
 }
 
 void HBWalkingDialog::on_BT_SYSID_STOP_SAVE_clicked()
@@ -115,12 +132,12 @@ void HBWalkingDialog::on_BT_SYSID_STOP_SAVE_clicked()
 
 void HBWalkingDialog::on_BT_SYSID_INPUT_START_2_clicked()
 {
-    USER_COMMAND cmd;
-    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_SYSID_STEP_INPUT_START;
-    cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = ui->LE_SYSID_INPUT_FREQ->text().toDouble();
-    cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_SYSID_INPUT_AMP->text().toDouble();
-    cmd.COMMAND_TARGET = AlnumHBWalking;
-    pLAN->SendCommand(cmd);
+//    USER_COMMAND cmd;
+//    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_SYSID_STEP_INPUT_START;
+//    cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = ui->LE_SYSID_INPUT_FREQ->text().toDouble();
+//    cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_SYSID_INPUT_AMP->text().toDouble();
+//    cmd.COMMAND_TARGET = AlnumHBWalking;
+//    pLAN->SendCommand(cmd);
 }
 
 void HBWalkingDialog::on_BT_WALK_TEST_2_clicked()
@@ -143,11 +160,11 @@ void HBWalkingDialog::on_BT_CONTROL_ON_clicked()
 
 void HBWalkingDialog::on_BT_OLTORQUE_GO_clicked()
 {
-    USER_COMMAND cmd;
-    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_OL_TORQUE_TUNING;
-    cmd.COMMAND_DATA.USER_PARA_INT[0] = ui->LE_OLTORQUE_MA->text().toInt();
-    cmd.COMMAND_TARGET = AlnumHBWalking;
-    pLAN->SendCommand(cmd);
+//    USER_COMMAND cmd;
+//    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_OL_TORQUE_TUNING;
+//    cmd.COMMAND_DATA.USER_PARA_INT[0] = ui->LE_OLTORQUE_MA->text().toInt();
+//    cmd.COMMAND_TARGET = AlnumHBWalking;
+//    pLAN->SendCommand(cmd);
 }
 
 void HBWalkingDialog::on_BT_ONE_LEG_READY_clicked()
@@ -264,4 +281,36 @@ void HBWalkingDialog::on_BT_READY_TO_WALK_clicked()
     cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_STEP_STRIDE->text().toDouble();
     cmd.COMMAND_TARGET = AlnumHBWalking;
     pLAN->SendCommand(cmd);
+}
+
+void HBWalkingDialog::on_BT_WALK_SINGLELOG_clicked()
+{
+    USER_COMMAND cmd;
+    cmd.COMMAND_DATA.USER_COMMAND = HBWalking_SingleLog;
+    cmd.COMMAND_DATA.USER_PARA_INT[0] = ui->LE_NO_OF_STEP_2->text().toInt();
+    cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = ui->LE_STEP_TIME_2->text().toDouble();
+    cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = ui->LE_STEP_STRIDE_2->text().toDouble();
+    cmd.COMMAND_TARGET = AlnumHBWalking;
+    pLAN->SendCommand(cmd);
+}
+
+void HBWalkingDialog::on_BT_WALK_ROS_clicked()
+{
+    USER_COMMAND cmd;
+    cmd.COMMAND_TARGET = AlnumHBWalking;
+    if(ui->LE_ROS_STATUS->text() == "Connected")
+    {
+        cmd.COMMAND_DATA.USER_COMMAND = HBWalking_ROSWalk;
+        cmd.COMMAND_DATA.USER_PARA_INT[0] = 10;
+        cmd.COMMAND_DATA.USER_PARA_DOUBLE[0] = 0.8;
+        cmd.COMMAND_DATA.USER_PARA_DOUBLE[1] = 0;
+        cmd.COMMAND_DATA.USER_PARA_INT[10] = 1;
+    }else if(ui->LE_ROS_STATUS->text() == "Start")
+    {
+        cmd.COMMAND_DATA.USER_COMMAND = HBWalking_ROSWalk;
+        cmd.COMMAND_DATA.USER_PARA_INT[10] = 0;
+    }
+    printf("before send\n");
+    pLAN->SendCommand(cmd);
+    printf("after send\n");
 }

@@ -18,6 +18,7 @@ public:
     ~HBWalkingDialog();
 
 private slots:
+    void DisplayUpdate();
     void on_BT_WALK_TEST_clicked();
     
     void on_BT_WALK_READY_clicked();
@@ -64,6 +65,10 @@ private slots:
 
     void on_BT_READY_TO_WALK_clicked();
 
+    void on_BT_WALK_SINGLELOG_clicked();
+
+    void on_BT_WALK_ROS_clicked();
+    
 private:
     LANDialog			*lanData;
     Ui::HBWalkingDialog *ui;
