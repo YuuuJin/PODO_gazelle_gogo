@@ -413,7 +413,7 @@ int GG_SingleLogWalk::Preveiw_walking()
 
 
     //// -------------------- Sway scaling ----------------------------------------------------
-    double scaling_factor = 0.9;//1.00;// + 0.1*sway_con;
+    double scaling_factor = 1.00;// + 0.1*sway_con;
     COM_ref_local.y = COM_ref_local.y*scaling_factor;
     dCOM_ref_local.y = dCOM_ref_local.y*scaling_factor;
     ddCOM_ref_local.y = ddCOM_ref_local.y*scaling_factor;
@@ -1993,7 +1993,7 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
     N_step = _N_step;
     step_stride = _step_stride;
     R_or_L = _RL_first;
-    dsp_ratio = 0.2;
+    dsp_ratio = 0.04;
     dsp_ratio_com = 0.2;
     des_dsp_ratio = dsp_ratio;
     FootUp_height = 0.10;
@@ -2356,22 +2356,22 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
         else
         {
             STEP_INFO SD_temp;
-            if(Walking_mode == SINGLELOG)
-            {
-                if(i == 2)
-                {
-                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*singlelog_w/2, 0);
-                }else if(i > N_step -1)
-                {
-                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*pelv_w/2, 0);
-                }else
-                {
-                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*singlelog_w/2, 0);
-                }
-            }else
-            {
+//            if(Walking_mode == SINGLELOG)
+//            {
+//                if(i == 2)
+//                {
+//                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*singlelog_w/2, 0);
+//                }else if(i > N_step -1)
+//                {
+//                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*pelv_w/2, 0);
+//                }else
+//                {
+//                    SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*singlelog_w/2, 0);
+//                }
+//            }else
+//            {
                 SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*pelv_w/2, 0);
-            }
+//            }
 
             SD_temp.Fquat = quat();
             SD_temp.yaw_rad = 0;
@@ -2395,26 +2395,26 @@ vec3 GG_SingleLogWalk::FootY_trajectory(double _real_t_step, double _t_foot_now,
     double t_half_dsp = _real_t_step*_dsp_ratio/2.0;
     double t_half_ssp = t_moving*0.5;
 
-    if(Walking_mode == SINGLELOG)
-    {
-        if(_t_foot_now < t_half_dsp - 0.5*dt)
-        {
-        }
-        else if(_t_foot_now < t_half_ssp + t_half_dsp - 0.5*dt)
-        {
-            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, t_half_ssp + t_half_dsp, _y_dy_ddy_Foot_old, vec3(MaxFoot_y_cur,0,0));
-            return p_dp_ddp;
-        }
-        else if(_t_foot_now < _real_t_step - t_half_dsp - 0.5*dt)
-        {
-            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
-            return p_dp_ddp;
-        }
-        else
-        {
-        }
-    }else
-    {
+//    if(Walking_mode == SINGLELOG)
+//    {
+//        if(_t_foot_now < t_half_dsp - 0.5*dt)
+//        {
+//        }
+//        else if(_t_foot_now < t_half_ssp + t_half_dsp - 0.5*dt)
+//        {
+//            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, t_half_ssp + t_half_dsp, _y_dy_ddy_Foot_old, vec3(MaxFoot_y_cur,0,0));
+//            return p_dp_ddp;
+//        }
+//        else if(_t_foot_now < _real_t_step - t_half_dsp - 0.5*dt)
+//        {
+//            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
+//            return p_dp_ddp;
+//        }
+//        else
+//        {
+//        }
+//    }else
+//    {
         if(_t_foot_now < t_half_dsp - 0.5*dt)
         {
         }
@@ -2426,7 +2426,7 @@ vec3 GG_SingleLogWalk::FootY_trajectory(double _real_t_step, double _t_foot_now,
         else
         {
         }
-    }
+//    }
 
     return _y_dy_ddy_Foot_old;
 }

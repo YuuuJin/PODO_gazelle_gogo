@@ -1112,7 +1112,7 @@ int main(int argc, char *argv[])
             init_StateEstimator(); // State Estimator Initialization
             WB_FLAG = 1;
 
-            //if(userData->ros_walking_cmd == ROSWALK_START)
+
             if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 1)
             {
                 FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
@@ -1241,7 +1241,7 @@ int main(int argc, char *argv[])
         case ROSWALK_NORMAL_START:
         {
             int no_of_step = 10;
-            double t_step = 2.0;
+            double t_step = 1.0;
             double step_stride = 0.;
 
             FILE_LOG(logSUCCESS) << "--------------------------------------------------";

@@ -82,7 +82,8 @@ void SensorDialog::UpdateSensors(){
 
 }
 
-void SensorDialog::on_BTN_SENSOR_ENABLE_clicked(){
+void SensorDialog::on_BTN_SENSOR_ENABLE_clicked()
+{
     USER_COMMAND cmd;
     cmd.COMMAND_DATA.USER_PARA_CHAR[0] = 1;     // on
     cmd.COMMAND_DATA.USER_COMMAND = DAEMON_SENSOR_SENSOR_ONOFF;
@@ -90,7 +91,8 @@ void SensorDialog::on_BTN_SENSOR_ENABLE_clicked(){
     pLAN->SendCommand(cmd);
 }
 
-void SensorDialog::on_BTN_SENSOR_DISABLE_clicked(){
+void SensorDialog::on_BTN_SENSOR_DISABLE_clicked()
+{
     USER_COMMAND cmd;
     cmd.COMMAND_DATA.USER_PARA_CHAR[0] = 0;     // off
     cmd.COMMAND_DATA.USER_COMMAND = DAEMON_SENSOR_SENSOR_ONOFF;
@@ -114,8 +116,10 @@ void SensorDialog::on_BTN_SENSOR_IMU_NULL_clicked(){
     pLAN->SendCommand(cmd);
 }
 
-void SensorDialog::on_BTN_CIMU_GET_OFFSET_clicked(){
-
+void SensorDialog::on_BTN_CIMU_GET_OFFSET_clicked()
+{
+    ui->LE_SENSOR_CIMU_ROLL_OFFSET->setText(QString().sprintf("%.2f",-PODO_DATA.CoreSEN.IMU[0].Roll));
+    ui->LE_SENSOR_CIMU_PITCH_OFFSET->setText(QString().sprintf("%.2f",-PODO_DATA.CoreSEN.IMU[0].Pitch));
 }
 
 void SensorDialog::on_BTN_CIMU_SET_OFFSET_clicked(){
@@ -208,6 +212,15 @@ void SensorDialog::on_NIMU_RESET_clicked()
 {
     // reset to acc angle
     USER_COMMAND cmd;
+    ui->LE_SENSOR_CIMU_ROLL_OFFSET->setText(QString().sprintf("0.0"));
+    ui->LE_SENSOR_CIMU_PITCH_OFFSET->setText(QString().sprintf("0.0"));
+    cmd.COMMAND_DATA.USER_PARA_CHAR[0] = 0;	//CIMU
+    cmd.COMMAND_DATA.USER_PARA_FLOAT[0] = ui->LE_SENSOR_CIMU_ROLL_OFFSET->text().toFloat();
+    cmd.COMMAND_DATA.USER_PARA_FLOAT[1] = ui->LE_SENSOR_CIMU_PITCH_OFFSET->text().toFloat();
+    cmd.COMMAND_DATA.USER_COMMAND = DAEMON_SENSOR_IMU_OFFSET_SET;
+    cmd.COMMAND_TARGET = RBCORE_PODO_NO;
+    pLAN->SendCommand(cmd);
+
     cmd.COMMAND_DATA.USER_PARA_CHAR[0] = 3;
     cmd.COMMAND_DATA.USER_COMMAND = DAEMON_SENSOR_IMU_NULL;
     cmd.COMMAND_TARGET = RBCORE_PODO_NO;

@@ -196,7 +196,6 @@ public:
     void L_Vib_Control_init();
 
     // Ankle torque Control
-    bool Ankle_torque_control_flag;
     vec4 AnkleTorque_ref;
     vec4 InputTorque;  //init need
     LegJoints LJ_ref, LJ_ref_old;
@@ -389,11 +388,8 @@ public:
         DSP_FZ_Control_flag = true;
 
         //7. Pos ankle torque control
-        Pos_Ankle_torque_control_flag = true;
+        Pos_Ankle_torque_control_flag = false;//true;
 
-
-        // main.cpp  --> not using now
-        Ankle_torque_control_flag = false;  // pwm control
 
     }
 
