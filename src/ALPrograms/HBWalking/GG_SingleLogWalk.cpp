@@ -52,7 +52,6 @@ int GG_SingleLogWalk::Preveiw_walking()
              {
                  printf("-------------%d th new step replanning--------------\n",step_phase);
 
-
                  N_step = step_phase + userData->ros_step_num;  //extend last step
 
                  if(SDB.size() <= step_phase + 7)
@@ -2261,7 +2260,8 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
     // fill in the Step_DATA buffer ( this should be modifed for joystick walking)
     for(int i = 0; i < N_step + 3 ;i++)
     {
-        if(i == 0){
+        if(i == 0)
+        {
             STEP_INFO SD_temp;
             vec3 zmp_ini = COM_ref;// + vec3(0, R_or_L*pelv_w/50, 0);
 
@@ -2275,9 +2275,11 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
             cout<<"i : "<<i<<"  swingFoot: "<<(int)SDB[i].swingFoot << "   t_step = " << SDB[i].t<<endl;
             cout << "Fpos = " << SD_temp.Fpos.x << "," << SD_temp.Fpos.y << endl;
         }
-        else if(i == 1){
+        else if(i == 1)
+        {
             STEP_INFO SD_temp;
-            if(R_or_L == 1){
+            if(R_or_L == 1)
+            {
                 SD_temp.Fpos = pLF_ref;
                 SD_temp.Fquat = qLF_ref;
                 SD_temp.yaw_rad = 0;
@@ -2370,7 +2372,7 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
 //                }
 //            }else
 //            {
-                SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*pelv_w/2, 0);
+            SD_temp.Fpos = vec3(SDB.back().Fpos.x + step_stride, R_or_L*pelv_w/2, 0);
 //            }
 
             SD_temp.Fquat = quat();

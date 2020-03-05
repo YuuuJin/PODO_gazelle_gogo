@@ -46,7 +46,8 @@ int HB_PreviewWalk::Preveiw_walking()
             else{
                 N_step = step_phase + 5;  //extend last step
 
-                if(SDB.size() <= step_phase + 7){
+                if(SDB.size() <= step_phase + 7)
+                {
                     STEP_INFO SD_defalt;
 
                     SD_defalt.Fpos = vec3();

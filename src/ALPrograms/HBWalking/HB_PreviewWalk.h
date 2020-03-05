@@ -390,7 +390,6 @@ public:
         //7. Pos ankle torque control
         Pos_Ankle_torque_control_flag = false;//true;
 
-
     }
 
     void HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _qRF, vec3 _pLF, quat _qLF, double _WST_ini_deg, double _t_step, double _N_step, double _step_stride, int _RL_first){
@@ -665,8 +664,10 @@ public:
 
 
         // fill in the Step_DATA buffer ( this should be modifed for joystick walking)
-        for(int i = 0; i < N_step + 3 ;i++){
-            if(i == 0){
+        for(int i = 0; i < N_step + 3 ;i++)
+        {
+            if(i == 0)
+            {
                 STEP_INFO SD_temp;
                 vec3 zmp_ini = COM_ref;// + vec3(0, R_or_L*pelv_w/50, 0);
 
@@ -680,9 +681,11 @@ public:
                 cout<<"i : "<<i<<"  swingFoot: "<<(int)SDB[i].swingFoot<<endl;
                 cout << "Fpos = " << SD_temp.Fpos.x << "," << SD_temp.Fpos.y << endl;
             }
-            else if(i == 1){
+            else if(i == 1)
+            {
                 STEP_INFO SD_temp;
-                if(R_or_L == 1){
+                if(R_or_L == 1)
+                {
                     SD_temp.Fpos = pLF_ref;
                     SD_temp.Fquat = qLF_ref;
                     SD_temp.yaw_rad = 0;

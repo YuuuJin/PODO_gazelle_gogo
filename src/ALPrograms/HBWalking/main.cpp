@@ -20,7 +20,7 @@
 #include "robotstateestimator.h"                        //hyoin
 #include "../../share/Headers/LANData/ROSLANData.h"
 
-#define SAVEN       370
+#define SAVEN       390
 
 #define PODO_AL_NAME       "HBWalking"
 
@@ -106,7 +106,9 @@ vec3 pel_estimated;
 
 //SAVE
 int Scnt = 0;
+int Sggcnt = 0;
 double SAVE[SAVEN][300000];
+double SAVE_GG[SAVEN][300000];
 
 // Functions
 void ResetGlobalCoord(int RF_OR_LF_OR_PC_MidFoot);
@@ -118,6 +120,7 @@ void Torque2Choreonoid(DesiredStates _Des_State);
 void save_onestep(int cnt);
 void save_onestep_ggsw(int cnt);
 void save_all();
+void save_all_gg();
 void init_StateEstimator();
 doubles quat2doubles(quat _quat);
 
@@ -331,7 +334,6 @@ int main(int argc, char *argv[])
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
             break;
         }
-
         case HBWalking_SYSID_START:
         {
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
@@ -2696,7 +2698,7 @@ void RBTaskThread(void *)
             {
                 _task_thread = _task_Idle;
 
-                save_all();
+                save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
             }
 
@@ -2788,7 +2790,7 @@ void RBTaskThread(void *)
                 _task_thread = _task_Idle;
                 userData->FLAG_receivedROS = ROS_RX_EMPTY;
 
-                save_all();
+                save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
             }
 
@@ -3500,326 +3502,386 @@ void save_onestep(int cnt){
 
 void save_onestep_ggsw(int cnt)
 {
-    SAVE[0][cnt] = GGSW.COM_ref.x;
-    SAVE[1][cnt] = GGSW.CP_ref.x;
-    SAVE[2][cnt] = GGSW.COM_ref.y;
-    SAVE[3][cnt] = GGSW.CP_ref.y;
-    SAVE[4][cnt] = GGSW.p_ref[0].x;
-    SAVE[5][cnt] = GGSW.p_ref[0].y;
-    SAVE[6][cnt] = GGSW.p_out.x;
-    SAVE[7][cnt] = GGSW.p_out.y;
-    SAVE[8][cnt] = GGSW.COM_LIPM.x;
-    SAVE[9][cnt] = GGSW.COM_LIPM.y;
+    SAVE_GG[0][cnt] = GGSW.COM_ref.x;
+    SAVE_GG[1][cnt] = GGSW.CP_ref.x;
+    SAVE_GG[2][cnt] = GGSW.COM_ref.y;
+    SAVE_GG[3][cnt] = GGSW.CP_ref.y;
+    SAVE_GG[4][cnt] = GGSW.p_ref[0].x;
+    SAVE_GG[5][cnt] = GGSW.p_ref[0].y;
+    SAVE_GG[6][cnt] = GGSW.p_out.x;
+    SAVE_GG[7][cnt] = GGSW.p_out.y;
+    SAVE_GG[8][cnt] = GGSW.COM_LIPM.x;
+    SAVE_GG[9][cnt] = GGSW.COM_LIPM.y;
 
-    SAVE[10][cnt] = GGSW.dCOM_ref.x;
-    SAVE[11][cnt] = GGSW.dCOM_ref.y;
-    SAVE[12][cnt] = GGSW.cZMP.x;
-    SAVE[13][cnt] = GGSW.cZMP.y;
-    SAVE[14][cnt] = GGSW.ZMP_global.x;
-    SAVE[15][cnt] = GGSW.ZMP_global.y;
-    SAVE[16][cnt] = GGSW.cZMP_proj.x;
-    SAVE[17][cnt] = GGSW.cZMP_proj.y;
+    SAVE_GG[10][cnt] = GGSW.dCOM_ref.x;
+    SAVE_GG[11][cnt] = GGSW.dCOM_ref.y;
+    SAVE_GG[12][cnt] = GGSW.cZMP.x;
+    SAVE_GG[13][cnt] = GGSW.cZMP.y;
+    SAVE_GG[14][cnt] = GGSW.ZMP_global.x;
+    SAVE_GG[15][cnt] = GGSW.ZMP_global.y;
+    SAVE_GG[16][cnt] = GGSW.cZMP_proj.x;
+    SAVE_GG[17][cnt] = GGSW.cZMP_proj.y;
 
-    SAVE[18][cnt] = GGSW.RS.IMUangle.x;
-    SAVE[19][cnt] = GGSW.RS.IMUangle.y;
-    SAVE[20][cnt] = GGSW.RS.IMUangle.z;
+    SAVE_GG[18][cnt] = GGSW.RS.IMUangle.x;
+    SAVE_GG[19][cnt] = GGSW.RS.IMUangle.y;
+    SAVE_GG[20][cnt] = GGSW.RS.IMUangle.z;
 
-    SAVE[21][cnt] = GGSW.X_obs[0];
-    SAVE[22][cnt] = GGSW.Y_obs[0];
-    SAVE[23][cnt] = GGSW.X_obs[1];
-    SAVE[24][cnt] = GGSW.Y_obs[1];
-    SAVE[25][cnt] = GGSW.RS.IMULocalW.x;
-    SAVE[26][cnt] = GGSW.RS.IMULocalW.y;
+    SAVE_GG[21][cnt] = GGSW.X_obs[0];
+    SAVE_GG[22][cnt] = GGSW.Y_obs[0];
+    SAVE_GG[23][cnt] = GGSW.X_obs[1];
+    SAVE_GG[24][cnt] = GGSW.Y_obs[1];
+    SAVE_GG[25][cnt] = GGSW.RS.IMULocalW.x;
+    SAVE_GG[26][cnt] = GGSW.RS.IMULocalW.y;
 
-    SAVE[27][cnt] = GGSW.dT;//dT_est;//dT_buf[0];
-    SAVE[28][cnt] = GGSW.pRF_ref.x;
-    SAVE[29][cnt] = GGSW.pLF_ref.x;
+    SAVE_GG[27][cnt] = GGSW.dT;//dT_est;//dT_buf[0];
+    SAVE_GG[28][cnt] = GGSW.pRF_ref.x;
+    SAVE_GG[29][cnt] = GGSW.pLF_ref.x;
 
-    SAVE[30][cnt] = GGSW.pRF_ref.z;
-    SAVE[31][cnt] = GGSW.pLF_ref.z;
-    SAVE[32][cnt] = GGSW.ZMP_error_local.y;
+    SAVE_GG[30][cnt] = GGSW.pRF_ref.z;
+    SAVE_GG[31][cnt] = GGSW.pLF_ref.z;
+    SAVE_GG[32][cnt] = GGSW.ZMP_error_local.y;
 
-    SAVE[33][cnt] = GGSW.RS.CSP.pCOM.x; // COM_measure x
-    SAVE[34][cnt] = GGSW.RS.CSP.pCOM.y; // COM_measure y
+    SAVE_GG[33][cnt] = GGSW.RS.CSP.pCOM.x; // COM_measure x
+    SAVE_GG[34][cnt] = GGSW.RS.CSP.pCOM.y; // COM_measure y
 
-    SAVE[35][cnt] = GGSW.uCOM.x;
-    SAVE[36][cnt] = GGSW.uCOM.y;
+    SAVE_GG[35][cnt] = GGSW.uCOM.x;
+    SAVE_GG[36][cnt] = GGSW.uCOM.y;
 
-    SAVE[37][cnt] = GGSW.CP_m_filtered.x; // temp x
-    SAVE[38][cnt] = GGSW.CP_m_filtered.y; // temp y
+    SAVE_GG[37][cnt] = GGSW.CP_m_filtered.x; // temp x
+    SAVE_GG[38][cnt] = GGSW.CP_m_filtered.y; // temp y
 
-    SAVE[39][cnt] = GGSW.COM_error_local.y;
-    SAVE[40][cnt] = GGSW.SDB[GGSW.step_phase].swingFoot;
+    SAVE_GG[39][cnt] = GGSW.COM_error_local.y;
+    SAVE_GG[40][cnt] = GGSW.SDB[GGSW.step_phase].swingFoot;
 
-    SAVE[41][cnt] = GGSW.COM_m.x;
-    SAVE[42][cnt] = GGSW.COM_m.y;
-    SAVE[43][cnt] = GGSW.COM_damping_con.x;
-    SAVE[44][cnt] = GGSW.COM_damping_con.y;
+    SAVE_GG[41][cnt] = GGSW.COM_m.x;
+    SAVE_GG[42][cnt] = GGSW.COM_m.y;
+    SAVE_GG[43][cnt] = GGSW.COM_damping_con.x;
+    SAVE_GG[44][cnt] = GGSW.COM_damping_con.y;
 
-    SAVE[45][cnt] = GGSW.CP_m.y; // ZMP x estimation
-    SAVE[46][cnt] = GGSW.CP_m.x;
-    SAVE[47][cnt] = 0;
-    SAVE[48][cnt] = GGSW.pRF_ref.x;
-    SAVE[49][cnt] = GGSW.pRF_ref.y;
+    SAVE_GG[45][cnt] = GGSW.CP_m.y; // ZMP x estimation
+    SAVE_GG[46][cnt] = GGSW.CP_m.x;
+    SAVE_GG[47][cnt] = 0;
+    SAVE_GG[48][cnt] = GGSW.pRF_ref.x;
+    SAVE_GG[49][cnt] = GGSW.pRF_ref.y;
 
-    SAVE[50][cnt] = GGSW.RS.F_RF.z;
-    SAVE[51][cnt] = GGSW.RS.F_LF.z;
-    SAVE[52][cnt] = GGSW.pLF_ref.x;
-    SAVE[53][cnt] = GGSW.pLF_ref.y;
-    SAVE[54][cnt] = GGSW.RS.CSV.dpCOM.y;
+    SAVE_GG[50][cnt] = GGSW.RS.F_RF.z;
+    SAVE_GG[51][cnt] = GGSW.RS.F_LF.z;
+    SAVE_GG[52][cnt] = GGSW.pLF_ref.x;
+    SAVE_GG[53][cnt] = GGSW.pLF_ref.y;
+    SAVE_GG[54][cnt] = GGSW.RS.CSV.dpCOM.y;
 
-    SAVE[55][cnt] = GGSW.RS.CSV.dpCOM.x;
-    SAVE[56][cnt] = GGSW.RS.CSV.dpCOM.y;
-    SAVE[57][cnt] = GGSW.Fz_diff_error;
+    SAVE_GG[55][cnt] = GGSW.RS.CSV.dpCOM.x;
+    SAVE_GG[56][cnt] = GGSW.RS.CSV.dpCOM.y;
+    SAVE_GG[57][cnt] = GGSW.Fz_diff_error;
 
-    SAVE[58][cnt] = GGSW.ACC_RF_filtered.x;
-    SAVE[59][cnt] = GGSW.ACC_RF_filtered.y;
-    SAVE[60][cnt] = GGSW.ACC_LF_filtered.x;
-    SAVE[61][cnt] = GGSW.ACC_LF_filtered.y;
+    SAVE_GG[58][cnt] = GGSW.ACC_RF_filtered.x;
+    SAVE_GG[59][cnt] = GGSW.ACC_RF_filtered.y;
+    SAVE_GG[60][cnt] = GGSW.ACC_LF_filtered.x;
+    SAVE_GG[61][cnt] = GGSW.ACC_LF_filtered.y;
 
-    SAVE[62][cnt] = GGSW.Ye_obs[0];
-    SAVE[63][cnt] = GGSW.Ye_obs[1];
-    SAVE[64][cnt] = GGSW.Xe_obs[0];
-    SAVE[65][cnt] = GGSW.Xe_obs[1];
-    SAVE[66][cnt] = GGSW.L_roll_obs[0];
-    SAVE[67][cnt] = GGSW.LHR_con_deg;
+    SAVE_GG[62][cnt] = GGSW.Ye_obs[0];
+    SAVE_GG[63][cnt] = GGSW.Ye_obs[1];
+    SAVE_GG[64][cnt] = GGSW.Xe_obs[0];
+    SAVE_GG[65][cnt] = GGSW.Xe_obs[1];
+    SAVE_GG[66][cnt] = GGSW.L_roll_obs[0];
+    SAVE_GG[67][cnt] = GGSW.LHR_con_deg;
 
-    SAVE[68][cnt] = GGSW.dCOM_m_diff.x;
-    SAVE[69][cnt] = GGSW.dCOM_m_diff.y;
-    SAVE[70][cnt] = GGSW.dCOM_m_imu.x;
-    SAVE[71][cnt] = GGSW.dCOM_m_imu.y;
-    SAVE[72][cnt] = 0;
-    SAVE[73][cnt] = 0;
+    SAVE_GG[68][cnt] = GGSW.dCOM_m_diff.x;
+    SAVE_GG[69][cnt] = GGSW.dCOM_m_diff.y;
+    SAVE_GG[70][cnt] = GGSW.dCOM_m_imu.x;
+    SAVE_GG[71][cnt] = GGSW.dCOM_m_imu.y;
+    SAVE_GG[72][cnt] = 0;
+    SAVE_GG[73][cnt] = 0;
 
-    SAVE[74][cnt] = GGSW.RS.M_RF.x;
-    SAVE[75][cnt] = GGSW.RS.M_RF.y;
-    SAVE[76][cnt] = GGSW.RS.F_RF.z;
-    SAVE[77][cnt] = GGSW.RS.M_LF.x;
-    SAVE[78][cnt] = GGSW.RS.M_LF.y;
-    SAVE[79][cnt] = GGSW.RS.F_LF.z;
+    SAVE_GG[74][cnt] = GGSW.RS.M_RF.x;
+    SAVE_GG[75][cnt] = GGSW.RS.M_RF.y;
+    SAVE_GG[76][cnt] = GGSW.RS.F_RF.z;
+    SAVE_GG[77][cnt] = GGSW.RS.M_LF.x;
+    SAVE_GG[78][cnt] = GGSW.RS.M_LF.y;
+    SAVE_GG[79][cnt] = GGSW.RS.F_LF.z;
 
-    SAVE[80][cnt] = GGSW.RF_z_dz_ddz[0];
-    SAVE[81][cnt] = GGSW.RF_z_dz_ddz[1];
-    SAVE[82][cnt] = GGSW.LF_z_dz_ddz[0];
-    SAVE[83][cnt] = GGSW.LF_z_dz_ddz[1];
-    SAVE[84][cnt] = GGSW.RF_landing_flag;
-    SAVE[85][cnt] = GGSW.LF_landing_flag;
+    SAVE_GG[80][cnt] = GGSW.RF_z_dz_ddz[0];
+    SAVE_GG[81][cnt] = GGSW.RF_z_dz_ddz[1];
+    SAVE_GG[82][cnt] = GGSW.LF_z_dz_ddz[0];
+    SAVE_GG[83][cnt] = GGSW.LF_z_dz_ddz[1];
+    SAVE_GG[84][cnt] = GGSW.RF_landing_flag;
+    SAVE_GG[85][cnt] = GGSW.LF_landing_flag;
 
-    SAVE[86][cnt] = GGSW.pRF_landing.z;
-    SAVE[87][cnt] = GGSW.pLF_landing.z;
-    SAVE[88][cnt] = 0;
-    SAVE[89][cnt] = 0;
+    SAVE_GG[86][cnt] = GGSW.pRF_landing.z;
+    SAVE_GG[87][cnt] = GGSW.pLF_landing.z;
+    SAVE_GG[88][cnt] = 0;
+    SAVE_GG[89][cnt] = 0;
 
-    SAVE[90][cnt] = GGSW.COM_y_dy_ddy_SA[0];
-    SAVE[91][cnt] = GGSW.COM_y_dy_ddy_SA[1];
-    SAVE[92][cnt] = GGSW.COM_y_dy_ddy_SA[2];
-    SAVE[93][cnt] = GGSW.COM_x_dx_ddx_SA[0];
-    SAVE[94][cnt] = GGSW.COM_x_dx_ddx_SA[1];
-    SAVE[95][cnt] = GGSW.COM_x_dx_ddx_SA[2];
-    SAVE[96][cnt] = GGSW.p_out_SA.y;
-    SAVE[97][cnt] = GGSW.p_out_SA.x;
-    SAVE[98][cnt] = GGSW.p_ref_SA[0].y;
-    SAVE[99][cnt] = GGSW.p_ref_SA[0].x;
+    SAVE_GG[90][cnt] = GGSW.COM_y_dy_ddy_SA[0];
+    SAVE_GG[91][cnt] = GGSW.COM_y_dy_ddy_SA[1];
+    SAVE_GG[92][cnt] = GGSW.COM_y_dy_ddy_SA[2];
+    SAVE_GG[93][cnt] = GGSW.COM_x_dx_ddx_SA[0];
+    SAVE_GG[94][cnt] = GGSW.COM_x_dx_ddx_SA[1];
+    SAVE_GG[95][cnt] = GGSW.COM_x_dx_ddx_SA[2];
+    SAVE_GG[96][cnt] = GGSW.p_out_SA.y;
+    SAVE_GG[97][cnt] = GGSW.p_out_SA.x;
+    SAVE_GG[98][cnt] = GGSW.p_ref_SA[0].y;
+    SAVE_GG[99][cnt] = GGSW.p_ref_SA[0].x;
 
-    SAVE[100][cnt] = GGSW.COM_SA_ref.y;
-    SAVE[101][cnt] = GGSW.COM_SA_ref.x;
-    SAVE[102][cnt] = GGSW.dCOM_SA_ref.y;
-    SAVE[103][cnt] = GGSW.dCOM_SA_ref.x;
-    SAVE[104][cnt] = GGSW.t_now;
-    SAVE[105][cnt] = GGSW.CP_SA_ref_local.x;
-    SAVE[106][cnt] = GGSW.CP_SA_ref_local.y;
-    SAVE[107][cnt] = 0;
-    SAVE[108][cnt] = GGSW.Landing_delXY.x;
-    SAVE[109][cnt] = GGSW.Landing_delXY.y;
+    SAVE_GG[100][cnt] = GGSW.COM_SA_ref.y;
+    SAVE_GG[101][cnt] = GGSW.COM_SA_ref.x;
+    SAVE_GG[102][cnt] = GGSW.dCOM_SA_ref.y;
+    SAVE_GG[103][cnt] = GGSW.dCOM_SA_ref.x;
+    SAVE_GG[104][cnt] = GGSW.t_now;
+    SAVE_GG[105][cnt] = GGSW.CP_SA_ref_local.x;
+    SAVE_GG[106][cnt] = GGSW.CP_SA_ref_local.y;
+    SAVE_GG[107][cnt] = 0;
+    SAVE_GG[108][cnt] = GGSW.Landing_delXY.x;
+    SAVE_GG[109][cnt] = GGSW.Landing_delXY.y;
 
-    SAVE[110][cnt] = GGSW.CP_error_lf.x;
-    SAVE[111][cnt] = GGSW.CP_error_lf.y;
-    SAVE[112][cnt] = GGSW.cZMP_SA_lf.x;
-    SAVE[113][cnt] = GGSW.cZMP_SA_lf.y;
-    SAVE[114][cnt] = GGSW.RF_y_dy_ddy[0];
-    SAVE[115][cnt] = GGSW.RF_y_dy_ddy[1];
-    SAVE[116][cnt] = GGSW.pRF_landing.x;
-    SAVE[117][cnt] = GGSW.pRF_landing.y;
-    SAVE[118][cnt] = 0;
-    SAVE[119][cnt] = 0;
+    SAVE_GG[110][cnt] = GGSW.CP_error_lf.x;
+    SAVE_GG[111][cnt] = GGSW.CP_error_lf.y;
+    SAVE_GG[112][cnt] = GGSW.cZMP_SA_lf.x;
+    SAVE_GG[113][cnt] = GGSW.cZMP_SA_lf.y;
+    SAVE_GG[114][cnt] = GGSW.RF_y_dy_ddy[0];
+    SAVE_GG[115][cnt] = GGSW.RF_y_dy_ddy[1];
+    SAVE_GG[116][cnt] = GGSW.pRF_landing.x;
+    SAVE_GG[117][cnt] = GGSW.pRF_landing.y;
+    SAVE_GG[118][cnt] = 0;
+    SAVE_GG[119][cnt] = 0;
 
-    SAVE[120][cnt] = GGSW.CP_error_rf.x;
-    SAVE[121][cnt] = GGSW.CP_error_rf.y;
-    SAVE[122][cnt] = GGSW.cZMP_SA_rf.x;
-    SAVE[123][cnt] = GGSW.cZMP_SA_rf.y;
-    SAVE[124][cnt] = GGSW.LF_y_dy_ddy[0];
-    SAVE[125][cnt] = GGSW.LF_y_dy_ddy[1];
-    SAVE[126][cnt] = GGSW.pLF_landing.x;
-    SAVE[127][cnt] = GGSW.pLF_landing.y;
-    SAVE[128][cnt] = 0;
-    SAVE[129][cnt] = 0;
+    SAVE_GG[120][cnt] = GGSW.CP_error_rf.x;
+    SAVE_GG[121][cnt] = GGSW.CP_error_rf.y;
+    SAVE_GG[122][cnt] = GGSW.cZMP_SA_rf.x;
+    SAVE_GG[123][cnt] = GGSW.cZMP_SA_rf.y;
+    SAVE_GG[124][cnt] = GGSW.LF_y_dy_ddy[0];
+    SAVE_GG[125][cnt] = GGSW.LF_y_dy_ddy[1];
+    SAVE_GG[126][cnt] = GGSW.pLF_landing.x;
+    SAVE_GG[127][cnt] = GGSW.pLF_landing.y;
+    SAVE_GG[128][cnt] = 0;
+    SAVE_GG[129][cnt] = 0;
 
-    SAVE[130][cnt] = GGSW.del_u_f.x;
-    SAVE[131][cnt] = GGSW.del_u_f.y;
-    SAVE[132][cnt] = GGSW.del_b_f.x;
-    SAVE[133][cnt] = GGSW.del_b_f.y;
-    SAVE[134][cnt] = GGSW.new_T;
-    SAVE[135][cnt] = GGSW.del_u_g.x;
-    SAVE[136][cnt] = GGSW.del_u_g.y;
-    SAVE[137][cnt] = GGSW.del_b_g.x;
-    SAVE[138][cnt] = GGSW.del_b_g.y;
-    SAVE[139][cnt] = GGSW.SA_Enable_flag;
+    SAVE_GG[130][cnt] = GGSW.del_u_f.x;
+    SAVE_GG[131][cnt] = GGSW.del_u_f.y;
+    SAVE_GG[132][cnt] = GGSW.del_b_f.x;
+    SAVE_GG[133][cnt] = GGSW.del_b_f.y;
+    SAVE_GG[134][cnt] = GGSW.new_T;
+    SAVE_GG[135][cnt] = GGSW.del_u_g.x;
+    SAVE_GG[136][cnt] = GGSW.del_u_g.y;
+    SAVE_GG[137][cnt] = GGSW.del_b_g.x;
+    SAVE_GG[138][cnt] = GGSW.del_b_g.y;
+    SAVE_GG[139][cnt] = GGSW.SA_Enable_flag;
 
-    SAVE[140][cnt] = GGSW.del_u_f_filtered.x;
-    SAVE[141][cnt] = GGSW.del_u_f_filtered.y;
-    SAVE[142][cnt] = GGSW.del_b_f_filtered.x;
-    SAVE[143][cnt] = GGSW.del_b_f_filtered.y;
-    SAVE[144][cnt] = GGSW.new_T_filtered;
-    SAVE[145][cnt] = GGSW.UD_flag;
-    SAVE[146][cnt] = GGSW.LandingZ_des;
-    SAVE[147][cnt] = 0;
-    SAVE[148][cnt] = GGSW.Pelv_roll_ref;
-    SAVE[149][cnt] = GGSW.Pelv_pitch_ref;
+    SAVE_GG[140][cnt] = GGSW.del_u_f_filtered.x;
+    SAVE_GG[141][cnt] = GGSW.del_u_f_filtered.y;
+    SAVE_GG[142][cnt] = GGSW.del_b_f_filtered.x;
+    SAVE_GG[143][cnt] = GGSW.del_b_f_filtered.y;
+    SAVE_GG[144][cnt] = GGSW.new_T_filtered;
+    SAVE_GG[145][cnt] = GGSW.UD_flag;
+    SAVE_GG[146][cnt] = GGSW.LandingZ_des;
+    SAVE_GG[147][cnt] = 0;
+    SAVE_GG[148][cnt] = GGSW.Pelv_roll_ref;
+    SAVE_GG[149][cnt] = GGSW.Pelv_pitch_ref;
 
-    SAVE[150][cnt] = GGSW.Omega_pitch;
-    SAVE[151][cnt] = GGSW.Omega_roll;
-    SAVE[152][cnt] = GGSW.Omega_pitch_filtered;
-    SAVE[153][cnt] = GGSW.Omega_roll_filtered;
-    SAVE[154][cnt] = GGSW.del_b0_Nf.x;
-    SAVE[155][cnt] = GGSW.del_b0_Nf.y;
-    SAVE[156][cnt] = GGSW.b0_Nf.x;
-    SAVE[157][cnt] = GGSW.b0_Nf.y;
-    SAVE[158][cnt] = GGSW.SDB[GGSW.step_phase].t;
-    SAVE[159][cnt] = GGSW.T_nom;
+    SAVE_GG[150][cnt] = GGSW.Omega_pitch;
+    SAVE_GG[151][cnt] = GGSW.Omega_roll;
+    SAVE_GG[152][cnt] = GGSW.Omega_pitch_filtered;
+    SAVE_GG[153][cnt] = GGSW.Omega_roll_filtered;
+    SAVE_GG[154][cnt] = GGSW.del_b0_Nf.x;
+    SAVE_GG[155][cnt] = GGSW.del_b0_Nf.y;
+    SAVE_GG[156][cnt] = GGSW.b0_Nf.x;
+    SAVE_GG[157][cnt] = GGSW.b0_Nf.y;
+    SAVE_GG[158][cnt] = GGSW.SDB[GGSW.step_phase].t;
+    SAVE_GG[159][cnt] = GGSW.T_nom;
 
-    SAVE[160][cnt] = GGSW.del_u_Nf.x;
-    SAVE[161][cnt] = GGSW.del_u_Nf.y;
-    SAVE[162][cnt] = GGSW.del_b_Nf.x;
-    SAVE[163][cnt] = GGSW.del_b_Nf.y;
-    SAVE[164][cnt] = GGSW.new_T_Nf;
-    SAVE[165][cnt] = GGSW.del_u_Nf_filtered.x;
-    SAVE[166][cnt] = GGSW.del_u_Nf_filtered.y;
-    SAVE[167][cnt] = GGSW.del_b_Nf_filtered.x;
-    SAVE[168][cnt] = GGSW.del_b_Nf_filtered.y;
-    SAVE[169][cnt] = GGSW.new_T_Nf_filtered;
+    SAVE_GG[160][cnt] = GGSW.del_u_Nf.x;
+    SAVE_GG[161][cnt] = GGSW.del_u_Nf.y;
+    SAVE_GG[162][cnt] = GGSW.del_b_Nf.x;
+    SAVE_GG[163][cnt] = GGSW.del_b_Nf.y;
+    SAVE_GG[164][cnt] = GGSW.new_T_Nf;
+    SAVE_GG[165][cnt] = GGSW.del_u_Nf_filtered.x;
+    SAVE_GG[166][cnt] = GGSW.del_u_Nf_filtered.y;
+    SAVE_GG[167][cnt] = GGSW.del_b_Nf_filtered.x;
+    SAVE_GG[168][cnt] = GGSW.del_b_Nf_filtered.y;
+    SAVE_GG[169][cnt] = GGSW.new_T_Nf_filtered;
 
-    SAVE[170][cnt] = GGSW.dz_com_ctrl;
-    SAVE[171][cnt] = GGSW.z_com_ctrl;
-    SAVE[172][cnt] = 0;
-    SAVE[173][cnt] = 0;
-    SAVE[174][cnt] = 0;
-    SAVE[175][cnt] = 0;
-    SAVE[176][cnt] = 0;
-    SAVE[177][cnt] = GGSW.G_R_g_pitroll_rpy.r;
-    SAVE[178][cnt] = GGSW.G_R_g_pitroll_rpy.p;
-    SAVE[179][cnt] = GGSW.G_R_g_pitroll_rpy.y;
+    SAVE_GG[170][cnt] = GGSW.dz_com_ctrl;
+    SAVE_GG[171][cnt] = GGSW.z_com_ctrl;
+    SAVE_GG[172][cnt] = 0;
+    SAVE_GG[173][cnt] = 0;
+    SAVE_GG[174][cnt] = 0;
+    SAVE_GG[175][cnt] = 0;
+    SAVE_GG[176][cnt] = 0;
+    SAVE_GG[177][cnt] = GGSW.G_R_g_pitroll_rpy.r;
+    SAVE_GG[178][cnt] = GGSW.G_R_g_pitroll_rpy.p;
+    SAVE_GG[179][cnt] = GGSW.G_R_g_pitroll_rpy.y;
 
-    SAVE[180][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHY].id][MC_ID_CH_Pairs[RHY].ch].CurrentPosition;
-    SAVE[181][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHR].id][MC_ID_CH_Pairs[RHR].ch].CurrentPosition;
-    SAVE[182][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHP].id][MC_ID_CH_Pairs[RHP].ch].CurrentPosition;
-    SAVE[183][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RKN].id][MC_ID_CH_Pairs[RKN].ch].CurrentPosition;
-    SAVE[184][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAP].id][MC_ID_CH_Pairs[RAP].ch].CurrentPosition;
-    SAVE[185][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAR].id][MC_ID_CH_Pairs[RAR].ch].CurrentPosition;
-    SAVE[186][cnt] = 0;
-    SAVE[187][cnt] = 0;
-    SAVE[188][cnt] = 0;
-    SAVE[189][cnt] = 0;
+    SAVE_GG[180][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHY].id][MC_ID_CH_Pairs[RHY].ch].CurrentPosition;
+    SAVE_GG[181][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHR].id][MC_ID_CH_Pairs[RHR].ch].CurrentPosition;
+    SAVE_GG[182][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RHP].id][MC_ID_CH_Pairs[RHP].ch].CurrentPosition;
+    SAVE_GG[183][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RKN].id][MC_ID_CH_Pairs[RKN].ch].CurrentPosition;
+    SAVE_GG[184][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAP].id][MC_ID_CH_Pairs[RAP].ch].CurrentPosition;
+    SAVE_GG[185][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[RAR].id][MC_ID_CH_Pairs[RAR].ch].CurrentPosition;
+    SAVE_GG[186][cnt] = 0;
+    SAVE_GG[187][cnt] = 0;
+    SAVE_GG[188][cnt] = 0;
+    SAVE_GG[189][cnt] = 0;
 
-    SAVE[190][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHY].id][MC_ID_CH_Pairs[LHY].ch].CurrentPosition;
-    SAVE[191][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHR].id][MC_ID_CH_Pairs[LHR].ch].CurrentPosition;
-    SAVE[192][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHP].id][MC_ID_CH_Pairs[LHP].ch].CurrentPosition;
-    SAVE[193][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LKN].id][MC_ID_CH_Pairs[LKN].ch].CurrentPosition;
-    SAVE[194][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAP].id][MC_ID_CH_Pairs[LAP].ch].CurrentPosition;
-    SAVE[195][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAR].id][MC_ID_CH_Pairs[LAR].ch].CurrentPosition;
-    SAVE[196][cnt] = 0;
-    SAVE[197][cnt] = 0;
-    SAVE[198][cnt] = 0;
-    SAVE[199][cnt] = 0;
+    SAVE_GG[190][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHY].id][MC_ID_CH_Pairs[LHY].ch].CurrentPosition;
+    SAVE_GG[191][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHR].id][MC_ID_CH_Pairs[LHR].ch].CurrentPosition;
+    SAVE_GG[192][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LHP].id][MC_ID_CH_Pairs[LHP].ch].CurrentPosition;
+    SAVE_GG[193][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LKN].id][MC_ID_CH_Pairs[LKN].ch].CurrentPosition;
+    SAVE_GG[194][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAP].id][MC_ID_CH_Pairs[LAP].ch].CurrentPosition;
+    SAVE_GG[195][cnt] = sharedSEN->ENCODER[MC_ID_CH_Pairs[LAR].id][MC_ID_CH_Pairs[LAR].ch].CurrentPosition;
+    SAVE_GG[196][cnt] = 0;
+    SAVE_GG[197][cnt] = 0;
+    SAVE_GG[198][cnt] = 0;
+    SAVE_GG[199][cnt] = 0;
 
-    SAVE[200][cnt] = WBmotion->LJ.RHY*R2D + RHY_con_deg;
-    SAVE[201][cnt] = WBmotion->LJ.RHR*R2D + RHR_con_deg;
-    SAVE[202][cnt] = WBmotion->LJ.RHP*R2D + RHP_con_deg;
-    SAVE[203][cnt] = WBmotion->LJ.RKN*R2D;
-    SAVE[204][cnt] = RA1_ref_deg;  //RAP board
-    SAVE[205][cnt] = RA2_ref_deg;  //RAR board
-    SAVE[206][cnt] = 0;
-    SAVE[207][cnt] = RHY_con_deg;
-    SAVE[208][cnt] = RHR_con_deg;
-    SAVE[209][cnt] = RHP_con_deg;
+    SAVE_GG[200][cnt] = WBmotion->LJ.RHY*R2D + RHY_con_deg;
+    SAVE_GG[201][cnt] = WBmotion->LJ.RHR*R2D + RHR_con_deg;
+    SAVE_GG[202][cnt] = WBmotion->LJ.RHP*R2D + RHP_con_deg;
+    SAVE_GG[203][cnt] = WBmotion->LJ.RKN*R2D;
+    SAVE_GG[204][cnt] = RA1_ref_deg;  //RAP board
+    SAVE_GG[205][cnt] = RA2_ref_deg;  //RAR board
+    SAVE_GG[206][cnt] = 0;
+    SAVE_GG[207][cnt] = RHY_con_deg;
+    SAVE_GG[208][cnt] = RHR_con_deg;
+    SAVE_GG[209][cnt] = RHP_con_deg;
 
-    SAVE[210][cnt] = WBmotion->LJ.LHY*R2D + LHY_con_deg;
-    SAVE[211][cnt] = WBmotion->LJ.LHR*R2D + LHR_con_deg;
-    SAVE[212][cnt] = WBmotion->LJ.LHP*R2D + LHP_con_deg;
-    SAVE[213][cnt] = WBmotion->LJ.LKN*R2D;
-    SAVE[214][cnt] = LA1_ref_deg; //LAP board
-    SAVE[215][cnt] = LA2_ref_deg; //LAR board
-    SAVE[216][cnt] = 0;
-    SAVE[217][cnt] = LHY_con_deg;
-    SAVE[218][cnt] = LHR_con_deg;
-    SAVE[219][cnt] = LHP_con_deg;
+    SAVE_GG[210][cnt] = WBmotion->LJ.LHY*R2D + LHY_con_deg;
+    SAVE_GG[211][cnt] = WBmotion->LJ.LHR*R2D + LHR_con_deg;
+    SAVE_GG[212][cnt] = WBmotion->LJ.LHP*R2D + LHP_con_deg;
+    SAVE_GG[213][cnt] = WBmotion->LJ.LKN*R2D;
+    SAVE_GG[214][cnt] = LA1_ref_deg; //LAP board
+    SAVE_GG[215][cnt] = LA2_ref_deg; //LAR board
+    SAVE_GG[216][cnt] = 0;
+    SAVE_GG[217][cnt] = LHY_con_deg;
+    SAVE_GG[218][cnt] = LHR_con_deg;
+    SAVE_GG[219][cnt] = LHP_con_deg;
 
-    SAVE[220][cnt] = GGSW.AnkleTorque_ref[0]; //RAR ref torque
-    SAVE[221][cnt] = GGSW.AnkleTorque_ref[1]; //RAP ref torque
-    SAVE[222][cnt] = GGSW.AnkleTorque_ref[2]; //LAR ref torque
-    SAVE[223][cnt] = GGSW.AnkleTorque_ref[3]; //LAP ref torque
-    SAVE[224][cnt] = GGSW.RF_Fz_ref;
-    SAVE[225][cnt] = GGSW.LF_Fz_ref;
-    SAVE[226][cnt] = 0;
-    SAVE[227][cnt] = 0;
-    SAVE[228][cnt] = 0;
-    SAVE[229][cnt] = GGSW.Alpha_dsp;
+    SAVE_GG[220][cnt] = GGSW.AnkleTorque_ref[0]; //RAR ref torque
+    SAVE_GG[221][cnt] = GGSW.AnkleTorque_ref[1]; //RAP ref torque
+    SAVE_GG[222][cnt] = GGSW.AnkleTorque_ref[2]; //LAR ref torque
+    SAVE_GG[223][cnt] = GGSW.AnkleTorque_ref[3]; //LAP ref torque
+    SAVE_GG[224][cnt] = GGSW.RF_Fz_ref;
+    SAVE_GG[225][cnt] = GGSW.LF_Fz_ref;
+    SAVE_GG[226][cnt] = 0;
+    SAVE_GG[227][cnt] = 0;
+    SAVE_GG[228][cnt] = 0;
+    SAVE_GG[229][cnt] = GGSW.Alpha_dsp;
 
-    SAVE[230][cnt] = GGSW.DSP_time_flag;
-    SAVE[231][cnt] = GGSW.DSP_force_flag;
-    SAVE[232][cnt] = GGSW.RF_Fz_ref;
-    SAVE[233][cnt] = GGSW.LF_Fz_ref;
-    SAVE[234][cnt] = GGSW.Fz_diff_ref;
-    SAVE[235][cnt] = GGSW.Fz_diff;
-    SAVE[236][cnt] = GGSW.dz_ctrl;
-    SAVE[237][cnt] = GGSW.dz_ctrl_filtered;
-    SAVE[238][cnt] = GGSW.z_ctrl;
-    SAVE[239][cnt] = GGSW.z_ctrl_filtered;
+    SAVE_GG[230][cnt] = GGSW.DSP_time_flag;
+    SAVE_GG[231][cnt] = GGSW.DSP_force_flag;
+    SAVE_GG[232][cnt] = GGSW.RF_Fz_ref;
+    SAVE_GG[233][cnt] = GGSW.LF_Fz_ref;
+    SAVE_GG[234][cnt] = GGSW.Fz_diff_ref;
+    SAVE_GG[235][cnt] = GGSW.Fz_diff;
+    SAVE_GG[236][cnt] = GGSW.dz_ctrl;
+    SAVE_GG[237][cnt] = GGSW.dz_ctrl_filtered;
+    SAVE_GG[238][cnt] = GGSW.z_ctrl;
+    SAVE_GG[239][cnt] = GGSW.z_ctrl_filtered;
 
-    SAVE[240][cnt] = GGSW.dRF_angle_ctrl.x;
-    SAVE[241][cnt] = GGSW.dRF_angle_ctrl.y;
-    SAVE[242][cnt] = GGSW.RF_angle_ctrl.x;
-    SAVE[243][cnt] = GGSW.RF_angle_ctrl.y;
-    SAVE[244][cnt] = GGSW.dLF_angle_ctrl.x;
-    SAVE[245][cnt] = GGSW.dLF_angle_ctrl.y;
-    SAVE[246][cnt] = GGSW.LF_angle_ctrl.x;
-    SAVE[247][cnt] = GGSW.LF_angle_ctrl.y;
-    SAVE[248][cnt] = 0;
-    SAVE[249][cnt] = 0;
+    SAVE_GG[240][cnt] = GGSW.dRF_angle_ctrl.x;
+    SAVE_GG[241][cnt] = GGSW.dRF_angle_ctrl.y;
+    SAVE_GG[242][cnt] = GGSW.RF_angle_ctrl.x;
+    SAVE_GG[243][cnt] = GGSW.RF_angle_ctrl.y;
+    SAVE_GG[244][cnt] = GGSW.dLF_angle_ctrl.x;
+    SAVE_GG[245][cnt] = GGSW.dLF_angle_ctrl.y;
+    SAVE_GG[246][cnt] = GGSW.LF_angle_ctrl.x;
+    SAVE_GG[247][cnt] = GGSW.LF_angle_ctrl.y;
+    SAVE_GG[248][cnt] = 0;
+    SAVE_GG[249][cnt] = 0;
 
-    SAVE[250][cnt] = GGSW.RS.IMUangle_comp.x;
-    SAVE[251][cnt] = GGSW.RS.IMUangle_comp.y;
-    SAVE[252][cnt] = GGSW.COM_m_comp.x;
-    SAVE[253][cnt] = GGSW.COM_m_comp.y;
-    SAVE[254][cnt] = GGSW.dCOM_m_comp.x;
-    SAVE[255][cnt] = GGSW.dCOM_m_comp.y;
-    SAVE[256][cnt] = GGSW.CP_m_comp.x;
-    SAVE[257][cnt] = GGSW.CP_m_comp.y;
-    SAVE[258][cnt] = GGSW.cZMP_TC_proj.x;
-    SAVE[259][cnt] = GGSW.cZMP_TC_proj.y;
+    SAVE_GG[250][cnt] = GGSW.RS.IMUangle_comp.x;
+    SAVE_GG[251][cnt] = GGSW.RS.IMUangle_comp.y;
+    SAVE_GG[252][cnt] = GGSW.COM_m_comp.x;
+    SAVE_GG[253][cnt] = GGSW.COM_m_comp.y;
+    SAVE_GG[254][cnt] = GGSW.dCOM_m_comp.x;
+    SAVE_GG[255][cnt] = GGSW.dCOM_m_comp.y;
+    SAVE_GG[256][cnt] = GGSW.CP_m_comp.x;
+    SAVE_GG[257][cnt] = GGSW.CP_m_comp.y;
+    SAVE_GG[258][cnt] = GGSW.cZMP_TC_proj.x;
+    SAVE_GG[259][cnt] = GGSW.cZMP_TC_proj.y;
 
-    SAVE[260][cnt] = GGSW.COM_e_imu_local.x;
-    SAVE[261][cnt] = GGSW.COM_e_imu_local.y;
-    SAVE[262][cnt] = GGSW.dCOM_e_imu_local.x;
-    SAVE[263][cnt] = GGSW.dCOM_e_imu_local.y;
-    SAVE[264][cnt] = GGSW.dsp_ctrl_gain;
-    SAVE[265][cnt] = GGSW.dsp_tilt_gain;
-    SAVE[266][cnt] = GGSW.cZMP_dsp_global.y;
-    SAVE[267][cnt] = GGSW.cZMP_dsp_global.x;
-    SAVE[268][cnt] = GGSW.cZMP_dsp_global_proj.y;
-    SAVE[269][cnt] = GGSW.cZMP_dsp_global_proj.x;
+    SAVE_GG[260][cnt] = GGSW.COM_e_imu_local.x;
+    SAVE_GG[261][cnt] = GGSW.COM_e_imu_local.y;
+    SAVE_GG[262][cnt] = GGSW.dCOM_e_imu_local.x;
+    SAVE_GG[263][cnt] = GGSW.dCOM_e_imu_local.y;
+    SAVE_GG[264][cnt] = GGSW.dsp_ctrl_gain;
+    SAVE_GG[265][cnt] = GGSW.dsp_tilt_gain;
+    SAVE_GG[266][cnt] = GGSW.cZMP_dsp_global.y;
+    SAVE_GG[267][cnt] = GGSW.cZMP_dsp_global.x;
+    SAVE_GG[268][cnt] = GGSW.cZMP_dsp_global_proj.y;
+    SAVE_GG[269][cnt] = GGSW.cZMP_dsp_global_proj.x;
 
-    SAVE[270][cnt] = GGSW.COM_m_comp_filtered.x;
-    SAVE[271][cnt] = GGSW.COM_m_comp_filtered.y;
-    SAVE[272][cnt] = GGSW.dCOM_m_comp_filtered.x;
-    SAVE[273][cnt] = GGSW.dCOM_m_comp_filtered.y;
-    SAVE[274][cnt] = GGSW.Pelv_pitch_acc_ref;
-    SAVE[275][cnt] = GGSW.Pelv_pitch_vel_ref;
-    SAVE[276][cnt] = GGSW.Pelv_pitch_ref;
-    SAVE[277][cnt] = GGSW.Pelv_roll_acc_ref;
-    SAVE[278][cnt] = GGSW.Pelv_roll_vel_ref;
-    SAVE[279][cnt] = GGSW.Pelv_roll_ref;
+    SAVE_GG[270][cnt] = GGSW.COM_m_comp_filtered.x;
+    SAVE_GG[271][cnt] = GGSW.COM_m_comp_filtered.y;
+    SAVE_GG[272][cnt] = GGSW.dCOM_m_comp_filtered.x;
+    SAVE_GG[273][cnt] = GGSW.dCOM_m_comp_filtered.y;
+    SAVE_GG[274][cnt] = GGSW.Pelv_pitch_acc_ref;
+    SAVE_GG[275][cnt] = GGSW.Pelv_pitch_vel_ref;
+    SAVE_GG[276][cnt] = GGSW.Pelv_pitch_ref;
+    SAVE_GG[277][cnt] = GGSW.Pelv_roll_acc_ref;
+    SAVE_GG[278][cnt] = GGSW.Pelv_roll_vel_ref;
+    SAVE_GG[279][cnt] = GGSW.Pelv_roll_ref;
 
-    SAVE[280][cnt] = GGSW.MaxFoot_y_cur;
+
+    SAVE_GG[280][cnt] = GGSW.p_ref_con_error_filtered;
+    SAVE_GG[281][cnt] = GGSW.COM_m_filtered.x;
+    SAVE_GG[282][cnt] = GGSW.COM_m_filtered.y;
+    SAVE_GG[283][cnt] = GGSW.COM_m_filtered.z;
+    SAVE_GG[284][cnt] = GGSW.dCOM_m_filtered.x;
+    SAVE_GG[285][cnt] = GGSW.dCOM_m_filtered.y;
+    SAVE_GG[286][cnt] = GGSW.dCOM_m_filtered.z;
+    SAVE_GG[287][cnt] = GGSW.COM_SA_LIPM.x;
+    SAVE_GG[288][cnt] = GGSW.COM_SA_LIPM.y;
+    SAVE_GG[289][cnt] = GGSW.COM_SA_LIPM.z;
+    SAVE_GG[290][cnt] = GGSW.dCOM_SA_LIPM.x;
+    SAVE_GG[291][cnt] = GGSW.dCOM_SA_LIPM.y;
+    SAVE_GG[292][cnt] = GGSW.dCOM_SA_LIPM.z;
+    SAVE_GG[293][cnt] = GGSW.p_ref_offset_y;
+    SAVE_GG[294][cnt] = GGSW.R_roll_obs.x;
+    SAVE_GG[295][cnt] = GGSW.R_roll_obs.y;
+    SAVE_GG[296][cnt] = GGSW.R_roll_obs.z;
+    SAVE_GG[297][cnt] = GGSW.L_roll_obs.x;
+    SAVE_GG[298][cnt] = GGSW.L_roll_obs.y;
+    SAVE_GG[299][cnt] = GGSW.L_roll_obs.z;
+    SAVE_GG[300][cnt] = GGSW.RF_landing_angle.r;
+    SAVE_GG[301][cnt] = GGSW.RF_landing_angle.p;
+    SAVE_GG[302][cnt] = GGSW.RF_landing_angle.y;
+    SAVE_GG[303][cnt] = GGSW.LF_landing_angle.r;
+    SAVE_GG[304][cnt] = GGSW.LF_landing_angle.p;
+    SAVE_GG[305][cnt] = GGSW.LF_landing_angle.y;
+    SAVE_GG[306][cnt] = GGSW.X_RTorsoYaw.x;
+    SAVE_GG[307][cnt] = GGSW.X_RTorsoYaw.y;
+    SAVE_GG[308][cnt] = GGSW.X_RTorsoYaw.z;
+    SAVE_GG[309][cnt] = GGSW.X_LTorsoYaw.x;
+    SAVE_GG[310][cnt] = GGSW.X_LTorsoYaw.y;
+    SAVE_GG[311][cnt] = GGSW.X_LTorsoYaw.z;
+
+    SAVE_GG[312][cnt] = GGSW.R_roll_compen_deg;
+    SAVE_GG[313][cnt] = GGSW.L_roll_compen_deg;
+    SAVE_GG[314][cnt] = GGSW.R_knee_compen_deg;
+    SAVE_GG[315][cnt] = GGSW.L_knee_compen_deg;
+
+    SAVE_GG[316][cnt] = GGSW.Y_zmp_e_sum;
+    SAVE_GG[317][cnt] = GGSW.X_zmp_e_sum;
+    SAVE_GG[318][cnt] = GGSW.p_ref_for_COM[0].y;
+    SAVE_GG[319][cnt] = GGSW.p_ref_for_COM[0].x;
+
+    SAVE_GG[320][cnt] = GGSW.RS.IMULocalW.z;
+
+    SAVE_GG[321][cnt] = LHY_con_deg;
+    SAVE_GG[322][cnt] = RHY_con_deg;
+    SAVE_GG[323][cnt] = LHR_con_deg;
+    SAVE_GG[324][cnt] = RHR_con_deg;
+    SAVE_GG[325][cnt] = LHP_con_deg;
+    SAVE_GG[326][cnt] = RHP_con_deg;
+    SAVE_GG[327][cnt] = LKN_con_deg;
+    SAVE_GG[328][cnt] = RKN_con_deg;
+
+    SAVE_GG[328][cnt] = GGSW.ZMP_local.x;
+    SAVE_GG[329][cnt] = GGSW.ZMP_local.y;
+    SAVE_GG[330][cnt] = GGSW.ZMP_local.z;
+    SAVE_GG[331][cnt] = GGSW.MaxFoot_y_cur;
+    SAVE_GG[332][cnt] = userData->FLAG_receivedROS;
+    SAVE_GG[333][cnt] = userData->FLAG_sendROS;
 }
 
 void save_all()
@@ -3837,6 +3899,23 @@ void save_all()
 
     fclose(ffp2);
     printf("save done\n");
+}
+
+void save_all_gg()
+{
+    printf("ggwalk finished and saved%d\n",GGSW.k);
+    FILE* ffp3 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev2.txt","w");
+    for(int i=0;i<GGSW.k;i++)
+    {
+        for(int j=0;j<SAVEN;j++)
+        {
+            fprintf(ffp3,"%f\t",SAVE_GG[j][i]);
+        }
+        fprintf(ffp3,"\n");
+    }
+
+    fclose(ffp3);
+    printf("gg save done\n");
 }
 
 void init_StateEstimator()
