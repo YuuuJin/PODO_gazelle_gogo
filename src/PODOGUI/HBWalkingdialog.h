@@ -69,6 +69,8 @@ private slots:
 
     void on_BT_WALK_ROS_clicked();
     
+    void on_BT_DATA_SAVE_2_clicked();
+
 private:
     LANDialog			*lanData;
     Ui::HBWalkingDialog *ui;

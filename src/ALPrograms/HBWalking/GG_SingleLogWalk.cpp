@@ -80,7 +80,7 @@ int GG_SingleLogWalk::Preveiw_walking()
                              if(userData->ros_footsteps[1 + 3*i] < 0)             //if next footstep data is right
                              {
                                  //change next footstep using data received
-                                 SD_next_step.t = des_step_t;
+                                 SD_next_step.t = ros_step_t;
                                  dsp_ratio = des_dsp_ratio;
 
                                  //stancF_to_NextF limiter
@@ -115,7 +115,7 @@ int GG_SingleLogWalk::Preveiw_walking()
                              if(userData->ros_footsteps[1 + 3*i] > 0)
                              {
                                  //change next footstep using data received
-                                 SD_next_step.t = des_step_t;
+                                 SD_next_step.t = ros_step_t;
                                  dsp_ratio = des_dsp_ratio;
 
                                  //stancF_to_NextF limiter

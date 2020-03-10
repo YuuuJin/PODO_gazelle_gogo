@@ -142,6 +142,7 @@ public:
 
     vec3 des_Velocity; // (Vx, Vy, theta_dot) //from joystick input
     double des_step_t, des_dsp_ratio;
+    double ros_step_t = 1.0;
     vec3 del_pos; // (delX, delY, delTheta_deg) // should be calculated
     void Calc_del_pos_from_Joystick(int _RJOG_RL, int _RJOG_UD, int _LJOG_RL, int _LJOG_UD, double _des_t_step);
     vec3 StancF_to_NextF_limitation(char _swingFoot, vec3 _stancF_to_NextF);
@@ -338,7 +339,6 @@ public:
                           vec3 _F_RF, vec3 _F_LF, vec3 _M_RF, vec3 _M_LF);
 
     vec3 COM_measurment(vec3 _COM, double _zc, vec3 _ZMP_global, vec3 _IMUangle, quat _qPel);
-
 
     // Constructor
     HB_PreviewWalk(){

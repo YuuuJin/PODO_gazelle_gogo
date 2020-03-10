@@ -38,7 +38,13 @@ enum WALKREADYCOMMAND
     WALKREADY_GO_WALKREADYPOS,
     WALKREADY_GO_HOMEPOS,
     WALKREADY_WHEELCMD,
-    WALKREADY_INFINITY
+    WALKREADY_INFINITY,
+    WALKREADY_DUMMY1,
+    WALKREADY_DUMMY2,
+    WALKREADY_DUMMY3,
+    WALKREADY_DUMMY4,
+    WALKREADY_DUMMY5,
+    WALKREADY_SAVE
 };
 
 HBWalkingDialog::HBWalkingDialog(QWidget *parent, LANDialog *_lanData) :
@@ -313,4 +319,12 @@ void HBWalkingDialog::on_BT_WALK_ROS_clicked()
     printf("before send\n");
     pLAN->SendCommand(cmd);
     printf("after send\n");
+}
+
+void HBWalkingDialog::on_BT_DATA_SAVE_2_clicked()
+{
+    USER_COMMAND cmd;
+    cmd.COMMAND_TARGET = AlnumWalkReady;
+    cmd.COMMAND_DATA.USER_COMMAND = WALKREADY_SAVE;
+    pLAN->SendCommand(cmd);
 }

@@ -68,6 +68,7 @@
 #include"../../Gazelle_Ankle_Kine/Gazelle_kine.h"
 
 #define PODO_AL_NAME       "WalkReady"
+#define SAVEN       390
 
 using namespace std;
 const int RB_SUCCESS = true;
@@ -95,6 +96,10 @@ const static int ReadyEnd = 1200;
 const static int HitStart = ReadyEnd+1;
 const static int HitEnd = 4400;
 
+
+void save(int cnt);
+void save_all();
+int save_cnt = 0;
 
 int cntforcountsleep = 0;
 void countsleep(int microsec)
@@ -138,6 +143,7 @@ enum WALKREADYCOMMAND
     WALKREADY_HIT_RETURN,
     WALKREADY_HIT_INIT_POS,
     WALKREADY_WST_RESPOND,
+    WALKREADY_SAVE
 };
 // =====================================================
 
@@ -231,6 +237,11 @@ enum DEMOFLAG
     HIT_READY,
     HIT_RETURN
 };
+
+
+//SAVE
+int Scnt = 0;
+double SAVE[SAVEN][50000];
 
 int NRL_JOINT_TEST_FLAG = false;
 int NRL_JOINT_TEST_STATE = 0;
@@ -352,6 +363,12 @@ int main(int argc, char *argv[])
 
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = WALKREADY_NO_ACT;
             break;
+        case WALKREADY_SAVE:
+        {
+            save_all();
+            sharedCMD->COMMAND[PODO_NO].USER_COMMAND = WALKREADY_NO_ACT;
+            break;
+        }
 		case WALKREADY_GO_HOMEPOS:
 			cout << ">>> COMMAND: WALKREADY_GO_HOMEPOS" << endl;
 
@@ -438,7 +455,8 @@ void RBTaskThread(void *)
 {
 	while(isTerminated == 0)
     {
-
+        save(save_cnt);
+        save_cnt++;
         joint->MoveAllJoint();
         rt_task_suspend(&rtTaskCon);
 	}
@@ -1768,4 +1786,42 @@ double kirkZMPCon_YP2(double u, double ZMP, int zero)
     else if(y < -80.0) y = -80.0;
 
     return y ;
+}
+
+
+void save_all()
+{
+    FILE* ffp2 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev3.txt","w");
+    for(int i=0;i<save_cnt;i++)
+    {
+        for(int j=0;j<SAVEN;j++)
+        {
+            fprintf(ffp2,"%f\t",SAVE[j][i]);
+        }
+        fprintf(ffp2,"\n");
+    }
+
+    fclose(ffp2);
+    printf("save done\n");
+}
+
+void save(int cnt)
+{
+    SAVE[0][cnt] = sharedSEN->ENCODER[MC_GetID(RHP)][MC_GetCH(RHP)].CurrentPosition;
+    SAVE[1][cnt] = sharedSEN->ENCODER[MC_GetID(RKN)][MC_GetCH(RKN)].CurrentPosition;
+    SAVE[2][cnt] = sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentPosition;
+    SAVE[3][cnt] = sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentPosition;
+    SAVE[4][cnt] = sharedSEN->ENCODER[MC_GetID(RHP)][MC_GetCH(RHP)].CurrentReference;
+    SAVE[5][cnt] = sharedSEN->ENCODER[MC_GetID(RKN)][MC_GetCH(RKN)].CurrentReference;
+    SAVE[6][cnt] = sharedSEN->ENCODER[MC_GetID(RAP)][MC_GetCH(RAP)].CurrentReference;
+    SAVE[7][cnt] = sharedSEN->ENCODER[MC_GetID(RAR)][MC_GetCH(RAR)].CurrentReference;
+
+    SAVE[8][cnt] = sharedSEN->ENCODER[MC_GetID(LHP)][MC_GetCH(LHP)].CurrentPosition;
+    SAVE[9][cnt] = sharedSEN->ENCODER[MC_GetID(LKN)][MC_GetCH(LKN)].CurrentPosition;
+    SAVE[10][cnt] = sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentPosition;
+    SAVE[11][cnt] = sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentPosition;
+    SAVE[12][cnt] = sharedSEN->ENCODER[MC_GetID(LHP)][MC_GetCH(LHP)].CurrentReference;
+    SAVE[13][cnt] = sharedSEN->ENCODER[MC_GetID(LKN)][MC_GetCH(LKN)].CurrentReference;
+    SAVE[14][cnt] = sharedSEN->ENCODER[MC_GetID(LAP)][MC_GetCH(LAP)].CurrentReference;
+    SAVE[15][cnt] = sharedSEN->ENCODER[MC_GetID(LAR)][MC_GetCH(LAR)].CurrentReference;
 }

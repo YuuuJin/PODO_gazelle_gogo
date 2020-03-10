@@ -102,6 +102,7 @@ public:
     QPushButton *BT_DATA_SAVE;
     QPushButton *BT_TORQUE_TEST;
     QPushButton *BT_TEST_STOP;
+    QPushButton *BT_DATA_SAVE_2;
 
     void setupUi(QDialog *HBWalkingDialog)
     {
@@ -500,6 +501,11 @@ public:
 
         verticalLayout->addWidget(BT_TEST_STOP);
 
+        BT_DATA_SAVE_2 = new QPushButton(HBWalkingDialog);
+        BT_DATA_SAVE_2->setObjectName(QStringLiteral("BT_DATA_SAVE_2"));
+        BT_DATA_SAVE_2->setGeometry(QRect(530, 180, 61, 41));
+        sizePolicy1.setHeightForWidth(BT_DATA_SAVE_2->sizePolicy().hasHeightForWidth());
+        BT_DATA_SAVE_2->setSizePolicy(sizePolicy1);
 
         retranslateUi(HBWalkingDialog);
 
@@ -554,6 +560,7 @@ public:
         BT_DATA_SAVE->setText(QApplication::translate("HBWalkingDialog", "data save", 0));
         BT_TORQUE_TEST->setText(QApplication::translate("HBWalkingDialog", "Torque Test", 0));
         BT_TEST_STOP->setText(QApplication::translate("HBWalkingDialog", "Stop", 0));
+        BT_DATA_SAVE_2->setText(QApplication::translate("HBWalkingDialog", "walkready save", 0));
     } // retranslateUi
 
 };

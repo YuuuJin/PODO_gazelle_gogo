@@ -107,8 +107,8 @@ vec3 pel_estimated;
 //SAVE
 int Scnt = 0;
 int Sggcnt = 0;
-double SAVE[SAVEN][300000];
-double SAVE_GG[SAVEN][300000];
+double SAVE[SAVEN][50000];
+double SAVE_GG[SAVEN][50000];
 
 // Functions
 void ResetGlobalCoord(int RF_OR_LF_OR_PC_MidFoot);
@@ -349,11 +349,6 @@ int main(int argc, char *argv[])
             Initial_COM = vec3(WBmotion->pCOM_3x1[0],WBmotion->pCOM_3x1[1],WBmotion->pCOM_3x1[2]);
             cout<<"System ID Command received..!"<<endl;
 
-//            vec3 midfoot = vec3((WBmotion->pRF_3x1[0] + WBmotion->pLF_3x1[0])/2, (WBmotion->pRF_3x1[1] + WBmotion->pLF_3x1[1])/2, (WBmotion->pRF_3x1[2] + WBmotion->pLF_3x1[2])/2);
-
-//            WBmotion->addCOMInfo(0, 0, WBmotion->pCOM_3x1[2]- midfoot.z,0.5);
-//            WBmotion->addRFPosInfo(WBmotion->pRF_3x1[0]- midfoot.x, WBmotion->pRF_3x1[1]- midfoot.y, WBmotion->pRF_3x1[2]- midfoot.z,0.5);
-//            WBmotion->addLFPosInfo(WBmotion->pLF_3x1[0]- midfoot.x, WBmotion->pLF_3x1[1]- midfoot.y, WBmotion->pLF_3x1[2]- midfoot.z,0.5);
             WB_FLAG = 1;
 
             usleep(500*1000);
@@ -1243,7 +1238,7 @@ int main(int argc, char *argv[])
         case ROSWALK_NORMAL_START:
         {
             int no_of_step = 10;
-            double t_step = 1.0;
+            double t_step = 0.8;
             double step_stride = 0.;
 
             FILE_LOG(logSUCCESS) << "--------------------------------------------------";
@@ -1288,7 +1283,7 @@ int main(int argc, char *argv[])
             WST_ref_deg = sharedSEN->ENCODER[MC_GetID(WST)][MC_GetCH(WST)].CurrentPosition;
 
             // preview Gain load
-            GGSW.Set_walkingmode(0);
+//            GGSW.Set_walkingmode(0);
             GGSW.PreviewGainLoad(GGSW.zc);
             GGSW.HB_set_step(COM_ini, qPel_ini, pRF, qRF, pLF, qLF, WST_ref_deg, t_step, no_of_step, step_stride, 1);
 
@@ -1306,16 +1301,15 @@ int main(int argc, char *argv[])
 
 
             FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
-            GGSW.ROSWalk_flag = true;
+            GGSW.ROSWalk_flag =true;
             userData->M2G.ROSWalk_state = 1;
 
             for(int i=0;i<15;i++)
             {
                 userData->given_footsteps[i] = 0.;
             }
-            _task_thread = _task_ROS_Walk;
-
-
+//            _task_thread = _task_ROS_Walk;
+            _task_thread = _task_SingleLog_Walk;
 
             userData->ros_walking_cmd = ROSWALK_BREAK;
             break;
@@ -2682,7 +2676,6 @@ void RBTaskThread(void *)
 
             break;
         }
-
         case _task_SingleLog_Walk:
         {
 
@@ -2761,11 +2754,11 @@ void RBTaskThread(void *)
                     }
                 }
 
-                if(userData->ros_step_num < 2)
-                {
-                    FILE_LOG(logERROR) << "ROS Step_phase is null";
-                    GGSW.ROSWalk_off_flag = true;
-                }
+//                if(userData->ros_step_num < 2)
+//                {
+//                    FILE_LOG(logERROR) << "ROS Step_phase is null";
+//                    GGSW.ROSWalk_off_flag = true;
+//                }
             }
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
@@ -2811,12 +2804,11 @@ void RBTaskThread(void *)
 
             ////Foot and Pelv Orientation
             //foot Orientation
-
-                for(int i=0;i<4;i++)
-                {
-                    dbs_qRF[i] = GGSW.qRF_ref[i];
-                    dbs_qLF[i] = GGSW.qLF_ref[i];
-                }
+            for(int i=0;i<4;i++)
+            {
+                dbs_qRF[i] = GGSW.qRF_ref[i];
+                dbs_qLF[i] = GGSW.qLF_ref[i];
+            }
 
 
             // Pelvis Orientation
@@ -2863,6 +2855,7 @@ void RBTaskThread(void *)
                     GGSW.ROSWalk_off_flag = true;
                 }
             }
+
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
 
@@ -3119,7 +3112,8 @@ void Torque2Choreonoid(DesiredStates _Des_State)
 
 
 
-void save_onestep(int cnt){
+void save_onestep(int cnt)
+{
     SAVE[0][cnt] = HBPW.COM_ref.x;
     SAVE[1][cnt] = HBPW.CP_ref.x;
     SAVE[2][cnt] = HBPW.COM_ref.y;
