@@ -31,6 +31,7 @@ typedef struct _STEP_INFO{
     double yaw_rad;
     int swingFoot;
     double t;
+    int ros_step_phase;
 }STEP_INFO;
 
 typedef struct _WINDOW{

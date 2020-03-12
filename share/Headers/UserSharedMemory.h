@@ -9,7 +9,7 @@
 enum rosReceived{
     ROS_RX_FALSE = 0,
     ROS_RX_TRUE,
-    ROS_RX_EMPTY
+    ROS_RX_EMPTY,
 };
 
 typedef struct __LAN_STRUCT_GENERAL_COMMAND_
@@ -83,6 +83,13 @@ typedef struct _GUI2MOTION_
     LAN_GENERAL_COMMAND ros_cmd;
 } GUI2MOTION, *pGUI2MOTION;
 
+struct footstep_info{
+    double  x;
+    double  y;
+    int     step_phase;
+    int     lr_state;
+};
+
 typedef struct _USER_SHM_
 {
     MOTION2GUI  M2G;
@@ -115,7 +122,7 @@ typedef struct _USER_SHM_
     //giving data
     int             FLAG_sendROS;
     unsigned int    step_phase;     // current real step phase
-    float           given_footsteps[15];  // current real stance foot point and current swingfoot destination point
+    footstep_info   cur_footstep;  // current real stance foot point and current swingfoot destination point
     int             lr_state;   // swing foot state -1 or 1
 
     // recieving data
@@ -123,7 +130,7 @@ typedef struct _USER_SHM_
     int             ros_walking_cmd;
     int             ros_footstep_flag;
     unsigned int    ros_step_num;  // planned step phase
-    float           ros_footsteps[15]; // 5set of  del_x, del_y, del_theta w.r.t swingfoot destination coordinate
+    footstep_info   ros_footsteps[4]; // 5set of  del_x, del_y, del_theta w.r.t swingfoot destination coordinate
     int             ros_lr_state;
 
 } USER_SHM, *pUSER_SHM;

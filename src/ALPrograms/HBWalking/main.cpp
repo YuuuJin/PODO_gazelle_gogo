@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
         __IS_WORKING = false;
 
     userData->FLAG_receivedROS = ROS_RX_FALSE;
-    userData->ros_walking_cmd = ROSWALK_BREAK;
+    userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
     userData->ros_footstep_flag = false;
 
     joint->SetMotionOwner(0);
@@ -1109,16 +1109,18 @@ int main(int argc, char *argv[])
             init_StateEstimator(); // State Estimator Initialization
             WB_FLAG = 1;
 
-
             if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 1)
             {
                 FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
                 GGSW.ROSWalk_flag = true;
                 userData->M2G.ROSWalk_state = 1;
 
-                for(int i=0;i<15;i++)
+                for(int i=0;i<4;i++)
                 {
-                    userData->given_footsteps[i] = 0.;
+                    userData->ros_footsteps[i].x = 0.;
+                    userData->ros_footsteps[i].y = 0.;
+                    userData->ros_footsteps[i].step_phase = 0;
+                    userData->ros_footsteps[i].lr_state = 0;
                 }
             }
             _task_thread = _task_SingleLog_Walk;
@@ -1202,9 +1204,12 @@ int main(int argc, char *argv[])
                     GGSW.ROSWalk_flag = true;
                     userData->M2G.ROSWalk_state = 1;
 
-                    for(int i=0;i<15;i++)
+                    for(int i=0;i<4;i++)
                     {
-                        userData->given_footsteps[i] = 0.;
+                        userData->ros_footsteps[i].x = 0.;
+                        userData->ros_footsteps[i].y = 0.;
+                        userData->ros_footsteps[i].step_phase = 0;
+                        userData->ros_footsteps[i].lr_state = 0;
                     }
                 }
                 _task_thread = _task_ROS_Walk;
@@ -1235,7 +1240,7 @@ int main(int argc, char *argv[])
 
         switch(userData->ros_walking_cmd)
         {
-        case ROSWALK_NORMAL_START:
+        case ROS_ROSWALK_NORMAL_START:
         {
             int no_of_step = 10;
             double t_step = 0.8;
@@ -1304,22 +1309,25 @@ int main(int argc, char *argv[])
             GGSW.ROSWalk_flag =true;
             userData->M2G.ROSWalk_state = 1;
 
-            for(int i=0;i<15;i++)
+            for(int i=0;i<4;i++)
             {
-                userData->given_footsteps[i] = 0.;
+                userData->ros_footsteps[i].x = 0.;
+                userData->ros_footsteps[i].y = 0.;
+                userData->ros_footsteps[i].step_phase = 0;
+                userData->ros_footsteps[i].lr_state = 0;
             }
 //            _task_thread = _task_ROS_Walk;
             _task_thread = _task_SingleLog_Walk;
 
-            userData->ros_walking_cmd = ROSWALK_BREAK;
+            userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
             break;
         }
-        case ROSWALK_STOP:
+        case ROS_ROSWALK_STOP:
         {
             FILE_LOG(logSUCCESS) << "ROS Walk Stop\n";
             GGSW.ROSWalk_off_flag = true;
             userData->M2G.ROSWalk_state = 0;
-            userData->ros_walking_cmd = ROSWALK_BREAK;
+            userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
             break;
         }
         }
@@ -2739,33 +2747,53 @@ void RBTaskThread(void *)
             save_onestep_ggsw(GGSW.k);
 
             //// Set shared memory variables
-            if(GGSW.ROSWalk_flag == true)
+            if(GGSW.step_phase_change_flag == true)
             {
-                if(GGSW.step_phase_change_flag == true && GGSW.flag_send_ros == false)
+                //send result one step
+                switch(GGSW.ROSWalk_status)
                 {
-                    //send result one step
-                    printf("send ros\n");
-                    userData->FLAG_sendROS = CMD_DONE;
-                    GGSW.flag_send_ros = true;
-
-                    if(_task_thread == _task_Idle)
+                case ROSWALK_START:
+                {
+                    if(userData->ros_step_num < 2 && GGSW.ROSWalk_off_flag == false)
                     {
-                        userData->FLAG_sendROS = CMD_WALKING_FINISHED;
+                        FILE_LOG(logERROR) << "ROS Step_phase is null";
+                        GGSW.ROSWalk_off_flag = true;
                     }
+                    break;
                 }
-
-//                if(userData->ros_step_num < 2)
-//                {
-//                    FILE_LOG(logERROR) << "ROS Step_phase is null";
-//                    GGSW.ROSWalk_off_flag = true;
-//                }
+                case ROSWALK_STEP_DONE:
+                {
+                    printf("stepping done? %d\n",userData->FLAG_receivedROS);
+                    userData->FLAG_sendROS = CMD_DONE;
+                    GGSW.ROSWalk_status = ROSWALK_START;
+                    break;
+                }
+                case ROSWALK_STEP_PASS:
+                {
+                    printf("step pass\n");
+                    GGSW.ROSWalk_status = ROSWALK_START;
+                    break;
+                }
+                case ROSWALK_WALKING_DONE:
+                {
+                    printf("walking done? %d\n",userData->FLAG_receivedROS);
+                    userData->FLAG_sendROS = CMD_WALKING_FINISHED;
+                    GGSW.ROSWalk_status = ROSWALK_BREAK;
+                    break;
+                }
+                case ROSWALK_FALL_DONE:
+                {
+                    printf("falling done? %d\n",userData->FLAG_receivedROS);
+                    userData->FLAG_sendROS = CMD_ERROR;
+                    GGSW.ROSWalk_status = ROSWALK_BREAK;
+                    break;
+                }
+                }
             }
+
+
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
-
-            for(int i=0;i<15;i++)
-                userData->given_footsteps[i] = userData->ros_footsteps[i];
-
             break;
         }
         case _task_ROS_Walk:
@@ -2831,20 +2859,16 @@ void RBTaskThread(void *)
 
             //// Set shared memory variables
 
-            if(GGSW.flag_send_ros == false)
+            if(GGSW.ROSWalk_status == ROSWALK_STEP_DONE)
             {
-                GGSW.flag_send_ros = true;
-
-                //send result one step
-                if(_task_thread == _task_Idle)
-                {
-                    printf("walking done? %d\n",userData->FLAG_receivedROS);
-                    userData->FLAG_sendROS = CMD_WALKING_FINISHED;
-                }else
-                {
-                    printf("stepping done? %d\n",userData->FLAG_receivedROS);
-                    userData->FLAG_sendROS = CMD_DONE;
-                }
+                printf("stepping done? %d\n",userData->FLAG_receivedROS);
+                userData->FLAG_sendROS = CMD_DONE;
+                GGSW.ROSWalk_status = ROSWALK_START;
+            }else if(GGSW.ROSWalk_status == ROSWALK_WALKING_DONE)
+            {
+                printf("walking done? %d\n",userData->FLAG_receivedROS);
+                userData->FLAG_sendROS = CMD_WALKING_FINISHED;
+                GGSW.ROSWalk_status = ROSWALK_BREAK;
             }
 
             if(GGSW.ROSWalk_flag == true && userData->ros_footstep_flag == true)
@@ -2858,10 +2882,6 @@ void RBTaskThread(void *)
 
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
-
-            for(int i=0;i<15;i++)
-                userData->given_footsteps[i] = userData->ros_footsteps[i];
-
             break;
         }
         case _task_Idle:
@@ -2979,10 +2999,6 @@ void ResetGlobalCoord(int RF_OR_LF_OR_PC_MidFoot){
         WBmotion->pPel_3x1[1] = WBmotion->pPel_3x1[1] - midfoot.y;
         WBmotion->pPel_3x1[2] = WBmotion->pPel_3x1[2] - midfoot.z;
 
-//        WBmotion->addCOMInfo(WBmotion->pCOM_3x1[0], WBmotion->pCOM_3x1[1], WBmotion->pCOM_3x1[2],0.005);
-//        WBmotion->addRFPosInfo(WBmotion->pRF_3x1[0], WBmotion->pRF_3x1[1], WBmotion->pRF_3x1[2],0.005);
-//        WBmotion->addLFPosInfo(WBmotion->pLF_3x1[0], WBmotion->pLF_3x1[1], WBmotion->pLF_3x1[2],0.005);
-//        WBmotion->updateAll();
         WBmotion->addCOMInfo_HB(WBmotion->pCOM_3x1[0], WBmotion->pCOM_3x1[1], WBmotion->pCOM_3x1[2]);
         WBmotion->addRFPosInfo_HB(WBmotion->pRF_3x1[0], WBmotion->pRF_3x1[1], WBmotion->pRF_3x1[2]);
         WBmotion->addLFPosInfo_HB(WBmotion->pLF_3x1[0], WBmotion->pLF_3x1[1], WBmotion->pLF_3x1[2]);
@@ -3876,6 +3892,9 @@ void save_onestep_ggsw(int cnt)
     SAVE_GG[331][cnt] = GGSW.MaxFoot_y_cur;
     SAVE_GG[332][cnt] = userData->FLAG_receivedROS;
     SAVE_GG[333][cnt] = userData->FLAG_sendROS;
+
+    SAVE_GG[334][cnt] = GGSW.step_status;
+    SAVE_GG[335][cnt] = GGSW.ROSWalk_status;
 }
 
 void save_all()

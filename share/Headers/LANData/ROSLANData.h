@@ -14,10 +14,10 @@ enum COMMAND
 
 enum RosCommand
 {
-    ROSWALK_BREAK = 0,
-    ROSWALK_STOP,
-    ROSWALK_NORMAL_START,
-    ROSWALK_SINGLELOG_START
+    ROS_ROSWALK_BREAK = 0,
+    ROS_ROSWALK_STOP,
+    ROS_ROSWALK_NORMAL_START,
+    ROS_ROSWALK_SINGLELOG_START
 };
 
 /*----------------------PODO(Gazelle) to ROS-------------------------*/
@@ -27,7 +27,7 @@ struct P2R_status
     int     step_phase;
 
     int     lr_state;
-    float   given_footsteps[15];
+    footstep_info   cur_footstep;
     float   pel_pos_est[3];
 
     float   joint_reference[31];
@@ -45,11 +45,12 @@ struct P2R_result
 };
 
 /*--------------------------ROS to PODO(Gazelle)--------------------*/
+
 struct R2P_command
 {
     int             ros_cmd;
 
-    float           des_footsteps[15];
+    footstep_info   des_footsteps[4];
 
     unsigned int    step_num;
     int             footstep_flag;

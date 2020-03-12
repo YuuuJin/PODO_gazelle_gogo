@@ -2,11 +2,21 @@
 #define GG_SINGLELOGWALK_H
 
 #include "HB_PreviewWalk.h"
+#include "../../../share/Headers/RBLog.h"
 
 enum{
     NORMAL_WALKING = 0,
     SINGLELOG,
     FOOT_BRIDGE
+};
+
+enum{
+    ROSWALK_BREAK = 0,
+    ROSWALK_START,
+    ROSWALK_STEP_PASS,
+    ROSWALK_STEP_DONE,
+    ROSWALK_WALKING_DONE,
+    ROSWALK_FALL_DONE
 };
 
 class GG_SingleLogWalk : public HB_PreviewWalk
@@ -26,7 +36,9 @@ public:
     const double singlelog_w = 0.05;
     const double MaxFoot_y = 0.2;
     double MaxFoot_y_cur = MaxFoot_y;
-    bool flag_send_ros;
+    int ROSWalk_status = ROSWALK_BREAK;
+    int step_status = DSP;
+    int roswalk_first_phase;
 
     double cur_pos_x;
     double cur_pos_y;

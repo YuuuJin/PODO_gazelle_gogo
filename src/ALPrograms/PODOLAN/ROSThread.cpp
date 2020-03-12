@@ -98,8 +98,7 @@ void ROSWorker::sendSTATUS()
 
     status.step_phase=sharedUSER->step_phase;
 
-    for(int i=0;i<15;i++)
-        status.given_footsteps[i] = sharedUSER->given_footsteps[i];
+    status.cur_footstep = sharedUSER->cur_footstep;
 
     status.lr_state = sharedUSER->lr_state;
 
@@ -111,12 +110,16 @@ void ROSWorker::sendSTATUS()
 
 void ROSWorker::sendRESULT()
 {
-    if(sharedUSER->FLAG_sendROS != CMD_BREAK && sharedUSER->FLAG_receivedROS == ROS_RX_EMPTY)
+    if(sharedUSER->FLAG_sendROS != CMD_BREAK)
     {
-        printf("send ros : %d\n",sharedUSER->FLAG_sendROS);
+        FILE_LOG(logSUCCESS) << "send to ros";
+        printf("sendros flag is %d\n",sharedUSER->FLAG_sendROS);
+
         result.gazelle_result = sharedUSER->FLAG_sendROS;
         result.step_phase = sharedUSER->step_phase;
         result.lr_state = sharedUSER->lr_state;
+
+        printf("result : %d\n",result.step_phase);
 
         char *buf = new char[sizeof(P2R_result)];
         memcpy(buf, &result, sizeof(P2R_result));
@@ -137,34 +140,38 @@ void ROSWorker::readCMD(char* _data)
     sharedUSER->ros_step_num=command.step_num;
     sharedUSER->ros_footstep_flag = command.footstep_flag;
 
-    for(int i=0;i<15;i++)
-        sharedUSER->ros_footsteps[i] = command.des_footsteps[i];
+    for(int i=0; i<4; i++)
+    {
+        sharedUSER->ros_footsteps[i].x = command.des_footsteps[i].x;
+        sharedUSER->ros_footsteps[i].y = command.des_footsteps[i].y;
+        sharedUSER->ros_footsteps[i].step_phase = command.des_footsteps[i].step_phase;
+        sharedUSER->ros_footsteps[i].lr_state = command.des_footsteps[i].lr_state;
+
+        printf("%d, step_phase = %d, lr_State = %d\n",i,sharedUSER->ros_footsteps[i].step_phase, sharedUSER->ros_footsteps[i].lr_state);
+
+    }
 
     switch(sharedUSER->ros_walking_cmd)
     {
-    case ROSWALK_NORMAL_START:
+    case ROS_ROSWALK_NORMAL_START:
         printf("    * ros_cmd = Normal_walking Start\n");
         break;
-    case ROSWALK_SINGLELOG_START:
+    case ROS_ROSWALK_SINGLELOG_START:
         printf("    * ros_cmd = SingleLog_walking Start\n");
         break;
-    case ROSWALK_STOP:
+    case ROS_ROSWALK_STOP:
         printf("    * ros_cmd = Walking Stop\n");
         break;
     }
 
     if(sharedUSER->ros_footstep_flag == true)
     {
-        for(int m=0; m<15; m++)
-        {
-            sharedUSER->given_footsteps[m]=command.des_footsteps[m];
-        }
-
-        printf("    * flag is on. next 3 steps is\n");
-        printf("    [%.2f, %.2f, %.2f], [%.2f, %.2f, %.2f], [%.2f, %.2f, %.2f]\n",
-               sharedUSER->ros_footsteps[0],sharedUSER->ros_footsteps[1],sharedUSER->ros_footsteps[2],
-                sharedUSER->ros_footsteps[3],sharedUSER->ros_footsteps[4],sharedUSER->ros_footsteps[5],
-                sharedUSER->ros_footsteps[6],sharedUSER->ros_footsteps[7],sharedUSER->ros_footsteps[8]);
+        printf("    * flag is on. next 4 steps is\n");
+        printf("    [%dth :%.2f, %.2f], [%dth :%.2f, %.2f]\n    [%dth :%.2f, %.2f], [%dth :%.2f, %.2f]\n",
+                sharedUSER->ros_footsteps[0].step_phase, sharedUSER->ros_footsteps[0].x, sharedUSER->ros_footsteps[0].y,
+                sharedUSER->ros_footsteps[1].step_phase, sharedUSER->ros_footsteps[1].x, sharedUSER->ros_footsteps[1].y,
+                sharedUSER->ros_footsteps[2].step_phase, sharedUSER->ros_footsteps[2].x, sharedUSER->ros_footsteps[2].y,
+                sharedUSER->ros_footsteps[3].step_phase, sharedUSER->ros_footsteps[3].x, sharedUSER->ros_footsteps[3].y);
 
         if(sharedUSER->ros_lr_state == -1)
             printf("    * lr_state = RIGHT\n");
@@ -177,7 +184,6 @@ void ROSWorker::readCMD(char* _data)
     }
     printf("=====================================================\n");
     sharedUSER->FLAG_receivedROS = ROS_RX_TRUE;
-
 }
 
 ROSServer::ROSServer()
