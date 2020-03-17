@@ -126,7 +126,9 @@ void ROSWorker::sendRESULT()
         serverRST->RBSendData(buf, sizeof(P2R_result));
         delete [] buf;
         sharedUSER->FLAG_sendROS = CMD_BREAK;
-        sharedUSER->FLAG_receivedROS = ROS_RX_FALSE;
+
+        if(sharedUSER->FLAG_receivedROS == ROS_RX_EMPTY)
+            sharedUSER->FLAG_receivedROS = ROS_RX_FALSE;
     }
 }
 
