@@ -389,7 +389,7 @@ public:
         DSP_FZ_Control_flag = true;
 
         //7. Pos ankle torque control
-        Pos_Ankle_torque_control_flag = false;//true;
+        Pos_Ankle_torque_control_flag = true;
 
     }
 

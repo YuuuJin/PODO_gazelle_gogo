@@ -106,7 +106,6 @@ int GG_SingleLogWalk::Preveiw_walking()
                              SD_next_step.ros_step_phase = roswalk_first_phase + userData->ros_footsteps[i].step_phase;
 
 
-                             userData->FLAG_receivedROS = ROS_RX_EMPTY;
 
 
                              //check next step safety
@@ -121,6 +120,7 @@ int GG_SingleLogWalk::Preveiw_walking()
                              }else
                              {
                                  overwrite_flag = true;
+                                 userData->FLAG_receivedROS = ROS_RX_EMPTY;
                              }
                          }else      //if next swing foot is right
                          {
@@ -142,7 +142,6 @@ int GG_SingleLogWalk::Preveiw_walking()
 
                              SD_next_step.ros_step_phase = roswalk_first_phase + userData->ros_footsteps[i].step_phase;
 
-                             userData->FLAG_receivedROS = ROS_RX_EMPTY;
 
                              //check next step safety
                              if(SD_next_step.swingFoot == SDB[SD_next_step.ros_step_phase - 1].swingFoot) //(R->R)
@@ -156,6 +155,7 @@ int GG_SingleLogWalk::Preveiw_walking()
                              }else
                              {
                                  overwrite_flag = true;
+                                 userData->FLAG_receivedROS = ROS_RX_EMPTY;
                              }
                          }
 
@@ -318,7 +318,7 @@ int GG_SingleLogWalk::Preveiw_walking()
     {
         cout<<"Walk done!"<<endl;
         ROSWalk_status = ROSWALK_WALKING_DONE;
-        step_phase_change_flag = true;
+//        step_phase_change_flag = true;
         return -1;
     }
 

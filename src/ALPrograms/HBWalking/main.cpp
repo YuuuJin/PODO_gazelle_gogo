@@ -237,6 +237,17 @@ int main(int argc, char *argv[])
     // WBIK Initialize
     WBmotion = new TaskMotion(sharedREF, sharedSEN, sharedCMD, joint);
 
+    if(__IS_GAZEBO == true)
+    {
+        HBPW.Pos_Ankle_torque_control_flag = false;
+        GGSW.Pos_Ankle_torque_control_flag = false;
+    }else
+    {
+        HBPW.Pos_Ankle_torque_control_flag = true;
+        GGSW.Pos_Ankle_torque_control_flag = true;
+
+    }
+
     while(__IS_WORKING)
     {
         usleep(100*1000);
