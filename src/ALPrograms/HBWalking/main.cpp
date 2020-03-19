@@ -165,6 +165,7 @@ enum SE_COMMAND
 enum task_thread
 {
     _task_Idle = 0,
+    _task_Idle_SingleLog,
     _task_CPS_walking,
     _task_Stabilization,
     _task_TorqueTest,
@@ -2708,7 +2709,7 @@ void RBTaskThread(void *)
             //// Main Walking code
             if(GGSW.Preveiw_walking() == -1)
             {
-                _task_thread = _task_Idle;
+                _task_thread = _task_Idle_SingleLog;
 
                 save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
@@ -2801,7 +2802,6 @@ void RBTaskThread(void *)
                 }
                 }
             }
-
 
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
@@ -2896,6 +2896,7 @@ void RBTaskThread(void *)
             break;
         }
         case _task_Idle:
+        case _task_Idle_SingleLog:
 
             break;
         }
@@ -2917,7 +2918,7 @@ void RBTaskThread(void *)
         joint->SetJointRefAngle(RHP,WBmotion->LJ.RHP*R2D + RHP_con_deg);
         joint->SetJointRefAngle(RKN,WBmotion->LJ.RKN*R2D + RKN_con_deg);
 
-        if(_task_thread == _task_SingleLog_Walk)
+        if(_task_thread == _task_SingleLog_Walk || _task_thread == _task_Idle_SingleLog)
         {
             GK.IK_Ankle_right(WBmotion->LJ.RAP*R2D + GGSW.RF_angle_ctrl.y*R2D, WBmotion->LJ.RAR*R2D + GGSW.RF_angle_ctrl.x*R2D, RA1_ref_deg, RA2_ref_deg);
         }else
@@ -2938,7 +2939,7 @@ void RBTaskThread(void *)
         joint->SetJointRefAngle(LHP,WBmotion->LJ.LHP*R2D + LHP_con_deg);
         joint->SetJointRefAngle(LKN,WBmotion->LJ.LKN*R2D + LKN_con_deg);
 
-        if(_task_thread == _task_SingleLog_Walk)
+        if(_task_thread == _task_SingleLog_Walk || _task_thread == _task_Idle_SingleLog)
         {
             GK.IK_Ankle_left(WBmotion->LJ.LAP*R2D + GGSW.LF_angle_ctrl.y*R2D, WBmotion->LJ.LAR*R2D + GGSW.LF_angle_ctrl.x*R2D, LA1_ref_deg, LA2_ref_deg);
         }else
@@ -2961,7 +2962,7 @@ void RBTaskThread(void *)
 //==============================//
 void RBFlagThread(void *)
 {
-    rt_task_set_periodic(NULL, TM_NOW, 200*1000);        // 5 usec
+    rt_task_set_periodic(NULL, TM_NOW, 200*1000);        // 2 usec
 
     while(__IS_WORKING)
     {

@@ -1775,19 +1775,28 @@ int GG_SingleLogWalk::Preveiw_walking()
     dT = t_step - t_now;
     k++;
 
+    if(dT < t_step/2)
+    {
+        if(SDB[step_phase].ros_step_phase != -1 && userData->FLAG_receivedROS == ROS_RX_EMPTY)
+        {
+            printf("ros step_done\n");
+//            ROSWalk_status = ROSWALK_STEP_DONE;
+            userData->FLAG_sendROS = 2;
+        }
+    }
     if(dT <= dt + dt/2)
     {
         step_phase_change_flag = true;
-
-        if(SDB[step_phase].ros_step_phase != -1)
-        {
-            printf("ros step_done\n");
-            ROSWalk_status = ROSWALK_STEP_DONE;
-        }else
-        {
-            printf("step_done\n");
-            ROSWalk_status = ROSWALK_STEP_PASS;
-        }
+        printf("step done\n");
+//        if(SDB[step_phase].ros_step_phase != -1)
+//        {
+//            printf("ros step_done\n");
+//            ROSWalk_status = ROSWALK_STEP_DONE;
+//        }else
+//        {
+//            printf("step_done\n");
+//            ROSWalk_status = ROSWALK_STEP_PASS;
+//        }
 
         step_phase++;
     }
