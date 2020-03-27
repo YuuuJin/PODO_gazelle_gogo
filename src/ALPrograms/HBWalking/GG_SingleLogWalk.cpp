@@ -34,6 +34,7 @@ int GG_SingleLogWalk::Preveiw_walking()
                  STEP_INFO SD_last;
 
                SD_last.Fpos = (SDB[step_phase].Fpos + SDB[step_phase + 1].Fpos)/2; // middle Foot
+               printf("step_phase y = %f, +1 y = %f\n",SDB[step_phase].Fpos.y,SDB[step_phase+1].Fpos.y);
 //                 SD_last.Fpos.x = (pRF_ref.x + pLF_ref.x)/2; // middle Foot
 //                 SD_last.Fpos.y = (pRF_ref.y + pLF_ref.y)/2; // middle Foot
 //                 SD_last.Fpos.z = 0;

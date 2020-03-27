@@ -43,7 +43,7 @@ void ROSWorker::ROSConnected()
 {
     connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendSTATUS()));
     connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendRESULT()));
-    sendTimer->start(10);
+    sendTimer->start(20);
     sharedUSER->M2G.ROSflag = true;
 }
 
@@ -67,40 +67,44 @@ void ROSWorker::RSTDisconnected()
 
 void ROSWorker::sendSTATUS()
 {
-    for(int i=0; i<NO_OF_JOINTS; i++)
+//    for(int i=0; i<NO_OF_JOINTS; i++)
     {
-        status.joint_reference[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentReference;
-        status.joint_encoder[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentPosition;
+//        status.joint_reference[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentReference;
+//        status.joint_encoder[i] = sharedSEN->ENCODER[MC_GetID(i)][MC_GetCH(i)].CurrentPosition;
     }
 
-    status.ft_sensor[0] = sharedSEN->FT[0].Mx;
-    status.ft_sensor[1] = sharedSEN->FT[0].My;
-    status.ft_sensor[2] = sharedSEN->FT[0].Mz;
-    status.ft_sensor[3] = sharedSEN->FT[0].Fx;
-    status.ft_sensor[4] = sharedSEN->FT[0].Fy;
-    status.ft_sensor[5] = sharedSEN->FT[0].Fz;
-    status.ft_sensor[6] = sharedSEN->FT[1].Mx;
-    status.ft_sensor[7] = sharedSEN->FT[1].My;
-    status.ft_sensor[8] = sharedSEN->FT[1].Mz;
-    status.ft_sensor[9] = sharedSEN->FT[1].Fx;
-    status.ft_sensor[10]= sharedSEN->FT[1].Fy;
-    status.ft_sensor[11]= sharedSEN->FT[1].Fz;
+//    status.ft_sensor[0] = sharedSEN->FT[0].Mx;
+//    status.ft_sensor[1] = sharedSEN->FT[0].My;
+//    status.ft_sensor[2] = sharedSEN->FT[0].Mz;
+//    status.ft_sensor[3] = sharedSEN->FT[0].Fx;
+//    status.ft_sensor[4] = sharedSEN->FT[0].Fy;
+//    status.ft_sensor[5] = sharedSEN->FT[0].Fz;
+//    status.ft_sensor[6] = sharedSEN->FT[1].Mx;
+//    status.ft_sensor[7] = sharedSEN->FT[1].My;
+//    status.ft_sensor[8] = sharedSEN->FT[1].Mz;
+//    status.ft_sensor[9] = sharedSEN->FT[1].Fx;
+//    status.ft_sensor[10]= sharedSEN->FT[1].Fy;
+//    status.ft_sensor[11]= sharedSEN->FT[1].Fz;
 
-    status.imu_sensor[0] = sharedSEN->IMU[0].Roll;
-    status.imu_sensor[1] = sharedSEN->IMU[0].Pitch;
-    status.imu_sensor[2] = sharedSEN->IMU[0].Yaw;
-    status.imu_sensor[3] = sharedSEN->IMU[0].RollVel;
-    status.imu_sensor[4] = sharedSEN->IMU[0].PitchVel;
-    status.imu_sensor[5] = sharedSEN->IMU[0].YawVel;
-    status.imu_sensor[6] = sharedSEN->IMU[0].AccX;
-    status.imu_sensor[7] = sharedSEN->IMU[0].AccY;
-    status.imu_sensor[8] = sharedSEN->IMU[0].AccZ;
+//    status.imu_sensor[0] = sharedSEN->IMU[0].Roll;
+//    status.imu_sensor[1] = sharedSEN->IMU[0].Pitch;
+//    status.imu_sensor[2] = sharedSEN->IMU[0].Yaw;
+//    status.imu_sensor[3] = sharedSEN->IMU[0].RollVel;
+//    status.imu_sensor[4] = sharedSEN->IMU[0].PitchVel;
+//    status.imu_sensor[5] = sharedSEN->IMU[0].YawVel;
+//    status.imu_sensor[6] = sharedSEN->IMU[0].AccX;
+//    status.imu_sensor[7] = sharedSEN->IMU[0].AccY;
+//    status.imu_sensor[8] = sharedSEN->IMU[0].AccZ;
 
-    status.step_phase=sharedUSER->step_phase;
+    status.step_phase = sharedUSER->step_phase;
 
-    status.cur_footstep = sharedUSER->cur_footstep;
+//    status.cur_footstep = sharedUSER->cur_footstep;
 
-    status.lr_state = sharedUSER->lr_state;
+//    status.lr_state = sharedUSER->lr_state;
+
+    status.pel_pos_est[0] = sharedUSER->pel_pose[0];
+    status.pel_pos_est[1] = sharedUSER->pel_pose[1];
+    status.pel_pos_est[2] = sharedUSER->pel_pose[2];
 
     char *buf = new char[sizeof(P2R_status)];
     memcpy(buf, &status, sizeof(P2R_status));

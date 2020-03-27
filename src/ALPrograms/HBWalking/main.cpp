@@ -2803,6 +2803,10 @@ void RBTaskThread(void *)
                 }
             }
 
+            userData->pel_pose[0] = GGSW.COM_m_filtered[0];
+            userData->pel_pose[1] = GGSW.COM_m_filtered[1];
+            userData->pel_pose[2] = GGSW.COM_m_filtered[2];
+
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
             break;
@@ -3843,7 +3847,6 @@ void save_onestep_ggsw(int cnt)
     SAVE_GG[278][cnt] = GGSW.Pelv_roll_vel_ref;
     SAVE_GG[279][cnt] = GGSW.Pelv_roll_ref;
 
-
     SAVE_GG[280][cnt] = GGSW.p_ref_con_error_filtered;
     SAVE_GG[281][cnt] = GGSW.COM_m_filtered.x;
     SAVE_GG[282][cnt] = GGSW.COM_m_filtered.y;
@@ -3907,6 +3910,10 @@ void save_onestep_ggsw(int cnt)
 
     SAVE_GG[334][cnt] = GGSW.step_status;
     SAVE_GG[335][cnt] = GGSW.ROSWalk_status;
+
+    SAVE_GG[336][cnt] = userData->pel_pose[0];
+    SAVE_GG[337][cnt] = userData->pel_pose[1];
+    SAVE_GG[338][cnt] = userData->pel_pose[2];
 }
 
 void save_all()
