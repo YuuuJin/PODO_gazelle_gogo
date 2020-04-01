@@ -150,6 +150,7 @@ void ROSWorker::readCMD(char* _data)
     {
         sharedUSER->ros_footsteps[i].x = command.des_footsteps[i].x;
         sharedUSER->ros_footsteps[i].y = command.des_footsteps[i].y;
+        sharedUSER->ros_footsteps[i].r = command.des_footsteps[i].r;
         sharedUSER->ros_footsteps[i].step_phase = command.des_footsteps[i].step_phase;
         sharedUSER->ros_footsteps[i].lr_state = command.des_footsteps[i].lr_state;
 
@@ -173,11 +174,11 @@ void ROSWorker::readCMD(char* _data)
     if(sharedUSER->ros_footstep_flag == true)
     {
         printf("    * flag is on. next 4 steps is\n");
-        printf("    [%dth :%.2f, %.2f], [%dth :%.2f, %.2f]\n    [%dth :%.2f, %.2f], [%dth :%.2f, %.2f]\n",
-                sharedUSER->ros_footsteps[0].step_phase, sharedUSER->ros_footsteps[0].x, sharedUSER->ros_footsteps[0].y,
-                sharedUSER->ros_footsteps[1].step_phase, sharedUSER->ros_footsteps[1].x, sharedUSER->ros_footsteps[1].y,
-                sharedUSER->ros_footsteps[2].step_phase, sharedUSER->ros_footsteps[2].x, sharedUSER->ros_footsteps[2].y,
-                sharedUSER->ros_footsteps[3].step_phase, sharedUSER->ros_footsteps[3].x, sharedUSER->ros_footsteps[3].y);
+        printf("    [%dth :%.2f, %.2f, %.2f], [%dth :%.2f, %.2f, %.2f]\n    [%dth :%.2f, %.2f, %.2f], [%dth :%.2f, %.2f, %.2f]\n",
+                sharedUSER->ros_footsteps[0].step_phase, sharedUSER->ros_footsteps[0].x, sharedUSER->ros_footsteps[0].y, sharedUSER->ros_footsteps[0].r,
+                sharedUSER->ros_footsteps[1].step_phase, sharedUSER->ros_footsteps[1].x, sharedUSER->ros_footsteps[1].y, sharedUSER->ros_footsteps[1].r,
+                sharedUSER->ros_footsteps[2].step_phase, sharedUSER->ros_footsteps[2].x, sharedUSER->ros_footsteps[2].y, sharedUSER->ros_footsteps[2].r,
+                sharedUSER->ros_footsteps[3].step_phase, sharedUSER->ros_footsteps[3].x, sharedUSER->ros_footsteps[3].y, sharedUSER->ros_footsteps[3].r);
 
         if(sharedUSER->ros_lr_state == -1)
             printf("    * lr_state = RIGHT\n");

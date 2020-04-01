@@ -93,11 +93,13 @@ int GG_SingleLogWalk::Preveiw_walking()
 
                              //stancF_to_NextF limiter
                              quat del_Fquat_local = quat(vec3(0,0,1),del_pos.z*D2R);
+                             quat des_yaw = quat(vec3(0,0,1), userData->ros_footsteps[i].r*D2R);
 
                              SD_next_step.swingFoot = LFoot;
 
                              //load ros footstep
-                             SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
+//                             SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
+                             SD_next_step.Fquat = des_yaw*del_Fquat_local;
 
                              SD_next_step.Fpos.x = userData->ros_footsteps[i].x;
                              SD_next_step.Fpos.y = userData->ros_footsteps[i].y;
@@ -131,11 +133,13 @@ int GG_SingleLogWalk::Preveiw_walking()
 
                              //stancF_to_NextF limiter
                              quat del_Fquat_local = quat(vec3(0,0,1),del_pos.z*D2R);
+                             quat des_yaw = quat(vec3(0,0,1), userData->ros_footsteps[i].r*D2R);
 
                              SD_next_step.swingFoot = RFoot;
 
                              //load ros footstep
                              SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
+                             SD_next_step.Fquat = des_yaw*del_Fquat_local;
 
                              SD_next_step.Fpos.x = userData->ros_footsteps[i].x;
                              SD_next_step.Fpos.y = userData->ros_footsteps[i].y;

@@ -86,6 +86,7 @@ typedef struct _GUI2MOTION_
 struct footstep_info{
     double  x;
     double  y;
+    double  r;
     int     step_phase;
     int     lr_state;
 };

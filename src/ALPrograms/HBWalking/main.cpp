@@ -1131,6 +1131,7 @@ int main(int argc, char *argv[])
                 {
                     userData->ros_footsteps[i].x = 0.;
                     userData->ros_footsteps[i].y = 0.;
+                    userData->ros_footsteps[i].r = 0.;
                     userData->ros_footsteps[i].step_phase = 0;
                     userData->ros_footsteps[i].lr_state = 0;
                 }
@@ -1220,6 +1221,7 @@ int main(int argc, char *argv[])
                     {
                         userData->ros_footsteps[i].x = 0.;
                         userData->ros_footsteps[i].y = 0.;
+                        userData->ros_footsteps[i].r = 0.;
                         userData->ros_footsteps[i].step_phase = 0;
                         userData->ros_footsteps[i].lr_state = 0;
                     }
@@ -1325,6 +1327,7 @@ int main(int argc, char *argv[])
             {
                 userData->ros_footsteps[i].x = 0.;
                 userData->ros_footsteps[i].y = 0.;
+                userData->ros_footsteps[i].r = 0.;
                 userData->ros_footsteps[i].step_phase = 0;
                 userData->ros_footsteps[i].lr_state = 0;
             }
