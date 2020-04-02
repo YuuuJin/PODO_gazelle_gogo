@@ -29,6 +29,7 @@ public:
     vec3 FootY_trajectory(double _real_t_step, double _t_foot_now, double _dsp_ratio, vec3 _y_dy_ddy_Foot_old, double _Y_footStep);
     void Set_walkingmode(int _mode) { Walking_mode = _mode;}
     void Calc_del_pos_from_ROS();
+    void rosstep_l2g();
 public:
     int ROSWalk_flag = false;
     int ROSWalk_off_flag = false;
@@ -40,9 +41,13 @@ public:
     int step_status = DSP;
     int roswalk_first_phase;
 
+    footstep_info rosstep_global[4];
+
     double cur_pos_x;
     double cur_pos_y;
     double cur_deg_z;
 };
+
+
 
 #endif // GG_SINGLELOGWALK_H

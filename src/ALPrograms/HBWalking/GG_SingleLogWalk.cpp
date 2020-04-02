@@ -75,17 +75,13 @@ int GG_SingleLogWalk::Preveiw_walking()
                  {
                      STEP_INFO SD_next_step;
                      int overwrite_flag = false;
+                     rosstep_l2g();
 
                      FILE_LOG(logSUCCESS) << "ROS command received";
 
-                     if(userData->ros_footsteps[0].step_phase == 0)//first step
-                     {
-                         roswalk_first_phase = step_phase + 1;
-                     }
-
                      for(int i=0; i<4; i++)
                      {
-                         if(userData->ros_footsteps[i].y < 0)   //if next swing foot is left
+                         if(rosstep_global[i].lr_state == RFoot)//if next swing foot is left
                          {
                              //change next footstep using ros data
                              SD_next_step.t = ros_step_t;
@@ -93,7 +89,7 @@ int GG_SingleLogWalk::Preveiw_walking()
 
                              //stancF_to_NextF limiter
                              quat del_Fquat_local = quat(vec3(0,0,1),del_pos.z*D2R);
-                             quat des_yaw = quat(vec3(0,0,1), userData->ros_footsteps[i].r*D2R);
+                             quat des_yaw = quat(vec3(0,0,1), rosstep_global[i].r*D2R);
 
                              SD_next_step.swingFoot = LFoot;
 
@@ -101,12 +97,12 @@ int GG_SingleLogWalk::Preveiw_walking()
 //                             SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
                              SD_next_step.Fquat = des_yaw*del_Fquat_local;
 
-                             SD_next_step.Fpos.x = userData->ros_footsteps[i].x;
-                             SD_next_step.Fpos.y = userData->ros_footsteps[i].y;
+                             SD_next_step.Fpos.x = rosstep_global[i].x;
+                             SD_next_step.Fpos.y = rosstep_global[i].y;
                              SD_next_step.Fpos.z = 0.0;
 
 
-                             SD_next_step.ros_step_phase = roswalk_first_phase + userData->ros_footsteps[i].step_phase;
+                             SD_next_step.ros_step_phase = roswalk_first_phase + rosstep_global[i].step_phase;
 
 
 
@@ -133,7 +129,7 @@ int GG_SingleLogWalk::Preveiw_walking()
 
                              //stancF_to_NextF limiter
                              quat del_Fquat_local = quat(vec3(0,0,1),del_pos.z*D2R);
-                             quat des_yaw = quat(vec3(0,0,1), userData->ros_footsteps[i].r*D2R);
+                             quat des_yaw = quat(vec3(0,0,1), rosstep_global[i].r*D2R);
 
                              SD_next_step.swingFoot = RFoot;
 
@@ -141,11 +137,11 @@ int GG_SingleLogWalk::Preveiw_walking()
                              SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
                              SD_next_step.Fquat = des_yaw*del_Fquat_local;
 
-                             SD_next_step.Fpos.x = userData->ros_footsteps[i].x;
-                             SD_next_step.Fpos.y = userData->ros_footsteps[i].y;
+                             SD_next_step.Fpos.x = rosstep_global[i].x;
+                             SD_next_step.Fpos.y = rosstep_global[i].y;
                              SD_next_step.Fpos.z = 0.0;
 
-                             SD_next_step.ros_step_phase = roswalk_first_phase + userData->ros_footsteps[i].step_phase;
+                             SD_next_step.ros_step_phase = roswalk_first_phase + rosstep_global[i].step_phase;
 
 
                              //check next step safety
@@ -204,10 +200,10 @@ int GG_SingleLogWalk::Preveiw_walking()
                              SDB[step_phase + 1 + i].ros_step_phase = -1;
                          }
                      }
-                     printf("SDB[0,1,2] = %f(%d), %f(%d), %f(%d)\n",
-                                SDB[step_phase].Fpos.x,     SDB[step_phase].ros_step_phase,
-                                SDB[step_phase+1].Fpos.x,   SDB[step_phase+1].ros_step_phase,
-                                SDB[step_phase+2].Fpos.x,   SDB[step_phase+2].ros_step_phase);
+                     printf("SDB[0,1,2] = %f, %f(%d), %f, %f(%d), %f, %f(%d)\n",
+                                SDB[step_phase].Fpos.x,     SDB[step_phase].Fpos.y, SDB[step_phase].ros_step_phase,
+                                SDB[step_phase+1].Fpos.x,   SDB[step_phase+1].Fpos.y, SDB[step_phase+1].ros_step_phase,
+                                SDB[step_phase+2].Fpos.x,   SDB[step_phase+2].Fpos.y, SDB[step_phase+2].ros_step_phase);
 
                  }else
                  {
@@ -323,7 +319,7 @@ int GG_SingleLogWalk::Preveiw_walking()
     {
         cout<<"Walk done!"<<endl;
         ROSWalk_status = ROSWALK_WALKING_DONE;
-//        step_phase_change_flag = true;
+        step_phase_change_flag = true;
         return -1;
     }
 
@@ -2552,4 +2548,62 @@ vec3 GG_SingleLogWalk::FootY_trajectory(double _real_t_step, double _t_foot_now,
 //    }
 
     return _y_dy_ddy_Foot_old;
+}
+void GG_SingleLogWalk::rosstep_l2g()
+{
+    printf("================rosstep l2g=================\n");
+    for(int i = 0; i<4; i++)
+    {
+        rosstep_global[i].step_phase = userData->ros_footsteps[i].step_phase;
+        rosstep_global[i].lr_state = userData->ros_footsteps[i].lr_state;
+
+        double l2g_x, l2g_y, l2g_r = 0.;
+        double l_x, l_y, l_r = 0.;
+        mat3 rot_y;
+        if(i == 0)
+        {
+            if(rosstep_global[i].step_phase == 0)
+            {
+                roswalk_first_phase = step_phase + 1;
+                printf("first step (origin:left foot)\n");
+
+                l2g_x = SDB[step_phase].Fpos.x;
+                l2g_y = pelv_w/2;
+                l2g_r = 0.;
+                rot_y = mat3(vec3(0,0,1),l2g_r);
+            }else
+            {
+                l2g_x = SDB[step_phase].Fpos.x;
+                l2g_y = SDB[step_phase].Fpos.y;
+                l2g_r = rpy(SDB[step_phase].Fquat).y*R2D;
+                rot_y = mat3(vec3(0,0,1),l2g_r);
+
+            }
+        }else
+        {
+            l2g_x = rosstep_global[i-1].x;
+            l2g_y = rosstep_global[i-1].y;
+            l2g_r = rosstep_global[i-1].r;
+            rot_y = mat3(vec3(0,0,1),l2g_r);
+        }
+
+        printf("l2g = %f, %f, %f\n",l2g_x, l2g_y, l2g_r);
+
+        vec3 localfoot_ros = vec3(userData->ros_footsteps[i].x, userData->ros_footsteps[i].y, 0.);
+        printf("localfoot_ros = %f, %f, %f\n",localfoot_ros[0],localfoot_ros[1],userData->ros_footsteps[i].r);
+//        vec3 globalfoot_ros = rot_y*localfoot_ros;
+        vec3 globalfoot_ros;
+        globalfoot_ros[0] = localfoot_ros[0]*cos(l2g_r*D2R) - localfoot_ros[1]*sin(l2g_r*D2R);
+        globalfoot_ros[1] = localfoot_ros[0]*sin(l2g_r*D2R) + localfoot_ros[1]*cos(l2g_r*D2R);
+        printf("globalfoot_ros = %f, %f, %f\n",globalfoot_ros[0],globalfoot_ros[1],userData->ros_footsteps[i].r);
+
+        rosstep_global[i].x = globalfoot_ros[0] + l2g_x;
+        rosstep_global[i].y = globalfoot_ros[1] + l2g_y;
+        rosstep_global[i].r = userData->ros_footsteps[i].r + l2g_r;
+
+        printf("[%d] global = %f, %f, %f    local = %f, %f, %f [%d]\n",
+               rosstep_global[i].step_phase, rosstep_global[i].x, rosstep_global[i].y, rosstep_global[i].r,
+               userData->ros_footsteps[i].x, userData->ros_footsteps[i].y, userData->ros_footsteps[i].r, rosstep_global[i].lr_state);
+    }
+    printf("=============================================\n");
 }

@@ -133,6 +133,10 @@ void ROSWorker::sendRESULT()
 
         if(sharedUSER->FLAG_receivedROS == ROS_RX_EMPTY)
             sharedUSER->FLAG_receivedROS = ROS_RX_FALSE;
+        else
+            printf("no empty\n");
+
+        printf("send done kk\n");
     }
 }
 
