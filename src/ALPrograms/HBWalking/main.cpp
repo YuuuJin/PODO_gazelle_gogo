@@ -219,6 +219,7 @@ int main(int argc, char *argv[])
         __IS_WORKING = false;
 
     userData->FLAG_receivedROS = ROS_RX_FALSE;
+    userData->FLAG_sendROS = CMD_BREAK;
     userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
     userData->ros_footstep_flag = false;
 
@@ -323,7 +324,7 @@ int main(int argc, char *argv[])
         {
 
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
-            save_all();
+            save_all_gg();
             break;
         }
         case HBWalking_TORQUE_TEST:
@@ -1317,6 +1318,7 @@ int main(int argc, char *argv[])
             WB_FLAG = 1;
             userData->FLAG_sendROS = CMD_ACCEPT;
             userData->FLAG_receivedROS = ROS_RX_EMPTY;
+            printf("receive empty\n");
 
 
             FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
@@ -2828,6 +2830,7 @@ void RBTaskThread(void *)
             {
                 _task_thread = _task_Idle;
                 userData->FLAG_receivedROS = ROS_RX_EMPTY;
+                printf("receive empty walking done\n");
 
                 save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
@@ -3917,6 +3920,11 @@ void save_onestep_ggsw(int cnt)
     SAVE_GG[336][cnt] = userData->pel_pose[0];
     SAVE_GG[337][cnt] = userData->pel_pose[1];
     SAVE_GG[338][cnt] = userData->pel_pose[2];
+
+    SAVE_GG[339][cnt] = WBmotion->pPel_3x1[0];
+    SAVE_GG[340][cnt] = WBmotion->pPel_3x1[1];
+    SAVE_GG[341][cnt] = WBmotion->pPel_3x1[2];
+    SAVE_GG[342][cnt] = GGSW.step_phase_change_flag;
 }
 
 void save_all()

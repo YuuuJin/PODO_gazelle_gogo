@@ -124,6 +124,7 @@ void ROSWorker::sendRESULT()
         result.lr_state = sharedUSER->lr_state;
 
         printf("result : %d\n",result.step_phase);
+        printf("cur pel pos : %f, %f\n",sharedUSER->pel_pose[0], sharedUSER->pel_pose[1]);
 
         char *buf = new char[sizeof(P2R_result)];
         memcpy(buf, &result, sizeof(P2R_result));
@@ -132,7 +133,10 @@ void ROSWorker::sendRESULT()
         sharedUSER->FLAG_sendROS = CMD_BREAK;
 
         if(sharedUSER->FLAG_receivedROS == ROS_RX_EMPTY)
+        {
             sharedUSER->FLAG_receivedROS = ROS_RX_FALSE;
+            printf("receive false\n");
+        }
         else
             printf("no empty\n");
 
@@ -195,6 +199,7 @@ void ROSWorker::readCMD(char* _data)
     }
     printf("=====================================================\n");
     sharedUSER->FLAG_receivedROS = ROS_RX_TRUE;
+    printf("receive empty\n");
 }
 
 ROSServer::ROSServer()
