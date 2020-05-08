@@ -165,6 +165,7 @@ enum SE_COMMAND
 enum task_thread
 {
     _task_Idle = 0,
+    _task_Idle_SingleLog,
     _task_CPS_walking,
     _task_Stabilization,
     _task_TorqueTest,
@@ -218,6 +219,7 @@ int main(int argc, char *argv[])
         __IS_WORKING = false;
 
     userData->FLAG_receivedROS = ROS_RX_FALSE;
+    userData->FLAG_sendROS = CMD_BREAK;
     userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
     userData->ros_footstep_flag = false;
 
@@ -236,6 +238,17 @@ int main(int argc, char *argv[])
 
     // WBIK Initialize
     WBmotion = new TaskMotion(sharedREF, sharedSEN, sharedCMD, joint);
+
+    if(__IS_GAZEBO == true)
+    {
+        HBPW.Pos_Ankle_torque_control_flag = false;
+        GGSW.Pos_Ankle_torque_control_flag = false;
+    }else
+    {
+        HBPW.Pos_Ankle_torque_control_flag = true;
+        GGSW.Pos_Ankle_torque_control_flag = true;
+
+    }
 
     while(__IS_WORKING)
     {
@@ -311,7 +324,7 @@ int main(int argc, char *argv[])
         {
 
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
-            save_all();
+            save_all_gg();
             break;
         }
         case HBWalking_TORQUE_TEST:
@@ -1119,6 +1132,7 @@ int main(int argc, char *argv[])
                 {
                     userData->ros_footsteps[i].x = 0.;
                     userData->ros_footsteps[i].y = 0.;
+                    userData->ros_footsteps[i].r = 0.;
                     userData->ros_footsteps[i].step_phase = 0;
                     userData->ros_footsteps[i].lr_state = 0;
                 }
@@ -1208,6 +1222,7 @@ int main(int argc, char *argv[])
                     {
                         userData->ros_footsteps[i].x = 0.;
                         userData->ros_footsteps[i].y = 0.;
+                        userData->ros_footsteps[i].r = 0.;
                         userData->ros_footsteps[i].step_phase = 0;
                         userData->ros_footsteps[i].lr_state = 0;
                     }
@@ -1303,6 +1318,7 @@ int main(int argc, char *argv[])
             WB_FLAG = 1;
             userData->FLAG_sendROS = CMD_ACCEPT;
             userData->FLAG_receivedROS = ROS_RX_EMPTY;
+            printf("receive empty\n");
 
 
             FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
@@ -1313,6 +1329,7 @@ int main(int argc, char *argv[])
             {
                 userData->ros_footsteps[i].x = 0.;
                 userData->ros_footsteps[i].y = 0.;
+                userData->ros_footsteps[i].r = 0.;
                 userData->ros_footsteps[i].step_phase = 0;
                 userData->ros_footsteps[i].lr_state = 0;
             }
@@ -2697,7 +2714,7 @@ void RBTaskThread(void *)
             //// Main Walking code
             if(GGSW.Preveiw_walking() == -1)
             {
-                _task_thread = _task_Idle;
+                _task_thread = _task_Idle_SingleLog;
 
                 save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
@@ -2791,6 +2808,9 @@ void RBTaskThread(void *)
                 }
             }
 
+            userData->pel_pose[0] = GGSW.COM_m_filtered[0];
+            userData->pel_pose[1] = GGSW.COM_m_filtered[1];
+            userData->pel_pose[2] = GGSW.COM_m_filtered[2];
 
             userData->step_phase = GGSW.step_phase;
             userData->lr_state = GGSW.R_or_L;
@@ -2810,6 +2830,7 @@ void RBTaskThread(void *)
             {
                 _task_thread = _task_Idle;
                 userData->FLAG_receivedROS = ROS_RX_EMPTY;
+                printf("receive empty walking done\n");
 
                 save_all_gg();
                 cout<<"Preview Walk finished"<<endl;
@@ -2885,6 +2906,7 @@ void RBTaskThread(void *)
             break;
         }
         case _task_Idle:
+        case _task_Idle_SingleLog:
 
             break;
         }
@@ -2906,7 +2928,7 @@ void RBTaskThread(void *)
         joint->SetJointRefAngle(RHP,WBmotion->LJ.RHP*R2D + RHP_con_deg);
         joint->SetJointRefAngle(RKN,WBmotion->LJ.RKN*R2D + RKN_con_deg);
 
-        if(_task_thread == _task_SingleLog_Walk)
+        if(_task_thread == _task_SingleLog_Walk || _task_thread == _task_Idle_SingleLog)
         {
             GK.IK_Ankle_right(WBmotion->LJ.RAP*R2D + GGSW.RF_angle_ctrl.y*R2D, WBmotion->LJ.RAR*R2D + GGSW.RF_angle_ctrl.x*R2D, RA1_ref_deg, RA2_ref_deg);
         }else
@@ -2927,7 +2949,7 @@ void RBTaskThread(void *)
         joint->SetJointRefAngle(LHP,WBmotion->LJ.LHP*R2D + LHP_con_deg);
         joint->SetJointRefAngle(LKN,WBmotion->LJ.LKN*R2D + LKN_con_deg);
 
-        if(_task_thread == _task_SingleLog_Walk)
+        if(_task_thread == _task_SingleLog_Walk || _task_thread == _task_Idle_SingleLog)
         {
             GK.IK_Ankle_left(WBmotion->LJ.LAP*R2D + GGSW.LF_angle_ctrl.y*R2D, WBmotion->LJ.LAR*R2D + GGSW.LF_angle_ctrl.x*R2D, LA1_ref_deg, LA2_ref_deg);
         }else
@@ -2950,7 +2972,7 @@ void RBTaskThread(void *)
 //==============================//
 void RBFlagThread(void *)
 {
-    rt_task_set_periodic(NULL, TM_NOW, 200*1000);        // 5 usec
+    rt_task_set_periodic(NULL, TM_NOW, 200*1000);        // 2 usec
 
     while(__IS_WORKING)
     {
@@ -3831,7 +3853,6 @@ void save_onestep_ggsw(int cnt)
     SAVE_GG[278][cnt] = GGSW.Pelv_roll_vel_ref;
     SAVE_GG[279][cnt] = GGSW.Pelv_roll_ref;
 
-
     SAVE_GG[280][cnt] = GGSW.p_ref_con_error_filtered;
     SAVE_GG[281][cnt] = GGSW.COM_m_filtered.x;
     SAVE_GG[282][cnt] = GGSW.COM_m_filtered.y;
@@ -3895,6 +3916,15 @@ void save_onestep_ggsw(int cnt)
 
     SAVE_GG[334][cnt] = GGSW.step_status;
     SAVE_GG[335][cnt] = GGSW.ROSWalk_status;
+
+    SAVE_GG[336][cnt] = userData->pel_pose[0];
+    SAVE_GG[337][cnt] = userData->pel_pose[1];
+    SAVE_GG[338][cnt] = userData->pel_pose[2];
+
+    SAVE_GG[339][cnt] = WBmotion->pPel_3x1[0];
+    SAVE_GG[340][cnt] = WBmotion->pPel_3x1[1];
+    SAVE_GG[341][cnt] = WBmotion->pPel_3x1[2];
+    SAVE_GG[342][cnt] = GGSW.step_phase_change_flag;
 }
 
 void save_all()

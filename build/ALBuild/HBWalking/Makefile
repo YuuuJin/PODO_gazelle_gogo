@@ -1410,7 +1410,30 @@ GG_SingleLogWalk.o: ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp ../..
 		../../../src/ALPrograms/HBWalking/QuadProg++.hh \
 		../../../src/ALPrograms/HBWalking/Array.hh \
 		../../../src/Gazelle_Ankle_Kine/Gazelle_kine.h \
-		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h
+		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h \
+		../../../share/Headers/RBLog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QTextStream \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qset.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontiguouscache.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GG_SingleLogWalk.o ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp
 
 ####### Install

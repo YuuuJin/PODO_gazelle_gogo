@@ -23,18 +23,11 @@ enum RosCommand
 /*----------------------PODO(Gazelle) to ROS-------------------------*/
 struct P2R_status
 {
-    int     robot_state;
     int     step_phase;
 
-    int     lr_state;
-    footstep_info   cur_footstep;
     float   pel_pos_est[3];
 
-    float   joint_reference[31];
-    float   joint_encoder[31];
-
-    float   ft_sensor[12];
-    float   imu_sensor[9];
+//    float   joint_reference[31];
 };
 
 struct P2R_result

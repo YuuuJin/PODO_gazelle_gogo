@@ -355,10 +355,10 @@ public:
         step_phase_change_flag = true;
 
         // Controller Flags       
-        StepAdjustControl_flag = false;//true;
+        StepAdjustControl_flag = true;
         // --> variable filtering of dp
 
-        HipTorqueControl_flag = false;//true;
+        HipTorqueControl_flag = true;
 
         Landing_angle_control_flag = false;
 
@@ -389,7 +389,7 @@ public:
         DSP_FZ_Control_flag = true;
 
         //7. Pos ankle torque control
-        Pos_Ankle_torque_control_flag = false;//true;
+        Pos_Ankle_torque_control_flag = true;
 
     }
 

@@ -846,9 +846,10 @@ void GotoWalkReadyPos_OI(){
 
     double des_pCOM_3x1[3], des_qPEL_4x1[4], des_pRF_3x1[3], des_qRF_4x1[4], des_pLF_3x1[3], des_qLF_4x1[4];
 
+    printf("new walkready\n");
     des_pCOM_3x1[0] = 0.0;
     des_pCOM_3x1[1] = 0.0;
-    des_pCOM_3x1[2] = 0.77;
+    des_pCOM_3x1[2] = 0.74;//0.77;
 
     des_qPEL_4x1[0] = 1.0;
     des_qPEL_4x1[1] = 0.;
