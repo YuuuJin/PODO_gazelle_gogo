@@ -712,8 +712,7 @@ main.o: ../../src/__Daemon_Choreonoid/main.cpp /opt/Qt5.7.0/5.7/gcc_64/include/Q
 		../../src/__Daemon_Choreonoid/RBFTSensor.h \
 		../../src/__Daemon_Choreonoid/RBIMUSensor.h \
 		../../src/__Daemon_Choreonoid/RBSmartPower.h \
-		../../src/__Daemon_Choreonoid/RBOpticFlowSensor.h \
-		../../src/__Daemon_Choreonoid/RBFOGSensor.h
+		../../src/__Daemon_Choreonoid/RBOpticFlowSensor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../src/__Daemon_Choreonoid/main.cpp
 
 RBDataBase.o: ../../src/__Daemon_Choreonoid/RBDataBase.cpp ../../src/__Daemon_Choreonoid/RBDataBase.h \

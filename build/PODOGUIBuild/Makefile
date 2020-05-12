@@ -4381,7 +4381,20 @@ GUIMainWindow.o: ../../src/PODOGUI/GUIMainWindow.cpp ../../src/PODOGUI/GUIMainWi
 		../../src/PODOGUI/JoyStick/joystickvariable.h \
 		../../src/PODOGUI/cartaskdialog.h \
 		../../src/PODOGUI/HBWalkingdialog.h \
-		ui_GUIMainWindow.h
+		ui_GUIMainWindow.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMenuBar \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QStatusBar \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTabWidget \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QToolBar
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GUIMainWindow.o ../../src/PODOGUI/GUIMainWindow.cpp
 
 RBTCPClient.o: ../../src/PODOGUI/LAN/RBTCPClient.cpp ../../src/PODOGUI/LAN/RBTCPClient.h \
@@ -4730,7 +4743,51 @@ LANDialog.o: ../../src/PODOGUI/BasicFiles/LANDialog.cpp ../../src/PODOGUI/BasicF
 		../../share/Headers/LANData/RBLANData.h \
 		../../share/Headers/RBSharedMemory.h \
 		../../share/Headers/UserSharedMemory.h \
-		ui_LANDialog.h
+		ui_LANDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LANDialog.o ../../src/PODOGUI/BasicFiles/LANDialog.cpp
 
 PODOALDialog.o: ../../src/PODOGUI/BasicFiles/PODOALDialog.cpp ../../src/PODOGUI/BasicFiles/PODOALDialog.h \
@@ -4881,7 +4938,29 @@ PODOALDialog.o: ../../src/PODOGUI/BasicFiles/PODOALDialog.cpp ../../src/PODOGUI/
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/QSqlQuery \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
-		ui_PODOALDialog.h
+		ui_PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidget \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PODOALDialog.o ../../src/PODOGUI/BasicFiles/PODOALDialog.cpp
 
 JointDialog.o: ../../src/PODOGUI/BasicFiles/JointDialog.cpp ../../src/PODOGUI/BasicFiles/JointDialog.h \
@@ -5012,7 +5091,62 @@ JointDialog.o: ../../src/PODOGUI/BasicFiles/JointDialog.cpp ../../src/PODOGUI/Ba
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/QSqlQuery \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
-		ui_JointDialog.h
+		ui_JointDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o JointDialog.o ../../src/PODOGUI/BasicFiles/JointDialog.cpp
 
 SensorDialog.o: ../../src/PODOGUI/BasicFiles/SensorDialog.cpp ../../src/PODOGUI/BasicFiles/SensorDialog.h \
@@ -5143,7 +5277,60 @@ SensorDialog.o: ../../src/PODOGUI/BasicFiles/SensorDialog.cpp ../../src/PODOGUI/
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/QSqlQuery \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
-		ui_SensorDialog.h
+		ui_SensorDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SensorDialog.o ../../src/PODOGUI/BasicFiles/SensorDialog.cpp
 
 ModelDialog.o: ../../src/PODOGUI/BasicFiles/ModelDialog.cpp ../../src/PODOGUI/BasicFiles/ModelDialog.h \
@@ -5632,7 +5819,15 @@ ModelDialog.o: ../../src/PODOGUI/BasicFiles/ModelDialog.cpp ../../src/PODOGUI/Ba
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		../../src/Gazelle_Ankle_Kine/Gazelle_kine.h \
-		ui_ModelDialog.h
+		ui_ModelDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QCheckBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ModelDialog.o ../../src/PODOGUI/BasicFiles/ModelDialog.cpp
 
 SettingDialog.o: ../../src/PODOGUI/BasicFiles/SettingDialog.cpp ../../src/PODOGUI/BasicFiles/SettingDialog.h \
@@ -5783,7 +5978,38 @@ SettingDialog.o: ../../src/PODOGUI/BasicFiles/SettingDialog.cpp ../../src/PODOGU
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/QSqlQuery \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
-		ui_SettingDialog.h
+		ui_SettingDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SettingDialog.o ../../src/PODOGUI/BasicFiles/SettingDialog.cpp
 
 TutorialDialog.o: ../../src/PODOGUI/TutorialDialog.cpp ../../src/PODOGUI/TutorialDialog.h \
@@ -5915,13 +6141,26 @@ TutorialDialog.o: ../../src/PODOGUI/TutorialDialog.cpp ../../src/PODOGUI/Tutoria
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		ui_TutorialDialog.h \
-		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -5929,13 +6168,27 @@ TutorialDialog.o: ../../src/PODOGUI/TutorialDialog.cpp ../../src/PODOGUI/Tutoria
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TutorialDialog.o ../../src/PODOGUI/TutorialDialog.cpp
 
 omniwheeldialog.o: ../../src/PODOGUI/omniwheeldialog.cpp ../../src/PODOGUI/omniwheeldialog.h \
@@ -6067,13 +6320,31 @@ omniwheeldialog.o: ../../src/PODOGUI/omniwheeldialog.cpp ../../src/PODOGUI/omniw
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		ui_omniwheeldialog.h \
-		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -6081,13 +6352,30 @@ omniwheeldialog.o: ../../src/PODOGUI/omniwheeldialog.cpp ../../src/PODOGUI/omniw
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
+		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o omniwheeldialog.o ../../src/PODOGUI/omniwheeldialog.cpp
 
 walkingdialog.o: ../../src/PODOGUI/walkingdialog.cpp ../../src/PODOGUI/walkingdialog.h \
@@ -6219,6 +6507,70 @@ walkingdialog.o: ../../src/PODOGUI/walkingdialog.cpp ../../src/PODOGUI/walkingdi
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		ui_walkingdialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QCheckBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qcheckbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QSpacerItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QSpinBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTabWidget \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTableWidget \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtablewidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtableview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFileDialog \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfiledialog.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qdir.h \
@@ -6230,24 +6582,7 @@ walkingdialog.o: ../../src/PODOGUI/walkingdialog.cpp ../../src/PODOGUI/walkingdi
 		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o walkingdialog.o ../../src/PODOGUI/walkingdialog.cpp
 
 joystickdialog.o: ../../src/PODOGUI/joystickdialog.cpp ../../src/PODOGUI/joystickdialog.h \
@@ -6381,13 +6716,26 @@ joystickdialog.o: ../../src/PODOGUI/joystickdialog.cpp ../../src/PODOGUI/joystic
 		../../src/PODOGUI/JoyStick/joystickclass.h \
 		../../src/PODOGUI/JoyStick/joystickvariable.h \
 		ui_joystickdialog.h \
-		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -6395,13 +6743,30 @@ joystickdialog.o: ../../src/PODOGUI/joystickdialog.cpp ../../src/PODOGUI/joystic
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTableWidget \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtablewidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtableview.h \
+		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o joystickdialog.o ../../src/PODOGUI/joystickdialog.cpp
 
 RBJoystick.o: ../../src/PODOGUI/JoyStick/RBJoystick.cpp ../../src/PODOGUI/JoyStick/joystickclass.h \
@@ -6663,13 +7028,31 @@ cartaskdialog.o: ../../src/PODOGUI/cartaskdialog.cpp ../../src/PODOGUI/cartaskdi
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		ui_cartaskdialog.h \
-		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -6677,13 +7060,30 @@ cartaskdialog.o: ../../src/PODOGUI/cartaskdialog.cpp ../../src/PODOGUI/cartaskdi
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
+		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cartaskdialog.o ../../src/PODOGUI/cartaskdialog.cpp
 
 HBWalkingdialog.o: ../../src/PODOGUI/HBWalkingdialog.cpp ../../src/PODOGUI/HBWalkingdialog.h \
@@ -6815,13 +7215,32 @@ HBWalkingdialog.o: ../../src/PODOGUI/HBWalkingdialog.cpp ../../src/PODOGUI/HBWal
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtSql/qsqlquery.h \
 		../../share/Headers/JointInformation.h \
 		ui_HBWalkingdialog.h \
-		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -6829,13 +7248,29 @@ HBWalkingdialog.o: ../../src/PODOGUI/HBWalkingdialog.cpp ../../src/PODOGUI/HBWal
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
+		../../src/PODOGUI/BasicFiles/PODOALDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidgetItem \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o HBWalkingdialog.o ../../src/PODOGUI/HBWalkingdialog.cpp
 
 moc_GUIMainWindow.o: moc_GUIMainWindow.cpp 

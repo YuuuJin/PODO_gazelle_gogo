@@ -182,8 +182,7 @@ enum task_thread
     _task_HB_PrevWalk,
     _task_HB_test,
     _task_Ready_To_Walk,
-    _task_SingleLog_Walk,
-    _task_ROS_Walk
+    _task_SingleLog_Walk
 
 }_task_thread;
 
@@ -1132,7 +1131,8 @@ int main(int argc, char *argv[])
                 {
                     userData->ros_footsteps[i].x = 0.;
                     userData->ros_footsteps[i].y = 0.;
-                    userData->ros_footsteps[i].r = 0.;
+                    userData->ros_footsteps[i].z = 0.;
+                    userData->ros_footsteps[i].yaw = 0.;
                     userData->ros_footsteps[i].step_phase = 0;
                     userData->ros_footsteps[i].lr_state = 0;
                 }
@@ -1140,99 +1140,7 @@ int main(int argc, char *argv[])
             _task_thread = _task_SingleLog_Walk;
             break;
         }
-        case HBWalking_ROSWalk:
-        {
-            if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 0)
-            {
-                FILE_LOG(logSUCCESS) << "ROS Walk Stop\n";
-                GGSW.ROSWalk_off_flag = true;
-                userData->M2G.ROSWalk_state = 0;
-            }else
-            {
-                int no_of_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[0];
-                double t_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[0];
-                double step_stride = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[1];
 
-                FILE_LOG(logSUCCESS) << "--------------------------------------------------";
-                FILE_LOG(logSUCCESS) << "      New CMD : ROS Walking";
-                FILE_LOG(logSUCCESS) << "   " << step_stride  << "m, " << t_step << "s, " << no_of_step << "step" << endl;
-                FILE_LOG(logSUCCESS) << "--------------------------------------------------";
-
-                sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
-                _task_thread = _task_Idle;
-
-                joint->RefreshToCurrentReference();
-                joint->SetAllMotionOwner();
-
-                WBmotion->MomentFlag = false;
-                WB_FLAG = 0;
-
-                WBmotion->StopAll();
-                WBmotion->RefreshToCurrentReference_HB();
-
-                cout<<endl<<"Initial Task position: "<<endl;
-                cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
-                cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
-                cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
-                cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
-
-                ResetGlobalCoord(1);
-                usleep(200*1000);
-
-                cout<<"After ResetGlobal"<<endl;
-                cout<<"COM.x : "<<WBmotion->pCOM_3x1[0]<<"   COM.y : "<<WBmotion->pCOM_3x1[1]<<"  COM.z : "<<WBmotion->pCOM_3x1[2]<<endl;
-                cout<<"pel.x : "<<WBmotion->pPel_3x1[0]<<"   pel.y : "<<WBmotion->pPel_3x1[1]<<"  pel.z : "<<WBmotion->pPel_3x1[2]<<endl;
-                cout<<"LF.x : "<<WBmotion->pLF_3x1[0]<<"   LF.y : "<<WBmotion->pLF_3x1[1]<<"  LF.z : "<<WBmotion->pLF_3x1[2]<<endl;
-                cout<<"RF.x : "<<WBmotion->pRF_3x1[0]<<"   RF.y : "<<WBmotion->pRF_3x1[1]<<"  RF.z : "<<WBmotion->pRF_3x1[2]<<endl<<endl;
-
-                vec3 COM_ini = vec3(WBmotion->pCOM_3x1);
-                vec3 pRF = vec3(WBmotion->pRF_3x1);
-                vec3 pLF = vec3(WBmotion->pLF_3x1);
-
-                quat qPel_ini = quat(WBmotion->qPEL_4x1);
-                quat qRF = quat(WBmotion->qRF_4x1);
-                quat qLF = quat(WBmotion->qLF_4x1);
-
-                // Waist angle initialize
-                WST_ref_deg = sharedSEN->ENCODER[MC_GetID(WST)][MC_GetCH(WST)].CurrentPosition;
-
-                // preview Gain load
-                GGSW.Set_walkingmode(0);
-                GGSW.PreviewGainLoad(GGSW.zc);
-                GGSW.HB_set_step(COM_ini, qPel_ini, pRF, qRF, pLF, qLF, WST_ref_deg, t_step, no_of_step, step_stride, 1);
-
-                cout<<"foot print & timing : total "<<GGSW.SDB.size()<<"steps "<<endl;
-
-                for(int i=GGSW.SDB.size()-1;i>=0;i--)
-                {
-                    cout<<"phase: "<<i<<"  "<<GGSW.SDB[i].Fpos.x<<", "<<GGSW.SDB[i].Fpos.y<<" ("<<GGSW.SDB[i].t<<"s)"<<endl;
-                }
-
-                init_StateEstimator(); // State Estimator Initialization
-                WB_FLAG = 1;
-
-                //if(userData->ros_walking_cmd == ROSWALK_START)
-                if(sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[10] == 1)
-                {
-                    FILE_LOG(logSUCCESS) << "ROS Walk Start\n";
-                    GGSW.ROSWalk_flag = true;
-                    userData->M2G.ROSWalk_state = 1;
-
-                    for(int i=0;i<4;i++)
-                    {
-                        userData->ros_footsteps[i].x = 0.;
-                        userData->ros_footsteps[i].y = 0.;
-                        userData->ros_footsteps[i].r = 0.;
-                        userData->ros_footsteps[i].step_phase = 0;
-                        userData->ros_footsteps[i].lr_state = 0;
-                    }
-                }
-                _task_thread = _task_ROS_Walk;
-                break;
-            }
-            sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
-            break;
-        }
         case HBWalking_JoyStick_Walk_Stop:
         {
             sharedCMD->COMMAND[PODO_NO].USER_COMMAND = HBWalking_NO_ACT;
@@ -1329,7 +1237,8 @@ int main(int argc, char *argv[])
             {
                 userData->ros_footsteps[i].x = 0.;
                 userData->ros_footsteps[i].y = 0.;
-                userData->ros_footsteps[i].r = 0.;
+                userData->ros_footsteps[i].z = 0.;
+                userData->ros_footsteps[i].yaw = 0.;
                 userData->ros_footsteps[i].step_phase = 0;
                 userData->ros_footsteps[i].lr_state = 0;
             }
@@ -1377,6 +1286,13 @@ void RBTaskThread(void *)
             pel_estimated.z = RSE.OUTPUT.FK_PELVIS_POSITION[2];
 
         }
+
+        //// Put sensor value into RSEN object
+        SensorInput();
+
+        //// State Estimation
+        RST = SE.StateEst(RSEN);
+        GGSW.MeasurementInput(RST);
 
         switch(_task_thread)
         {
@@ -2813,103 +2729,31 @@ void RBTaskThread(void *)
             userData->pel_pose[2] = GGSW.COM_m_filtered[2];
 
             userData->step_phase = GGSW.step_phase;
-            userData->lr_state = GGSW.R_or_L;
+//            userData->lr_state = GGSW.R_or_L;
             break;
         }
-        case _task_ROS_Walk:
-        {
-            //// Put sensor value into RSEN object
-            SensorInput();
 
-            //// State Estimation
-            RST = SE.StateEst(RSEN);
-            GGSW.MeasurementInput(RST);
-
-            //// Main Walking code
-            if(GGSW.Preveiw_walking() == -1)
-            {
-                _task_thread = _task_Idle;
-                userData->FLAG_receivedROS = ROS_RX_EMPTY;
-                printf("receive empty walking done\n");
-
-                save_all_gg();
-                cout<<"Preview Walk finished"<<endl;
-            }
-
-            vec3 COM_total = GGSW.uCOM;
-
-            //// Leg Vibration Control
-            LHY_con_deg = -GGSW.LHY_con_deg;
-            RHY_con_deg = -GGSW.RHY_con_deg;
-
-            LHR_con_deg = 1.0*GGSW.LHR_con_deg + GGSW.L_roll_compen_deg;
-            RHR_con_deg = 1.0*GGSW.RHR_con_deg + GGSW.R_roll_compen_deg;
-
-            LHP_con_deg = 1.0*GGSW.LHP_con_deg*0.5;
-            RHP_con_deg = 1.0*GGSW.RHP_con_deg*0.5;
-            LKN_con_deg = GGSW.L_knee_compen_deg;
-            RKN_con_deg = GGSW.R_knee_compen_deg;
-
-
-            ////Foot and Pelv Orientation
-            //foot Orientation
-            for(int i=0;i<4;i++)
-            {
-                dbs_qRF[i] = GGSW.qRF_ref[i];
-                dbs_qLF[i] = GGSW.qLF_ref[i];
-            }
-
-
-            // Pelvis Orientation
-            for(int i=0;i<4;i++)
-            {
-                dbs_qPel[i] = GGSW.qPel_ref[i];
-            }
-
-            //// Put reference Task to Trajectory Handler
-            WBmotion->addCOMInfo_xy_pelz_HB(COM_total.x, COM_total.y, WBmotion->pPel_3x1[2]);
-            WBmotion->addRFPosInfo_HB(GGSW.pRF_ref.x, GGSW.pRF_ref.y, GGSW.pRF_ref.z);
-            WBmotion->addLFPosInfo_HB(GGSW.pLF_ref.x, GGSW.pLF_ref.y, GGSW.pLF_ref.z);
-            WBmotion->addRFOriInfo_HB(GGSW.qRF_ref);
-            WBmotion->addLFOriInfo_HB(GGSW.qLF_ref);
-            WBmotion->addPELOriInfo_HB(GGSW.qPel_ref);
-
-            WST_ref_deg = GGSW.WST_ref_deg;
-
-            save_onestep_ggsw(GGSW.k);
-
-            //// Set shared memory variables
-
-            if(GGSW.ROSWalk_status == ROSWALK_STEP_DONE)
-            {
-                printf("stepping done? %d\n",userData->FLAG_receivedROS);
-                userData->FLAG_sendROS = CMD_DONE;
-                GGSW.ROSWalk_status = ROSWALK_START;
-            }else if(GGSW.ROSWalk_status == ROSWALK_WALKING_DONE)
-            {
-                printf("walking done? %d\n",userData->FLAG_receivedROS);
-                userData->FLAG_sendROS = CMD_WALKING_FINISHED;
-                GGSW.ROSWalk_status = ROSWALK_BREAK;
-            }
-
-            if(GGSW.ROSWalk_flag == true && userData->ros_footstep_flag == true)
-            {
-                if(userData->ros_step_num < 2 && userData->FLAG_receivedROS != ROS_RX_FALSE && GGSW.ROSWalk_off_flag == false)
-                {
-                    FILE_LOG(logERROR) << "ROS Step_phase is null";
-                    GGSW.ROSWalk_off_flag = true;
-                }
-            }
-
-            userData->step_phase = GGSW.step_phase;
-            userData->lr_state = GGSW.R_or_L;
-            break;
-        }
         case _task_Idle:
         case _task_Idle_SingleLog:
 
             break;
         }
+        userData->pel_pose[0] = GGSW.COM_m_filtered[0];
+        userData->pel_pose[1] = GGSW.COM_m_filtered[1];
+        userData->pel_pose[2] = GGSW.COM_m_filtered[2];
+
+//        userData->pel_quat[0] = RST.IMUquat[0];
+//        userData->pel_quat[1] = RST.IMUquat[1];
+//        userData->pel_quat[2] = RST.IMUquat[2];
+//        userData->pel_quat[3] = RST.IMUquat[3];
+
+        quat pelquat = quat(rpy(RST.IMUangle[0], RST.IMUangle[1], RST.IMUangle[2]));
+        userData->pel_quat[0] = pelquat[0];
+        userData->pel_quat[1] = pelquat[1];
+        userData->pel_quat[2] = pelquat[2];
+        userData->pel_quat[3] = pelquat[3];
+
+        userData->step_phase = GGSW.step_phase;
 
     if(WB_FLAG == 1)
     {

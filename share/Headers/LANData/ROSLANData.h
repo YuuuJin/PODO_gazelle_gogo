@@ -27,6 +27,8 @@ struct P2R_status
 
     float   pel_pos_est[3];
 
+    float   pel_quaternion[4];
+
 //    float   joint_reference[31];
 };
 

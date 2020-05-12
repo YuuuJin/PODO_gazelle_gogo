@@ -190,6 +190,7 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		../../src/__PODOLauncher/.qmake.stash \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/resolve_config.prf \
@@ -356,6 +357,7 @@ Makefile: ../../src/__PODOLauncher/PODOLauncher.pro /opt/Qt5.7.0/5.7/gcc_64/mksp
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/resolve_config.prf \
@@ -514,6 +516,7 @@ Makefile: ../../src/__PODOLauncher/PODOLauncher.pro /opt/Qt5.7.0/5.7/gcc_64/mksp
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/qt_config.prf:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++/qmake.conf:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/exclusive_builds.prf:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/default_pre.prf:
 /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/resolve_config.prf:
@@ -984,7 +987,64 @@ LauncherDialog.o: ../../src/__PODOLauncher/LauncherDialog.cpp ../../src/__PODOLa
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QTimer \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qtimer.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qbasictimer.h \
-		ui_LauncherDialog.h
+		ui_LauncherDialog.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QCheckBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qcheckbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QSpinBox \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qspinbox.h \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
+		/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LauncherDialog.o ../../src/__PODOLauncher/LauncherDialog.cpp
 
 qrc_icon.o: qrc_icon.cpp 

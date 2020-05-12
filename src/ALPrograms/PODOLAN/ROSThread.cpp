@@ -98,13 +98,14 @@ void ROSWorker::sendSTATUS()
 
     status.step_phase = sharedUSER->step_phase;
 
-//    status.cur_footstep = sharedUSER->cur_footstep;
-
-//    status.lr_state = sharedUSER->lr_state;
-
     status.pel_pos_est[0] = sharedUSER->pel_pose[0];
     status.pel_pos_est[1] = sharedUSER->pel_pose[1];
     status.pel_pos_est[2] = sharedUSER->pel_pose[2];
+
+    status.pel_quaternion[0] = sharedUSER->pel_quat[0];
+    status.pel_quaternion[1] = sharedUSER->pel_quat[1];
+    status.pel_quaternion[2] = sharedUSER->pel_quat[2];
+    status.pel_quaternion[3] = sharedUSER->pel_quat[3];
 
     char *buf = new char[sizeof(P2R_status)];
     memcpy(buf, &status, sizeof(P2R_status));
@@ -121,7 +122,7 @@ void ROSWorker::sendRESULT()
 
         result.gazelle_result = sharedUSER->FLAG_sendROS;
         result.step_phase = sharedUSER->step_phase;
-        result.lr_state = sharedUSER->lr_state;
+//        result.lr_state = sharedUSER->lr_state;
 
         printf("result : %d\n",result.step_phase);
         printf("cur pel pos : %f, %f\n",sharedUSER->pel_pose[0], sharedUSER->pel_pose[1]);
@@ -158,7 +159,8 @@ void ROSWorker::readCMD(char* _data)
     {
         sharedUSER->ros_footsteps[i].x = command.des_footsteps[i].x;
         sharedUSER->ros_footsteps[i].y = command.des_footsteps[i].y;
-        sharedUSER->ros_footsteps[i].r = command.des_footsteps[i].r;
+        sharedUSER->ros_footsteps[i].z = command.des_footsteps[i].z;
+        sharedUSER->ros_footsteps[i].yaw = command.des_footsteps[i].yaw;
         sharedUSER->ros_footsteps[i].step_phase = command.des_footsteps[i].step_phase;
         sharedUSER->ros_footsteps[i].lr_state = command.des_footsteps[i].lr_state;
 
@@ -183,10 +185,10 @@ void ROSWorker::readCMD(char* _data)
     {
         printf("    * flag is on. next 4 steps is\n");
         printf("    [%dth :%.2f, %.2f, %.2f], [%dth :%.2f, %.2f, %.2f]\n    [%dth :%.2f, %.2f, %.2f], [%dth :%.2f, %.2f, %.2f]\n",
-                sharedUSER->ros_footsteps[0].step_phase, sharedUSER->ros_footsteps[0].x, sharedUSER->ros_footsteps[0].y, sharedUSER->ros_footsteps[0].r,
-                sharedUSER->ros_footsteps[1].step_phase, sharedUSER->ros_footsteps[1].x, sharedUSER->ros_footsteps[1].y, sharedUSER->ros_footsteps[1].r,
-                sharedUSER->ros_footsteps[2].step_phase, sharedUSER->ros_footsteps[2].x, sharedUSER->ros_footsteps[2].y, sharedUSER->ros_footsteps[2].r,
-                sharedUSER->ros_footsteps[3].step_phase, sharedUSER->ros_footsteps[3].x, sharedUSER->ros_footsteps[3].y, sharedUSER->ros_footsteps[3].r);
+                sharedUSER->ros_footsteps[0].step_phase, sharedUSER->ros_footsteps[0].x, sharedUSER->ros_footsteps[0].y, sharedUSER->ros_footsteps[0].yaw,
+                sharedUSER->ros_footsteps[1].step_phase, sharedUSER->ros_footsteps[1].x, sharedUSER->ros_footsteps[1].y, sharedUSER->ros_footsteps[1].yaw,
+                sharedUSER->ros_footsteps[2].step_phase, sharedUSER->ros_footsteps[2].x, sharedUSER->ros_footsteps[2].y, sharedUSER->ros_footsteps[2].yaw,
+                sharedUSER->ros_footsteps[3].step_phase, sharedUSER->ros_footsteps[3].x, sharedUSER->ros_footsteps[3].y, sharedUSER->ros_footsteps[3].yaw);
 
         if(sharedUSER->ros_lr_state == -1)
             printf("    * lr_state = RIGHT\n");

@@ -30,6 +30,7 @@ public:
     void Set_walkingmode(int _mode) { Walking_mode = _mode;}
     void Calc_del_pos_from_ROS();
     void rosstep_l2g();
+    int isSafeROSsteps(int i);
 public:
     int ROSWalk_flag = false;
     int ROSWalk_off_flag = false;

@@ -86,7 +86,8 @@ typedef struct _GUI2MOTION_
 struct footstep_info{
     double  x;
     double  y;
-    double  r;
+    double  z;
+    double  yaw;
     int     step_phase;
     int     lr_state;
 };
@@ -123,9 +124,8 @@ typedef struct _USER_SHM_
     //giving data
     int             FLAG_sendROS;
     unsigned int    step_phase;     // current real step phase
-    footstep_info   cur_footstep;  // current real stance foot point and current swingfoot destination point
-    int             lr_state;   // swing foot state -1 or 1
-    double          pel_pose[3];
+    double          pel_pose[3];    // x, y, z
+    double          pel_quat[4];    // quat
 
     // recieving data
     int             FLAG_receivedROS;
