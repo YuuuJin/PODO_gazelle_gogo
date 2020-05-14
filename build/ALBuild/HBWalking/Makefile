@@ -59,7 +59,7 @@ SOURCES       = ../../../src/ALPrograms/HBWalking/main.cpp \
 		../../../src/ALPrograms/HBWalking/HB_Controller.cpp \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.cpp \
 		../../../src/ALPrograms/HBWalking/basicsetting.cpp \
-		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp 
+		../../../src/ALPrograms/HBWalking/GG_ROSWalk.cpp 
 OBJECTS       = main.o \
 		taskmotion.o \
 		BasicTrajectory.o \
@@ -71,7 +71,7 @@ OBJECTS       = main.o \
 		HB_Controller.o \
 		robotstateestimator.o \
 		basicsetting.o \
-		GG_SingleLogWalk.o
+		GG_ROSWalk.o
 DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
 		/opt/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf \
@@ -247,7 +247,7 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h \
 		../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.h \
-		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h ../../../src/ALPrograms/HBWalking/main.cpp \
+		../../../src/ALPrograms/HBWalking/GG_ROSWalk.h ../../../src/ALPrograms/HBWalking/main.cpp \
 		../../../src/ALPrograms/HBWalking/taskmotion.cpp \
 		../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp \
 		../../../src/ALPrograms/HBWalking/HB_functions.cpp \
@@ -258,7 +258,7 @@ DIST          = /opt/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../src/ALPrograms/HBWalking/HB_Controller.cpp \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.cpp \
 		../../../src/ALPrograms/HBWalking/basicsetting.cpp \
-		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp
+		../../../src/ALPrograms/HBWalking/GG_ROSWalk.cpp
 QMAKE_TARGET  = HBWalking
 DESTDIR       = ../PODO_PROC_Build/
 TARGET        = ../PODO_PROC_Build/HBWalking
@@ -590,8 +590,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/BasicFiles/BasicSetting.h ../../../src/ALPrograms/HBWalking/BasicFiles/BasicJoint.h ../../../src/ALPrograms/HBWalking/BasicMath.h ../../../src/ALPrograms/HBWalking/BasicMatrix.h ../../../src/ALPrograms/HBWalking/HB_functions.h ../../../src/ALPrograms/HBWalking/HB_walking.h ../../../src/ALPrograms/HBWalking/Oinverse.h ../../../src/ALPrograms/HBWalking/taskmotion.h ../../../src/ALPrograms/HBWalking/BasicTrajectory.h ../../../src/ALPrograms/HBWalking/taskGeneral.h ../../../src/ALPrograms/HBWalking/ManualCAN.h ../../../src/ALPrograms/HBWalking/HB_inverse.h ../../../src/ALPrograms/HBWalking/BP_RBDL.h ../../../src/ALPrograms/HBWalking/HB_dynamics_walk.h ../../../src/ALPrograms/HBWalking/HB_types.h ../../../src/ALPrograms/HBWalking/HB_State_est.h ../../../src/ALPrograms/HBWalking/ow_cplex.h ../../../src/ALPrograms/HBWalking/Array.hh ../../../src/ALPrograms/HBWalking/QuadProg++.hh ../../../src/ALPrograms/HBWalking/HB_dynamics_walk2.h ../../../src/ALPrograms/HBWalking/HB_Jumping.h ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h ../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h ../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h ../../../src/ALPrograms/HBWalking/robotstateestimator.h ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWalking/taskmotion.cpp ../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp ../../../src/ALPrograms/HBWalking/HB_functions.cpp ../../../src/ALPrograms/HBWalking/ManualCAN.cpp ../../../src/ALPrograms/HBWalking/Array.cc ../../../src/ALPrograms/HBWalking/QuadProg++.cc ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp ../../../src/ALPrograms/HBWalking/HB_Controller.cpp ../../../src/ALPrograms/HBWalking/robotstateestimator.cpp ../../../src/ALPrograms/HBWalking/basicsetting.cpp ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/BasicFiles/BasicSetting.h ../../../src/ALPrograms/HBWalking/BasicFiles/BasicJoint.h ../../../src/ALPrograms/HBWalking/BasicMath.h ../../../src/ALPrograms/HBWalking/BasicMatrix.h ../../../src/ALPrograms/HBWalking/HB_functions.h ../../../src/ALPrograms/HBWalking/HB_walking.h ../../../src/ALPrograms/HBWalking/Oinverse.h ../../../src/ALPrograms/HBWalking/taskmotion.h ../../../src/ALPrograms/HBWalking/BasicTrajectory.h ../../../src/ALPrograms/HBWalking/taskGeneral.h ../../../src/ALPrograms/HBWalking/ManualCAN.h ../../../src/ALPrograms/HBWalking/HB_inverse.h ../../../src/ALPrograms/HBWalking/BP_RBDL.h ../../../src/ALPrograms/HBWalking/HB_dynamics_walk.h ../../../src/ALPrograms/HBWalking/HB_types.h ../../../src/ALPrograms/HBWalking/HB_State_est.h ../../../src/ALPrograms/HBWalking/ow_cplex.h ../../../src/ALPrograms/HBWalking/Array.hh ../../../src/ALPrograms/HBWalking/QuadProg++.hh ../../../src/ALPrograms/HBWalking/HB_dynamics_walk2.h ../../../src/ALPrograms/HBWalking/HB_Jumping.h ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h ../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h ../../../src/ALPrograms/HBWalking/robotstateestimator_parameter_Gazelle.h ../../../src/ALPrograms/HBWalking/robotstateestimator.h ../../../src/ALPrograms/HBWalking/GG_ROSWalk.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWalking/taskmotion.cpp ../../../src/ALPrograms/HBWalking/BasicTrajectory.cpp ../../../src/ALPrograms/HBWalking/HB_functions.cpp ../../../src/ALPrograms/HBWalking/ManualCAN.cpp ../../../src/ALPrograms/HBWalking/Array.cc ../../../src/ALPrograms/HBWalking/QuadProg++.cc ../../../src/ALPrograms/HBWalking/HB_PreviewWalk.cpp ../../../src/ALPrograms/HBWalking/HB_Controller.cpp ../../../src/ALPrograms/HBWalking/robotstateestimator.cpp ../../../src/ALPrograms/HBWalking/basicsetting.cpp ../../../src/ALPrograms/HBWalking/GG_ROSWalk.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -743,7 +743,7 @@ main.o: ../../../src/ALPrograms/HBWalking/main.cpp ../../../src/ALPrograms/HBWal
 		../../../src/ALPrograms/HBWalking/HB_Jumping.h \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h \
 		../../../src/ALPrograms/HBWalking/HB_StepAdjustor.h \
-		../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h \
+		../../../src/ALPrograms/HBWalking/GG_ROSWalk.h \
 		../../../src/ALPrograms/HBWalking/robotstateestimator.h \
 		../../../src/ALPrograms/HBWalking/cmatrix \
 		../../../src/ALPrograms/HBWalking/matrix2.hxx \
@@ -1328,7 +1328,7 @@ basicsetting.o: ../../../src/ALPrograms/HBWalking/basicsetting.cpp ../../../src/
 		../../../share/Headers/UserSharedMemory.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basicsetting.o ../../../src/ALPrograms/HBWalking/basicsetting.cpp
 
-GG_SingleLogWalk.o: ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.h \
+GG_ROSWalk.o: ../../../src/ALPrograms/HBWalking/GG_ROSWalk.cpp ../../../src/ALPrograms/HBWalking/GG_ROSWalk.h \
 		../../../src/ALPrograms/HBWalking/HB_PreviewWalk.h \
 		../../../src/ALPrograms/HBWalking/BasicMatrix.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/QVector \
@@ -1434,7 +1434,7 @@ GG_SingleLogWalk.o: ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp ../..
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GG_SingleLogWalk.o ../../../src/ALPrograms/HBWalking/GG_SingleLogWalk.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GG_ROSWalk.o ../../../src/ALPrograms/HBWalking/GG_ROSWalk.cpp
 
 ####### Install
 

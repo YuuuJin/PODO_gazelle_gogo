@@ -1,11 +1,11 @@
-#include "GG_SingleLogWalk.h"
+#include "GG_ROSWalk.h"
 
-GG_SingleLogWalk::GG_SingleLogWalk()
+GG_ROSWalk::GG_ROSWalk()
 {
 
 }
 
-int GG_SingleLogWalk::Preveiw_walking()
+int GG_ROSWalk::Preveiw_walking()
 {
 
     //// ----------------- step phase change-----------------------------
@@ -123,6 +123,18 @@ int GG_SingleLogWalk::Preveiw_walking()
                                  SDB[SD_next_step.ros_step_phase].Fpos = SD_next_step.Fpos;
                                  SDB[SD_next_step.ros_step_phase].Fquat = SD_next_step.Fquat;
                                  SDB[SD_next_step.ros_step_phase].ros_step_phase = SD_next_step.ros_step_phase;
+
+                                 if(Collision_flag == true)
+                                 {
+                                     SDB[SD_next_step.ros_step_phase - 1].collision = true;
+                                     SDB[SD_next_step.ros_step_phase - 1].t = 2.0;
+                                     Collision_flag = false;
+                                     printf("%d collision true\n",SD_next_step.ros_step_phase - 1);
+                                 }else
+                                 {
+                                     SDB[SD_next_step.ros_step_phase].collision = false;
+                                     printf("%d collision false\n",SD_next_step.ros_step_phase);
+                                 }
 
                                  if(SD_next_step.ros_step_phase - step_phase == 1)
                                     SDB[step_phase].ros_step_phase = SD_next_step.ros_step_phase - 1;
@@ -1146,9 +1158,6 @@ int GG_SingleLogWalk::Preveiw_walking()
     //for damping foot
     double Landing_Threshold = 25; // N
 
-
-
-
     // RFoot position
     if(SDB[step_phase].swingFoot == RFoot)
     {
@@ -1761,7 +1770,7 @@ int GG_SingleLogWalk::Preveiw_walking()
 
 
 
-void GG_SingleLogWalk::WindowFill()
+void GG_ROSWalk::WindowFill()
 {
     int last_tic;
 
@@ -2053,7 +2062,7 @@ void GG_SingleLogWalk::WindowFill()
     }
 }
 
-void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _qRF, vec3 _pLF, quat _qLF, double _WST_ini_deg, double _t_step, double _N_step, double _step_stride, int _RL_first){
+void GG_ROSWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _qRF, vec3 _pLF, quat _qLF, double _WST_ini_deg, double _t_step, double _N_step, double _step_stride, int _RL_first){
     t_step = _t_step;
     des_step_t = t_step;
     N_step = _N_step;
@@ -2464,32 +2473,32 @@ void GG_SingleLogWalk::HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _q
 
 }
 
-vec3 GG_SingleLogWalk::FootY_trajectory(double _real_t_step, double _t_foot_now, double _dsp_ratio, vec3 _y_dy_ddy_Foot_old, double _Y_footStep)
+vec3 GG_ROSWalk::FootY_trajectory(double _real_t_step, double _t_foot_now, double _dsp_ratio, vec3 _y_dy_ddy_Foot_old, double _Y_footStep)
 {
     double t_moving = 0.9*_real_t_step*(1.0 - _dsp_ratio);
     double t_half_dsp = _real_t_step*_dsp_ratio/2.0;
     double t_half_ssp = t_moving*0.5;
 
-//    if(Walking_mode == SINGLELOG)
-//    {
-//        if(_t_foot_now < t_half_dsp - 0.5*dt)
-//        {
-//        }
-//        else if(_t_foot_now < t_half_ssp + t_half_dsp - 0.5*dt)
-//        {
-//            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, t_half_ssp + t_half_dsp, _y_dy_ddy_Foot_old, vec3(MaxFoot_y_cur,0,0));
-//            return p_dp_ddp;
-//        }
-//        else if(_t_foot_now < _real_t_step - t_half_dsp - 0.5*dt)
-//        {
-//            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
-//            return p_dp_ddp;
-//        }
-//        else
-//        {
-//        }
-//    }else
-//    {
+    if(SDB[step_phase].collision == true)
+    {
+        if(_t_foot_now < t_half_dsp - 0.5*dt)
+        {
+        }
+        else if(_t_foot_now < t_half_ssp + t_half_dsp - 0.5*dt)
+        {
+            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, t_half_ssp + t_half_dsp, _y_dy_ddy_Foot_old, vec3(MaxFoot_y_cur,0,0));
+            return p_dp_ddp;
+        }
+        else if(_t_foot_now < _real_t_step - t_half_dsp - 0.5*dt)
+        {
+            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
+            return p_dp_ddp;
+        }
+        else
+        {
+        }
+    }else
+    {
         if(_t_foot_now < t_half_dsp - 0.5*dt)
         {
         }
@@ -2501,12 +2510,12 @@ vec3 GG_SingleLogWalk::FootY_trajectory(double _real_t_step, double _t_foot_now,
         else
         {
         }
-//    }
+    }
 
     return _y_dy_ddy_Foot_old;
 }
 
-int GG_SingleLogWalk::isSafeROSsteps(int index)
+int GG_ROSWalk::isSafeROSsteps(int index)
 {
 //    printf("\n=====================check ROS steps ====================\n");
 
@@ -2559,11 +2568,24 @@ int GG_SingleLogWalk::isSafeROSsteps(int index)
         return false;
     }else
     {
-        //check collision
         vec3 safezone;
-        safezone.x = 0.2;
-        safezone.y = 0.18;
+        safezone.x = 0.15;
+        safezone.y = 0.15;
         safezone.z = 0.;
+
+        vec3 collzone;
+        collzone.x = 0.23;
+        collzone.y = 0.2;
+        collzone.z = 0.;
+
+        if(nextfoot.x >= curfoot.x - collzone.x && nextfoot.x <= curfoot.x + collzone.x) //must collision
+            if(nextfoot.y >= curfoot.y - collzone.y && nextfoot.y <= curfoot.y + collzone.y)
+            {
+                printf("footstep input error\n");
+                return false;
+            }
+
+        //check collision
 
         double dx = (nextfoot.x - prevfoot.x)/100.;
         double dy = (nextfoot.y - prevfoot.y)/100.;
@@ -2577,16 +2599,20 @@ int GG_SingleLogWalk::isSafeROSsteps(int index)
                 if(y >= curfoot.y - safezone.y && y <= curfoot.y + safezone.y)
                 {
                     printf("collision\n");
-                    return false;
+                    Collision_flag = true;
+                    return true;
+
                 }
         }
         return true;
+
+
     }
 
     printf("=======================================================\n\n");
 }
 
-void GG_SingleLogWalk::rosstep_l2g()
+void GG_ROSWalk::rosstep_l2g()
 {
     printf("================rosstep l2g=================\n");
     double l2g_x, l2g_y, l2g_r = 0.;

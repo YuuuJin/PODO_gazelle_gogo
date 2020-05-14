@@ -19,10 +19,10 @@ enum{
     ROSWALK_FALL_DONE
 };
 
-class GG_SingleLogWalk : public HB_PreviewWalk
+class GG_ROSWalk : public HB_PreviewWalk
 {
 public:
-    GG_SingleLogWalk();
+    GG_ROSWalk();
     int Preveiw_walking();
     void WindowFill();
     void HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _qRF, vec3 _pLF, quat _qLF, double _WST_ini_deg, double _t_step, double _N_step, double _step_stride, int _RL_first);
@@ -47,8 +47,10 @@ public:
     double cur_pos_x;
     double cur_pos_y;
     double cur_deg_z;
+
+    int Collision_flag = false;
 };
 
 
 
-#endif // GG_SINGLELOGWALK_H
+#endif // GG_ROSWALK_H

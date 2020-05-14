@@ -32,6 +32,7 @@ typedef struct _STEP_INFO{
     int swingFoot;
     double t;
     int ros_step_phase;
+    int collision;
 }STEP_INFO;
 
 typedef struct _WINDOW{
@@ -352,10 +353,10 @@ public:
         COM_ref = vec3();
         COM_LIPM = vec3();
 
-        step_phase_change_flag = true;
+        step_phase_change_flag = false;//true;
 
         // Controller Flags       
-        StepAdjustControl_flag = true;
+        StepAdjustControl_flag = false;//true;
         // --> variable filtering of dp
 
         HipTorqueControl_flag = true;
