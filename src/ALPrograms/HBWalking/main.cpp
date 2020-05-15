@@ -3776,6 +3776,7 @@ void save_all()
 {
     printf("walk finished and saved%d\n",HBPW.k);
     FILE* ffp2 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev1.txt","w");
+//    FILE* ffp2 = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev1.txt","w");
     for(int i=0;i<HBPW.k;i++)
     {
         for(int j=0;j<SAVEN;j++)
@@ -3793,6 +3794,7 @@ void save_all_gg()
 {
     printf("ggwalk finished and saved%d\n",ROSW.k);
     FILE* ffp3 = fopen("/home/rainbow/Desktop/HBtest_Walking_Data_prev2.txt","w");
+//    FILE* ffp3 = fopen("/home/yujin/Desktop/HBtest_Walking_Data_prev2.txt","w");
     for(int i=0;i<ROSW.k;i++)
     {
         for(int j=0;j<SAVEN;j++)
@@ -3834,6 +3836,7 @@ void init_StateEstimator()
         RST_ini.JSP.JSP_Array[i] = getEnc(i);
         RST_ini.JSV.JSV_Array[i] = 0.0;
     }
+
     //for gazelle
     double RAP_deg, RAR_deg;
     GK.FK_diff_Ankle_right(getEnc(RAP)*R2D, getEnc(RAR)*R2D, 0, 0, RAP_deg, RAR_deg);
