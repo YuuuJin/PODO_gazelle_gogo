@@ -2326,12 +2326,15 @@ void THREAD_ReadSensor(){
 
     for(int i=0; i<_NO_OF_FT; i++){
         _DEV_FT[i].RBFT_ReadData();
+
         sharedSEN->FT[i].Fx     = _DEV_FT[i].FX;
         sharedSEN->FT[i].Fy     = _DEV_FT[i].FY;
         sharedSEN->FT[i].Fz     = _DEV_FT[i].FZ;
         sharedSEN->FT[i].Mx     = _DEV_FT[i].MX;
         sharedSEN->FT[i].My     = _DEV_FT[i].MY;
         sharedSEN->FT[i].Mz     = _DEV_FT[i].MZ;
+
+
 
 
         if(_DEV_FT[i].SENSOR_TYPE == 0){
@@ -2480,8 +2483,8 @@ void THREAD_ReadHomeError(){
                 }
             }
 
-            if(StatusErrorCnt[mc]%3 == 0)
-                FILE_LOG(logERROR) << "Status Get Error from Board " << mc << " Cnt : " << StatusErrorCnt[mc];
+//            if(StatusErrorCnt[mc]%3 == 0)
+//                FILE_LOG(logERROR) << "Status Get Error from Board " << mc << " Cnt : " << StatusErrorCnt[mc];
 
         }
     }

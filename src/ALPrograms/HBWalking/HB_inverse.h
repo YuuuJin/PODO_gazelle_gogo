@@ -202,6 +202,8 @@ public:
         HR2HPz = 0.072;  //l3
         ULEG = 0.33;  //l4
         LLEG = 0.32249;  //l5
+        //trash
+//        A2F = 0.088; //l6
         A2F = 0.085; //l6
 
 
@@ -585,7 +587,7 @@ public:
 
         if(l_AR2HP > ULEG + LLEG - 0.01){
             l_AR2HP = ULEG + LLEG - 0.01;
-            std::cout<<"right Knee goes to Singular position"<<std::endl;
+//            std::cout<<"right Knee goes to Singular position"<<std::endl;
         }
 
         double COS_PI_minus_q4 = (ULEG*ULEG + LLEG*LLEG - l_AR2HP*l_AR2HP)/(2*ULEG*LLEG);
@@ -704,7 +706,7 @@ public:
 
         if(l_AR2HP > ULEG + LLEG - 0.01){
             l_AR2HP = ULEG + LLEG - 0.01;
-            std::cout<<"left Knee goes to Singular position"<<std::endl;
+//            std::cout<<"left Knee goes to Singular position"<<std::endl;
         }
 
         COS_PI_minus_q4 = (ULEG*ULEG + LLEG*LLEG - l_AR2HP*l_AR2HP)/(2*ULEG*LLEG);

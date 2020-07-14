@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Daemon_Choreonoid1.0.0
-DISTDIR = /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/build/__DaemonBuild_Choreonoid/.tmp/Daemon_Choreonoid1.0.0
+DISTDIR = /home/rainbow/Desktop/PODO_gazelle_gogo/build/__DaemonBuild_Choreonoid/.tmp/Daemon_Choreonoid1.0.0
 LINK          = g++
 LFLAGS        = /usr/lib/xenomai/bootstrap.o -Wl,--wrap=main -Wl,--dynamic-list=/usr/lib/dynlist.ld -L/usr/lib -lcobalt -lpthread -lrt -Wl,-rpath,/opt/Qt5.7.0/5.7/gcc_64/lib
 LIBS          = $(SUBLIBS) -lalchemy -lcopperplate -lcobalt -lrt -lpcan -L/opt/Qt5.7.0/5.7/gcc_64/lib -lQt5Gui -L/usr/lib64 -lQt5Sql -lQt5Core -lGL -lpthread 

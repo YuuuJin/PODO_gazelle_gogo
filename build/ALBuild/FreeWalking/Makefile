@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = FreeWalking1.0.0
-DISTDIR = /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/build/ALBuild/FreeWalking/.tmp/FreeWalking1.0.0
+DISTDIR = /home/rainbow/Desktop/PODO_gazelle_gogo/build/ALBuild/FreeWalking/.tmp/FreeWalking1.0.0
 LINK          = g++
 LFLAGS        = /usr/lib/xenomai/bootstrap.o -Wl,--wrap=main -Wl,--dynamic-list=/usr/lib/dynlist.ld -L/usr/lib -lcobalt -lpthread -lrt -Wl,-O1 -Wl,-rpath,/opt/Qt5.7.0/5.7/gcc_64/lib
 LIBS          = $(SUBLIBS) -lalchemy -lcopperplate -lcobalt -lrt -lpcan -L../../../share/Libs -lik_math4 -lKINE_DRC_HUBO4 -L/opt/Qt5.7.0/5.7/gcc_64/lib -lQt5Core -lpthread 

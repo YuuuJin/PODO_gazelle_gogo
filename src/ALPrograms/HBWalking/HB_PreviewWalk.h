@@ -33,6 +33,7 @@ typedef struct _STEP_INFO{
     double t;
     int ros_step_phase;
     int collision;
+    int ros_walk;
 }STEP_INFO;
 
 typedef struct _WINDOW{
@@ -353,13 +354,13 @@ public:
         COM_ref = vec3();
         COM_LIPM = vec3();
 
-        step_phase_change_flag = false;//true;
+        step_phase_change_flag = true;
 
         // Controller Flags       
         StepAdjustControl_flag = false;//true;
         // --> variable filtering of dp
 
-        HipTorqueControl_flag = true;
+        HipTorqueControl_flag = false;//true;
 
         Landing_angle_control_flag = false;
 
@@ -391,7 +392,6 @@ public:
 
         //7. Pos ankle torque control
         Pos_Ankle_torque_control_flag = true;
-
     }
 
     void HB_set_step(vec3 _COM_ini, quat _qPel, vec3 _pRF, quat _qRF, vec3 _pLF, quat _qLF, double _WST_ini_deg, double _t_step, double _N_step, double _step_stride, int _RL_first){

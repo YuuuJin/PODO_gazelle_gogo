@@ -288,6 +288,9 @@ int RBFTSensor::RBFT_ReadData(void){
             PITCH = AccPitch;///SFPitch;
             ROLL = AccRoll;///SFRoll;
 
+            //trash
+//            printf("ROLL : %f, PITCH : %f\n",ROLL, PITCH);
+
             VelRoll = dAccRoll;//(double)((1.0f - 2.0f*RBCORE_PI*CutOffFeq*RT_TIMER_PERIOD_MS/1000.0f)*VelRollOld + RT_TIMER_PERIOD_MS/1000.0f*AccRollOld);
             VelRollOld = VelRoll;
             VelPitch = dAccPitch;//(double)((1.0f - 2.0f*RBCORE_PI*CutOffFeq*RT_TIMER_PERIOD_MS/1000.0f)*VelPitchOld + RT_TIMER_PERIOD_MS/1000.0f*AccPitchOld);

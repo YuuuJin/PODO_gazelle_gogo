@@ -1681,10 +1681,10 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
 
     //// variable gains
     double gain_roll_max = -0.5;//-0.5;
-    double gain_roll_min = -0.035;//-0.045;//-0.045;
+    double gain_roll_min = -0.035;//-0.005;//-0.035;
 
     double gain_pitch_max = -0.85;//-0.5;//-0.5;
-    double gain_pitch_min = -0.045;//-0.06;//-0.045;
+    double gain_pitch_min = -0.01;//-0.045;
 
     if(step_phase <= 1 || step_phase > N_step - 2)
     {

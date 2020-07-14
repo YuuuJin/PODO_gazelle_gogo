@@ -2479,8 +2479,11 @@ vec3 GG_ROSWalk::FootY_trajectory(double _real_t_step, double _t_foot_now, doubl
     double t_half_dsp = _real_t_step*_dsp_ratio/2.0;
     double t_half_ssp = t_moving*0.5;
 
+
     if(SDB[step_phase].collision == true)
     {
+        t_half_ssp = t_moving*0.3;
+        double t_half_ssp1 = t_moving*0.1;
         if(_t_foot_now < t_half_dsp - 0.5*dt)
         {
         }
@@ -2489,9 +2492,9 @@ vec3 GG_ROSWalk::FootY_trajectory(double _real_t_step, double _t_foot_now, doubl
             vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, t_half_ssp + t_half_dsp, _y_dy_ddy_Foot_old, vec3(MaxFoot_y_cur,0,0));
             return p_dp_ddp;
         }
-        else if(_t_foot_now < _real_t_step - t_half_dsp - 0.5*dt)
+        else if(_t_foot_now < _real_t_step - t_half_ssp1 - t_half_dsp - 0.5*dt)
         {
-            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
+            vec3 p_dp_ddp = calc_3rd(_t_foot_now - dt, _real_t_step - t_half_ssp1 - t_half_dsp + dt, _y_dy_ddy_Foot_old, vec3(_Y_footStep,0,0));
             return p_dp_ddp;
         }
         else
@@ -2574,8 +2577,8 @@ int GG_ROSWalk::isSafeROSsteps(int index)
         safezone.z = 0.;
 
         vec3 collzone;
-        collzone.x = 0.23;
-        collzone.y = 0.2;
+        collzone.x = 0.11;
+        collzone.y = 0.075;
         collzone.z = 0.;
 
         if(nextfoot.x >= curfoot.x - collzone.x && nextfoot.x <= curfoot.x + collzone.x) //must collision

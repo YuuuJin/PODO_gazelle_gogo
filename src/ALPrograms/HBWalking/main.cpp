@@ -575,7 +575,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
 
@@ -660,7 +660,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
@@ -739,7 +739,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
@@ -977,7 +977,9 @@ int main(int argc, char *argv[])
             WB_FLAG = 1;
 
 
+            printf("joywalk flag = %d\n",sharedCMD->COMMAND[PODO_NO].USER_PARA_CHAR[15]);
             if(sharedCMD->COMMAND[PODO_NO].USER_PARA_CHAR[15] == 10){
+                printf("joywalk true\n");
                 HBPW.Joystick_walk_flag = true;
                 HBPW.Joystick_on_signal = true;
 
@@ -1276,6 +1278,10 @@ void RBTaskThread(void *)
 {
     while(__IS_WORKING)
     {
+
+//        printf("[R] %f, %f [L] %f, %f\n",sharedSEN->FT[0].Roll, sharedSEN->FT[0].Pitch, sharedSEN->FT[1].Roll, sharedSEN->FT[1].Pitch);
+
+
         if(RSE.HSE_ONOFF)
         {
             RSE.READ_DATA_FROM_SENSOR();
@@ -1294,6 +1300,7 @@ void RBTaskThread(void *)
         //// State Estimation
         RST = SE.StateEst(RSEN);
         ROSW.MeasurementInput(RST);
+        HBPW.MeasurementInput(RST);
 
         switch(_task_thread)
         {
@@ -1412,7 +1419,7 @@ void RBTaskThread(void *)
                 int JOY_LB = sharedCMD->COMMAND[PODO_NO].USER_PARA_INT[5];
                 double des_t_step = sharedCMD->COMMAND[PODO_NO].USER_PARA_DOUBLE[15];
 
-                //cout<<"Ljog RL : "<<JOY_LJOG_RL<<endl;
+//                cout<<"Ljog UD : "<<JOY_LJOG_UD<<endl;
 
                 HBPW.Calc_del_pos_from_Joystick(JOY_RJOG_RL, JOY_RJOG_UD, JOY_LJOG_RL, JOY_LJOG_UD, des_t_step);
 
@@ -1671,14 +1678,14 @@ void RBTaskThread(void *)
 //            cout<<"IMU yaw vel: "<<HBPW.RS.IMULocalW.z<<"   con deg : "<<RHY_con_deg<<endl;
 
             //// -------------------------Right Swing Leg Vibration Control
-            RHR_con_deg = HBPW.RSwingLeg_Vib_Control(HBPW.ACC_RF_filtered, false);
-            //RHP_con_deg = 1*HBPW.RSwingLeg_Pitch_Vib_Control(HBPW.ACC_RF_filtered);
+//            RHR_con_deg = HBPW.RSwingLeg_Vib_Control(HBPW.ACC_RF_filtered, false);
+//            //RHP_con_deg = 1*HBPW.RSwingLeg_Pitch_Vib_Control(HBPW.ACC_RF_filtered);
 
-            //LHR_con_deg = HBPW.RTorso_Roll_Vib_Control(HBPW.RS.IMULocalW);
+//            //LHR_con_deg = HBPW.RTorso_Roll_Vib_Control(HBPW.RS.IMULocalW);
 
-            LHY_con_deg = HBPW.RTorso_Yaw_Vib_Control(HBPW.RS.IMULocalW, false);
+//            LHY_con_deg = HBPW.RTorso_Yaw_Vib_Control(HBPW.RS.IMULocalW, false);
 
-            cout<<"ACC_RFy_bpf: "<<HBPW.ACC_RF_filtered.y<<"   con deg : "<<RHR_con_deg<<endl;
+//            cout<<"ACC_RFy_bpf: "<<HBPW.ACC_RF_filtered.y<<"   con deg : "<<RHR_con_deg<<endl;
 
 
             //// ----------------Ankle Torque Control (by position)
@@ -1932,16 +1939,17 @@ void RBTaskThread(void *)
 
             //--------Ankle angle control ---------------------
 
-//            double dT_cZMP = 0.2;
+            double dT_cZMP = 0.2;
 //            HBPW.cZMP = exp(HBPW.w*dT_cZMP)/(exp(HBPW.w*dT_cZMP) - 1)*HBPW.CP_e_imu;
+            HBPW.cZMP = (1+(1/11.0*w))*(HBPW.COM_e_imu_local_filtered+(HBPW.dCOM_e_imu_local_filtered)/w);
 
-//            HBPW.cZMP_proj = zmpProjectionToSP_offset(HBPW.cZMP, HBPW.pRF_ref, HBPW.pLF_ref, HBPW.qRF_ref, HBPW.qLF_ref, HBPW.RS.F_RF, HBPW.RS.F_LF, +0.00, 0.00);
+            HBPW.cZMP_proj = zmpProjectionToSP_offset(HBPW.cZMP, HBPW.pRF_ref, HBPW.pLF_ref, HBPW.qRF_ref, HBPW.qLF_ref, HBPW.RS.F_RF, HBPW.RS.F_LF, +0.00, 0.00);
 
-//            HBPW.AnkleTorque_ref = HBPW.Ankle_Torque_from_cZMP(HBPW.cZMP_proj, HBPW.ZMP_global, HBPW.qRF_ref, HBPW.qLF_ref, HBPW.pRF_ref, HBPW.pLF_ref, HBPW.RS.F_RF, HBPW.RS.F_LF);
+            HBPW.AnkleTorque_ref = HBPW.Ankle_Torque_from_cZMP(HBPW.cZMP_proj, HBPW.ZMP_global, HBPW.qRF_ref, HBPW.qLF_ref, HBPW.pRF_ref, HBPW.pLF_ref, HBPW.RS.F_RF, HBPW.RS.F_LF);
 
-//            // calc 'XF_qaut_ctrl' according to torque reference
-////            HBPW.AnkleTorqueController_pos(HBPW.AnkleTorque_ref[0], HBPW.AnkleTorque_ref[1], HBPW.AnkleTorque_ref[2], HBPW.AnkleTorque_ref[3],
-////                                        HBPW.RS.F_RF, HBPW.RS.F_LF, HBPW.RS.M_RF, HBPW.RS.M_LF);
+            // calc 'XF_qaut_ctrl' according to torque reference
+            HBPW.AnkleTorqueController_pos(HBPW.AnkleTorque_ref[0], HBPW.AnkleTorque_ref[1], HBPW.AnkleTorque_ref[2], HBPW.AnkleTorque_ref[3],
+                                        HBPW.RS.F_RF, HBPW.RS.F_LF, HBPW.RS.M_RF, HBPW.RS.M_LF);
 //            HBPW.AnkleTorqueController_pos(0, 0, 0, 0,
 //                                        HBPW.RS.F_RF, HBPW.RS.F_LF, HBPW.RS.M_RF, HBPW.RS.M_LF);
 
@@ -2103,6 +2111,7 @@ void RBTaskThread(void *)
 //            }
 
             Scnt++;
+
             break;
         }
 
@@ -2135,7 +2144,7 @@ void RBTaskThread(void *)
 
 //            vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
 //            vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-//            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+//            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
 //            vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 F_RF = vec3(0,0,200);
             vec3 F_LF = vec3(0,0,200);
@@ -2220,7 +2229,7 @@ void RBTaskThread(void *)
         {
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz*4.0/5.0);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2402,7 +2411,7 @@ void RBTaskThread(void *)
             // Ankle position control Test
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2446,7 +2455,7 @@ void RBTaskThread(void *)
 
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2516,7 +2525,7 @@ void RBTaskThread(void *)
 
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2571,7 +2580,7 @@ void RBTaskThread(void *)
             // Ankle torque Control test-------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz*4.0/5.0);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2742,6 +2751,9 @@ void RBTaskThread(void *)
         userData->pel_pose[0] = ROSW.COM_m_filtered[0];
         userData->pel_pose[1] = ROSW.COM_m_filtered[1];
         userData->pel_pose[2] = ROSW.COM_m_filtered[2];
+//        userData->pel_pose[0] = HBPW.COM_m_filtered[0];
+//        userData->pel_pose[1] = HBPW.COM_m_filtered[1];
+//        userData->pel_pose[2] = HBPW.COM_m_filtered[2];
 
 //        userData->pel_quat[0] = RST.IMUquat[0];
 //        userData->pel_quat[1] = RST.IMUquat[1];
@@ -2912,7 +2924,7 @@ void SensorInput()
     vec3 F_LF = vec3(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
 //    vec3 F_RF = vec3(0,0,sharedSEN->FT[0].Fz);
 //    vec3 F_LF = vec3(0,0,sharedSEN->FT[1].Fz);
-    vec3 M_RF = vec3(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+    vec3 M_RF = vec3(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
     vec3 M_LF = vec3(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
 
     vec3 IMUangle(sharedSEN->IMU[0].Roll,sharedSEN->IMU[0].Pitch,sharedSEN->IMU[0].Yaw);   // Gyro Integration
@@ -3813,7 +3825,7 @@ void init_StateEstimator()
     ////Initialize State Estimator--------------------------------------------------------------------
     vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
     vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-    vec3 M_RF(sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+    vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
     vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
     quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
     RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;

@@ -807,7 +807,9 @@ void *RBCore_NRTThreadCon(void *)
                     sharedSEN->FT[i].Fx = GazeboSensor.FTSensor[i].force[0];
                     sharedSEN->FT[i].Fy = GazeboSensor.FTSensor[i].force[1];
                     sharedSEN->FT[i].Fz = GazeboSensor.FTSensor[i].force[2];
+
                     sharedSEN->FT[i].Mx = GazeboSensor.FTSensor[i].torque[0];
+
                     sharedSEN->FT[i].My = GazeboSensor.FTSensor[i].torque[1];
                     sharedSEN->FT[i].Mz = GazeboSensor.FTSensor[i].torque[2];
                 }

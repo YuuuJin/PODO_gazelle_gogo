@@ -477,7 +477,7 @@ void RobotStateEstimator::READ_DATA_FROM_SENSOR(void){
     IN_RFT_FX = sharedSEN->FT[0].Fx;
     IN_RFT_FY = sharedSEN->FT[0].Fy;
     IN_RFT_FZ = sharedSEN->FT[0].Fz;
-    IN_RFT_MX = sharedSEN->FT[0].Mx;
+    IN_RFT_MX = -sharedSEN->FT[0].Mx;
     IN_RFT_MY = sharedSEN->FT[0].My;
     IN_RFT_MZ = sharedSEN->FT[0].Mz;
 

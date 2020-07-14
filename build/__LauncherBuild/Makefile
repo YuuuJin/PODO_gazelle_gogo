@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = PODOLauncher1.0.0
-DISTDIR = /home/yujin/Desktop/GitHub/PODO_gazelle_gogo/build/__LauncherBuild/.tmp/PODOLauncher1.0.0
+DISTDIR = /home/rainbow/Desktop/PODO_gazelle_gogo/build/__LauncherBuild/.tmp/PODOLauncher1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/opt/Qt5.7.0/5.7/gcc_64/lib
 LIBS          = $(SUBLIBS) -L/opt/Qt5.7.0/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
@@ -712,7 +712,7 @@ moc_LauncherDialog.cpp: /opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		/opt/Qt5.7.0/5.7/gcc_64/include/QtCore/qbasictimer.h \
 		../../src/__PODOLauncher/LauncherDialog.h \
 		/opt/Qt5.7.0/5.7/gcc_64/bin/moc
-	/opt/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/yujin/Desktop/GitHub/PODO_gazelle_gogo/src/__PODOLauncher -I/opt/Qt5.7.0/5.7/gcc_64/include -I/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.0/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../../src/__PODOLauncher/LauncherDialog.h -o moc_LauncherDialog.cpp
+	/opt/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/rainbow/Desktop/PODO_gazelle_gogo/src/__PODOLauncher -I/opt/Qt5.7.0/5.7/gcc_64/include -I/opt/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.0/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../../src/__PODOLauncher/LauncherDialog.h -o moc_LauncherDialog.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
