@@ -1829,7 +1829,8 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
 
 
 
-    if(Pos_Ankle_torque_control_flag == true){
+    if(Pos_Ankle_torque_control_flag == true)
+    {
         RF_angle_ctrl.x += dRF_angle_ctrl.x*dt;
         RF_angle_ctrl.y += dRF_angle_ctrl.y*dt;
 
@@ -1848,7 +1849,8 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
         if(LF_angle_ctrl.y > angle_limit*D2R) LF_angle_ctrl.y = angle_limit*D2R;
         if(LF_angle_ctrl.y < -angle_limit*D2R) LF_angle_ctrl.y = -angle_limit*D2R;
     }
-    else{
+    else
+    {
         RF_angle_ctrl.x =0;
         RF_angle_ctrl.y =0;
 
@@ -1856,8 +1858,7 @@ void HB_PreviewWalk::AnkleTorqueController_pos(double _RAR_T_ref, double _RAP_T_
         LF_angle_ctrl.y =0;
     }
 
-//    RF_quat_ctrl = quat(vec3(0,1,0),RF_angle_ctrl.y)*quat(vec3(1,0,0),RF_angle_ctrl.x);
-//    LF_quat_ctrl = quat(vec3(0,1,0),LF_angle_ctrl.y)*quat(vec3(1,0,0),LF_angle_ctrl.x);
+
     RF_quat_ctrl = quat();//quat(vec3(0,1,0),RF_angle_ctrl.y)*quat(vec3(1,0,0),RF_angle_ctrl.x);
     LF_quat_ctrl = quat();//quat(vec3(0,1,0),LF_angle_ctrl.y)*quat(vec3(1,0,0),LF_angle_ctrl.x);
 
@@ -2783,8 +2784,6 @@ double HB_PreviewWalk::Calc_Landing_Threshold(char _swingFoot, vec3 _cZMP_dsp){
 
 int HB_PreviewWalk::Logging(){
     //// ------------------Logging---------------------------
-
-
     save_onestep(k);
     k++;
 }

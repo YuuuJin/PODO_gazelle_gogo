@@ -110,8 +110,10 @@ int Scnt = 0;
 int Sggcnt = 0;
 double SAVE[SAVEN][50000];
 double SAVE_GG[SAVEN][50000];
+int ftmode = -1;
 
 // Functions
+void ResetROSdata();
 void ResetGlobalCoord(int RF_OR_LF_OR_PC_MidFoot);
 void SensorInput();
 double getEnc(int in);
@@ -218,10 +220,7 @@ int main(int argc, char *argv[])
     if(RBInitialize() == false)
         __IS_WORKING = false;
 
-    userData->FLAG_receivedROS = ROS_RX_FALSE;
-    userData->FLAG_sendROS = CMD_BREAK;
-    userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
-    userData->ros_footstep_flag = false;
+    ResetROSdata();
 
     joint->SetMotionOwner(0);
 
@@ -243,10 +242,12 @@ int main(int argc, char *argv[])
     {
         HBPW.Pos_Ankle_torque_control_flag = false;
         ROSW.Pos_Ankle_torque_control_flag = false;
+        ftmode = 1;
     }else
     {
         HBPW.Pos_Ankle_torque_control_flag = true;
         ROSW.Pos_Ankle_torque_control_flag = true;
+        ftmode = -1;
 
     }
 
@@ -575,7 +576,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
 
@@ -660,7 +661,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
@@ -739,7 +740,7 @@ int main(int argc, char *argv[])
             ////Initialize State Estimator--------------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
             RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
@@ -1278,10 +1279,6 @@ void RBTaskThread(void *)
 {
     while(__IS_WORKING)
     {
-
-//        printf("[R] %f, %f [L] %f, %f\n",sharedSEN->FT[0].Roll, sharedSEN->FT[0].Pitch, sharedSEN->FT[1].Roll, sharedSEN->FT[1].Pitch);
-
-
         if(RSE.HSE_ONOFF)
         {
             RSE.READ_DATA_FROM_SENSOR();
@@ -2114,7 +2111,6 @@ void RBTaskThread(void *)
 
             break;
         }
-
         case _task_Inv_Dyn_con:
         {
             
@@ -2137,15 +2133,15 @@ void RBTaskThread(void *)
 
             break;
         }
-
         case _task_HB_Walking:
         {
             sharedCMD->Choreonoid.TorqueConOnOff = 0;
 
 //            vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
 //            vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-//            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+//            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
 //            vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
+
             vec3 F_RF = vec3(0,0,200);
             vec3 F_LF = vec3(0,0,200);
             vec3 M_RF = vec3(0,0,0);
@@ -2229,7 +2225,7 @@ void RBTaskThread(void *)
         {
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz*4.0/5.0);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2411,7 +2407,7 @@ void RBTaskThread(void *)
             // Ankle position control Test
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2455,7 +2451,7 @@ void RBTaskThread(void *)
 
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2525,7 +2521,7 @@ void RBTaskThread(void *)
 
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2580,7 +2576,7 @@ void RBTaskThread(void *)
             // Ankle torque Control test-------------------------------------------------------------
             vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz*4.0/5.0);
             vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-            vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+            vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
             vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
             vec3 pRF(WBmotion->pRF_3x1);
             vec3 pLF(WBmotion->pLF_3x1);
@@ -2629,7 +2625,6 @@ void RBTaskThread(void *)
         }
         case _task_ROS_Walk:
         {
-
             //// Put sensor value into RSEN object
             SensorInput();
 
@@ -2748,17 +2743,14 @@ void RBTaskThread(void *)
 
             break;
         }
+
+
         userData->pel_pose[0] = ROSW.COM_m_filtered[0];
         userData->pel_pose[1] = ROSW.COM_m_filtered[1];
         userData->pel_pose[2] = ROSW.COM_m_filtered[2];
 //        userData->pel_pose[0] = HBPW.COM_m_filtered[0];
 //        userData->pel_pose[1] = HBPW.COM_m_filtered[1];
 //        userData->pel_pose[2] = HBPW.COM_m_filtered[2];
-
-//        userData->pel_quat[0] = RST.IMUquat[0];
-//        userData->pel_quat[1] = RST.IMUquat[1];
-//        userData->pel_quat[2] = RST.IMUquat[2];
-//        userData->pel_quat[3] = RST.IMUquat[3];
 
         quat pelquat = quat(rpy(RST.IMUangle[0], RST.IMUangle[1], RST.IMUangle[2]));
         userData->pel_quat[0] = pelquat[0];
@@ -2924,7 +2916,7 @@ void SensorInput()
     vec3 F_LF = vec3(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
 //    vec3 F_RF = vec3(0,0,sharedSEN->FT[0].Fz);
 //    vec3 F_LF = vec3(0,0,sharedSEN->FT[1].Fz);
-    vec3 M_RF = vec3(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+    vec3 M_RF = vec3(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
     vec3 M_LF = vec3(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
 
     vec3 IMUangle(sharedSEN->IMU[0].Roll,sharedSEN->IMU[0].Pitch,sharedSEN->IMU[0].Yaw);   // Gyro Integration
@@ -3825,7 +3817,7 @@ void init_StateEstimator()
     ////Initialize State Estimator--------------------------------------------------------------------
     vec3 F_RF(sharedSEN->FT[0].Fx,sharedSEN->FT[0].Fy,sharedSEN->FT[0].Fz);
     vec3 F_LF(sharedSEN->FT[1].Fx,sharedSEN->FT[1].Fy,sharedSEN->FT[1].Fz);
-    vec3 M_RF(-sharedSEN->FT[0].Mx,sharedSEN->FT[0].My,0);
+    vec3 M_RF(sharedSEN->FT[0].Mx*ftmode,sharedSEN->FT[0].My,0);
     vec3 M_LF(sharedSEN->FT[1].Mx,sharedSEN->FT[1].My,0);
     quat IMUquat(sharedSEN->IMU[0].Q[0], sharedSEN->IMU[0].Q[1], sharedSEN->IMU[0].Q[2], sharedSEN->IMU[0].Q[3]);
     RST_ini.F_RF = F_RF; RST_ini.F_LF = F_LF; RST_ini.M_RF = M_RF; RST_ini.M_LF = M_LF;
@@ -3873,4 +3865,12 @@ doubles quat2doubles(quat _quat){
         q[i] = _quat[i];
     }
     return q;
+}
+
+void ResetROSdata()
+{
+    userData->FLAG_receivedROS = ROS_RX_FALSE;
+    userData->FLAG_sendROS = CMD_BREAK;
+    userData->ros_walking_cmd = ROS_ROSWALK_BREAK;
+    userData->ros_footstep_flag = false;
 }

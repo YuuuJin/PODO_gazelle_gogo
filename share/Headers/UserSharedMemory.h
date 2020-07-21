@@ -129,6 +129,7 @@ typedef struct _USER_SHM_
 
     // recieving data
     int             FLAG_receivedROS;
+    int             FLAG_usedROS;
     int             ros_walking_cmd;
     int             ros_footstep_flag;
     unsigned int    ros_step_num;  // planned step phase

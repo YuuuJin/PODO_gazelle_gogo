@@ -7,12 +7,18 @@ GG_ROSWalk::GG_ROSWalk()
 
 int GG_ROSWalk::Preveiw_walking()
 {
+    static int flag_pass = false;
+    //// --------------- SDB update when goal received ------------------
+
+
+
 
     //// ----------------- step phase change-----------------------------
     if(step_phase_change_flag == true)
     {//once call(init) every time step changes
 
         userData->step_phase = step_phase;
+        flag_pass = false;
         //// -------------------------------joystick mode-----------------------------------------
 
          if(ROSWalk_flag == true && step_phase > 2)
@@ -108,15 +114,15 @@ int GG_ROSWalk::Preveiw_walking()
 
                          if(overwrite_flag == true)
                          {
-
                              userData->FLAG_receivedROS = ROS_RX_EMPTY;
+                             userData->FLAG_usedROS = true;
 
                              if(SD_next_step.ros_step_phase > step_phase)
                              {
-                                 FILE_LOG(logSUCCESS) << "SDB overwrited";
                                  printf("SDB[%d] %f, %f     ->      %f, %f\n", SD_next_step.ros_step_phase,
                                             SDB[SD_next_step.ros_step_phase].Fpos.x, SDB[SD_next_step.ros_step_phase].Fpos.y,
                                             SD_next_step.Fpos.x, SD_next_step.Fpos.y);
+                                 FILE_LOG(logSUCCESS) << "SDB overwrited";
 
                                  SDB[SD_next_step.ros_step_phase].t = SD_next_step.t;
                                  SDB[SD_next_step.ros_step_phase].swingFoot = SD_next_step.swingFoot;
@@ -129,15 +135,17 @@ int GG_ROSWalk::Preveiw_walking()
                                      SDB[SD_next_step.ros_step_phase - 1].collision = true;
                                      SDB[SD_next_step.ros_step_phase - 1].t = 2.0;
                                      Collision_flag = false;
-                                     printf("%d collision true\n",SD_next_step.ros_step_phase - 1);
+//                                     printf("%d collision true\n",SD_next_step.ros_step_phase - 1);
                                  }else
                                  {
                                      SDB[SD_next_step.ros_step_phase].collision = false;
-                                     printf("%d collision false\n",SD_next_step.ros_step_phase);
+//                                     printf("%d collision false\n",SD_next_step.ros_step_phase);
                                  }
 
+                                 //????
                                  if(SD_next_step.ros_step_phase - step_phase == 1)
                                     SDB[step_phase].ros_step_phase = SD_next_step.ros_step_phase - 1;
+
                              }else
                              {
                                  FILE_LOG(logERROR) << "SDB don't changed -> step_phase";
@@ -149,6 +157,8 @@ int GG_ROSWalk::Preveiw_walking()
                                         SDB[SD_next_step.ros_step_phase].Fpos.x, SDB[SD_next_step.ros_step_phase].Fpos.y,
                                         SD_next_step.Fpos.x, SD_next_step.Fpos.y);
                          }
+
+
 
                          if(SDB[step_phase + 1 + i].ros_step_phase == -1)
                          {
@@ -206,11 +216,17 @@ int GG_ROSWalk::Preveiw_walking()
                  printf("-----------------------------------------------\n");
              }
 
+             if(SDB[step_phase].ros_step_phase != -1 && userData->FLAG_usedROS == true && userData->FLAG_sendROS == 0)
+             {
+                 FILE_LOG(logSUCCESS) << "send to ros";
+                 userData->FLAG_sendROS = 2;
+             }
          }
 
         // Step phase initialize
         t_step = SDB[step_phase].t;
         T_nom = SDB[step_phase].t;
+        FILE_LOG(logWARNING) << "STEP START=========================";
         cout<<"step phase: "<<step_phase<<"   t_step: "<<t_step<<endl;
         double yaw_deg = rpy(SDB[step_phase].Fquat).y*R2D;
         printf("Current Foot Step = %f, %f, %f (%d)\n",SDB[step_phase].Fpos.x,SDB[step_phase].Fpos.y,yaw_deg,SDB[step_phase].swingFoot);
@@ -279,6 +295,126 @@ int GG_ROSWalk::Preveiw_walking()
         step_phase_change_flag = false;
         cout<<"current phase changed: "<<step_phase<<"  t_step: "<<t_step<<endl;
     }
+
+
+    if(userData->FLAG_receivedROS == ROS_RX_TRUE && flag_pass == false)
+    {
+        if(ROSWalk_flag == true && step_phase > 2)
+        {
+            // Step replanning every step phase change
+            // ahead Next Two Step or more...(how much step should be planned before..?)
+            printf("-------------%d th new step replanning--------------\n",step_phase);
+
+                N_step = step_phase + userData->ros_step_num;  //extend last step
+
+                //// (step phase + i + 1) to (step_phase + i + 2)    i= 0,1
+
+                    STEP_INFO SD_next_step;
+                    int overwrite_flag = false;
+
+                    FILE_LOG(logSUCCESS) << "ROS command received";
+
+                    for(int i=0; i<4; i++)
+                    {
+                        //check ith ROSstep
+                        overwrite_flag = isSafeROSsteps(i);
+
+                        //change next footstep using ros data
+                        SD_next_step.t = ros_step_t;
+                        dsp_ratio = des_dsp_ratio;
+
+                        //stancF_to_NextF limiter
+    //                             quat del_Fquat_local = quat(vec3(0,0,1),del_pos.z*D2R);
+                        quat des_yaw = quat(vec3(0,0,1), userData->ros_footsteps[i].yaw*D2R);
+                        SD_next_step.swingFoot = -userData->ros_footsteps[i].lr_state;
+
+                        //load ros footstep
+    //                             SD_next_step.Fquat  = SDB[step_phase + i + 0].Fquat*del_Fquat_local;
+                        SD_next_step.Fquat = des_yaw;//*del_Fquat_local;
+
+                        SD_next_step.Fpos.x = userData->ros_footsteps[i].x;
+                        SD_next_step.Fpos.y = userData->ros_footsteps[i].y;
+                        SD_next_step.Fpos.z = 0.0;
+
+                        SD_next_step.ros_step_phase = roswalk_first_phase + userData->ros_footsteps[i].step_phase;
+
+                        if(overwrite_flag == true)
+                        {
+                            userData->FLAG_receivedROS = ROS_RX_EMPTY;
+                            userData->FLAG_usedROS = true;
+
+                            if(SD_next_step.ros_step_phase > step_phase)
+                            {
+                                printf("SDB[%d] %f, %f     ->      %f, %f\n", SD_next_step.ros_step_phase,
+                                           SDB[SD_next_step.ros_step_phase].Fpos.x, SDB[SD_next_step.ros_step_phase].Fpos.y,
+                                           SD_next_step.Fpos.x, SD_next_step.Fpos.y);
+                                FILE_LOG(logSUCCESS) << "SDB overwrited";
+
+                                SDB[SD_next_step.ros_step_phase].t = SD_next_step.t;
+                                SDB[SD_next_step.ros_step_phase].swingFoot = SD_next_step.swingFoot;
+                                SDB[SD_next_step.ros_step_phase].Fpos = SD_next_step.Fpos;
+                                SDB[SD_next_step.ros_step_phase].Fquat = SD_next_step.Fquat;
+                                SDB[SD_next_step.ros_step_phase].ros_step_phase = SD_next_step.ros_step_phase;
+
+                                if(Collision_flag == true)
+                                {
+                                    SDB[SD_next_step.ros_step_phase - 1].collision = true;
+                                    SDB[SD_next_step.ros_step_phase - 1].t = 2.0;
+                                    Collision_flag = false;
+    //                                     printf("%d collision true\n",SD_next_step.ros_step_phase - 1);
+                                }else
+                                {
+                                    SDB[SD_next_step.ros_step_phase].collision = false;
+    //                                     printf("%d collision false\n",SD_next_step.ros_step_phase);
+                                }
+
+                                //????
+                                if(SD_next_step.ros_step_phase - step_phase == 1)
+                                   SDB[step_phase].ros_step_phase = SD_next_step.ros_step_phase - 1;
+
+                            }else
+                            {
+                                FILE_LOG(logERROR) << "SDB don't changed -> step_phase";
+                            }
+                        }else
+                        {
+                            flag_pass = true;
+                            FILE_LOG(logERROR) << "SDB don't changed";
+                            printf("SDB[%d] %f, %f         (%f, %f)\n", SD_next_step.ros_step_phase,
+                                       SDB[SD_next_step.ros_step_phase].Fpos.x, SDB[SD_next_step.ros_step_phase].Fpos.y,
+                                       SD_next_step.Fpos.x, SD_next_step.Fpos.y);
+                        }
+
+
+
+                        if(SDB[step_phase + 1 + i].ros_step_phase == -1)
+                        {
+                            FILE_LOG(logINFO) << "next SDB changed";
+                            printf("SDB[%d] %f, %f     ->      %f, %f\n", step_phase + 1 + i,
+                                       SDB[step_phase + 1 + i].Fpos.x, SDB[step_phase + 1 + i].Fpos.y,
+                                    SDB[step_phase - 1 + i].Fpos.x, SDB[step_phase - 1 + i].Fpos.y);
+
+                            SDB[step_phase + 1 + i].t = SDB[step_phase - 1 + i].t;
+                            SDB[step_phase + 1 + i].swingFoot = SDB[step_phase - 1 + i].swingFoot;
+                            SDB[step_phase + 1 + i].Fpos = SDB[step_phase - 1 + i].Fpos;
+                            SDB[step_phase + 1 + i].Fquat = SDB[step_phase - 1 + i].Fquat;
+                            SDB[step_phase + 1 + i].ros_step_phase = -1;
+                        }
+
+                    }
+                    printf("SDB[0,1,2] = %f, %f(%d), %f, %f(%d), %f, %f(%d)\n",
+                               SDB[step_phase].Fpos.x,     SDB[step_phase].Fpos.y, SDB[step_phase].ros_step_phase,
+                               SDB[step_phase+1].Fpos.x,   SDB[step_phase+1].Fpos.y, SDB[step_phase+1].ros_step_phase,
+                               SDB[step_phase+2].Fpos.x,   SDB[step_phase+2].Fpos.y, SDB[step_phase+2].ros_step_phase);
+
+
+
+                printf("-----------------------------------------------\n");
+
+
+        }
+    }
+
 
     if(step_phase >= N_step + 4)
     {
@@ -1738,22 +1874,22 @@ int GG_ROSWalk::Preveiw_walking()
     dT = t_step - t_now;
     k++;
 
-    if(dT < t_step/2)
-    {
-        if(SDB[step_phase].ros_step_phase != -1 && userData->FLAG_receivedROS == ROS_RX_EMPTY)
-        {
-            printf("ros step_done\n");
-//            printf("ucom pose = %f, %f\n", userData->pel_pose[0], userData->pel_pose[1]);
-//            printf("rcom pose = %f, %f\n", COM_m_filtered[0], COM_m_filtered[1]);
+//    if(dT < t_step/2)
+//    {
+//        if(SDB[step_phase].ros_step_phase != -1 && userData->FLAG_usedROS == true && userData->FLAG_sendROS == 0)
+//        {
+//            FILE_LOG(logSUCCESS) << "send to ros";
+////            printf("ros step_done\n");
+//            userData->FLAG_sendROS = 2;
+//        }
+//    }
 
-//            ROSWalk_status = ROSWALK_STEP_DONE;
-            userData->FLAG_sendROS = 2;
-        }
-    }
+
     if(dT <= dt + dt/2)
     {
         step_phase_change_flag = true;
-        printf("step done\n");
+
+        FILE_LOG(logWARNING) << "STEPDONE-------------------------";
 //        if(SDB[step_phase].ros_step_phase != -1)
 //        {
 //            printf("ros step_done\n");
@@ -2520,47 +2656,34 @@ vec3 GG_ROSWalk::FootY_trajectory(double _real_t_step, double _t_foot_now, doubl
 
 int GG_ROSWalk::isSafeROSsteps(int index)
 {
-//    printf("\n=====================check ROS steps ====================\n");
-
-    printf("---------%d\n",index);
+    printf("***********%dth\n",index);
     vec3 nextfoot, curfoot, prevfoot;
     int curlr;
 
-    if(index==0)
+    //set first phase
+    if(index==0 && userData->ros_footsteps[index].step_phase == 0)
     {
-        if(userData->ros_footsteps[index].step_phase == 0)
-        {
-            roswalk_first_phase = step_phase + 1;
-            printf("first step\n");
-        }
-
-
-        nextfoot[0] = userData->ros_footsteps[index].x;
-        nextfoot[1] = userData->ros_footsteps[index].y;
-
-        curfoot = SDB[step_phase].Fpos;
-        prevfoot = SDB[step_phase - 1].Fpos;
-
-        curlr = -SDB[step_phase].swingFoot;
-    }else
-    {
-
-        nextfoot[0] = userData->ros_footsteps[index].x;
-        nextfoot[1] = userData->ros_footsteps[index].y;
-
-        curfoot = SDB[step_phase + index].Fpos;
-        prevfoot = SDB[step_phase + index - 1].Fpos;
-
-        curlr = -SDB[step_phase + index].swingFoot;
+        roswalk_first_phase = step_phase + 1;
+        printf("first step\n");
     }
 
+    //set cur foot info
+    nextfoot[0] = userData->ros_footsteps[index].x;
+    nextfoot[1] = userData->ros_footsteps[index].y;
+
+    curfoot = SDB[step_phase + index].Fpos;
+    prevfoot = SDB[step_phase + index - 1].Fpos;
+
+    curlr = -SDB[step_phase + index].swingFoot;
     printf("prev(%f, %f), cur(%f, %f), next(%f, %f)\n", prevfoot[0],prevfoot[1],curfoot[0],curfoot[1],nextfoot[0],nextfoot[1]);
 
+    //calculate stride
     double x_stride = nextfoot.x - curfoot.x;
     double y_stride = nextfoot.y - curfoot.y;
     double len_stride = sqrt(x_stride*x_stride + y_stride*y_stride);
-    printf("%d th stride : %f, %f (len=%f)\n",index,x_stride, y_stride, len_stride);
+    printf("%d th stride : %f(x), %f(y) (len=%f)\n",index,x_stride, y_stride, len_stride);
 
+    //check ros step
     if(curlr == userData->ros_footsteps[index].lr_state)
     {
         printf("R->R or L->L\n");
@@ -2571,24 +2694,39 @@ int GG_ROSWalk::isSafeROSsteps(int index)
         return false;
     }else
     {
+        if(userData->ros_footsteps[index].lr_state == RFoot)
+        {
+            if(nextfoot[1] > curfoot.y)
+            {
+                printf("lr_state error\n");
+                return false;
+            }
+        }else
+        {
+            if(nextfoot[1] < curfoot.y)
+            {
+                printf("lr_state error\n");
+                return false;
+            }
+        }
+
         vec3 safezone;
         safezone.x = 0.15;
         safezone.y = 0.15;
         safezone.z = 0.;
 
         vec3 collzone;
-        collzone.x = 0.11;
-        collzone.y = 0.075;
+        collzone.x = 0.115;
+        collzone.y = 0.08;
         collzone.z = 0.;
 
+        //check collision
         if(nextfoot.x >= curfoot.x - collzone.x && nextfoot.x <= curfoot.x + collzone.x) //must collision
             if(nextfoot.y >= curfoot.y - collzone.y && nextfoot.y <= curfoot.y + collzone.y)
             {
                 printf("footstep input error\n");
                 return false;
             }
-
-        //check collision
 
         double dx = (nextfoot.x - prevfoot.x)/100.;
         double dy = (nextfoot.y - prevfoot.y)/100.;
@@ -2604,7 +2742,6 @@ int GG_ROSWalk::isSafeROSsteps(int index)
                     printf("collision\n");
                     Collision_flag = true;
                     return true;
-
                 }
         }
         return true;
